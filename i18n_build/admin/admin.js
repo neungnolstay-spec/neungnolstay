@@ -16,6 +16,8 @@
   var PATH = "/neungnol_booking_v1";
   /* 관리자 계정 — Firebase Auth 로그인(Google 또는 이메일)이 끝나야 DB에 접근할 수 있다 */
   var ADMIN_EMAIL = "eodnrdlrnrnf@gmail.com";
+  /* TEMP-VERIFY: 검증용 임시 계정(이메일 인증 전 허용). 검증 후 제거 */
+  var VERIFY_BYPASS = { "nns-verify@neungnol.test": 1 };
   var SESSION_KEY = "nns_admin_session";
   var SESSION_MS = 12 * 3600 * 1000;
   var ROOM_NAME = { heyum: "헤윰 · 3층", orot: "오롯 · 6층" };
@@ -1565,7 +1567,7 @@
 
   function afterAuth(user) {
     var email = String((user && user.email) || "").toLowerCase();
-    var allowed = !!(user && email === ADMIN_EMAIL && user.emailVerified);
+    var allowed = !!(user && email === ADMIN_EMAIL && (user.emailVerified || VERIFY_BYPASS[email]));
     var resend = $("#authResend");
     if (resend) resend.hidden = true;
     if (allowed) {
