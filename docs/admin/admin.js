@@ -229,9 +229,9 @@
       addScript(base + "firebase-app-compat.js", function () {
         addScript(base + "firebase-auth-compat.js", function () {
           addScript(base + "firebase-database-compat.js", function () { resolve(); },
-            function () { reject(new Error("sdk")); });
-        }, function () { reject(new Error("sdk")); });
-      }, function () { reject(new Error("sdk")); });
+            function () { reject(new Error("sdk:database")); });
+        }, function () { reject(new Error("sdk:auth")); });
+      }, function () { reject(new Error("sdk:app")); });
     });
   }
 
@@ -1659,10 +1659,10 @@
           showPanel("auth");
         }, function () {});
       });
-    }).catch(function () {
+    }).catch(function (e) {
       showPanel("auth");
       setSync("off", "연결 실패");
-      authMsg("Firebase를 불러오지 못했습니다. 네트워크를 확인해 주세요.");
+      authMsg("Firebase를 불러오지 못했습니다. 네트워크를 확인해 주세요. [" + ((e && (e.message || e.code)) || e) + "]");
     });
   }
 

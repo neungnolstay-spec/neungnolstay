@@ -370,6 +370,7 @@ def footer(t: dict, depth: int, page: str = "home") -> str:
     <div class="foot-bottom">
       <span>{e(t['footer']['rights'])}</span>
       <span>{e(t['footer']['disclaimer'])}</span>
+      {view_toggle(t, compact=True)}
       <a class="foot-admin" href="{a['root']}admin/">{e(t['booking']['admin'])}</a>
     </div>
   </div>
