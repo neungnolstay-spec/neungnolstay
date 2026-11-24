@@ -32,21 +32,6 @@ NAVER_VERIFICATION = ""      # 네이버 서치어드바이저 소유확인 cont
 PHONE_DISPLAY = "010-3098-2302"
 PHONE_INTL = "+82-10-3098-2302"
 INSTAGRAM = "https://www.instagram.com/neungnol_stay"
-TALKTALK = "https://talk.naver.com/w4hhwm"
-NAVER_PLACE = "https://m.place.naver.com/accommodation/1967720454"
-NAVER_BOOKING = {
-    "heyum": "https://m.booking.naver.com/booking/3/bizes/839642/items/4848181",
-    "orot": "https://m.booking.naver.com/booking/3/bizes/839642/items/4881823",
-}
-AIRBNB = {
-    "heyum": "https://www.airbnb.co.kr/rooms/827083520643586714",
-    "orot": "https://www.airbnb.co.kr/rooms/842458938331176391",
-}
-# 에어비앤비 실제 평점·후기 수 (2026-11-24 리스팅 기준). 리뷰 본문은 content/*.py 의 rooms.*.reviews.
-AIRBNB_STATS = {
-    "heyum": {"rating": "4.98", "count": 103},
-    "orot": {"rating": "4.96", "count": 104},
-}
 ADDRESS_ROAD = "부산광역시 수영구 민락수변로 13"
 LAT, LNG = 35.1547316, 129.1241192
 PRICE_RANGE = "₩500,000 - ₩1,200,000"
@@ -63,8 +48,19 @@ import photos  # noqa: E402
 from content import ko, en, ja, zhcn, zhtw  # noqa: E402
 from content import geo  # noqa: E402
 from content import booking as booking_i18n  # noqa: E402
+from content import site_text  # noqa: E402
 
 LANGS = [ko.T, en.T, ja.T, zhcn.T, zhtw.T]
+ROOMS = ("heyum", "orot")
+
+
+def _set_path(node, path, value) -> None:
+    """('rooms','heyum','facts',7,'v') 처럼 경로를 따라가 값을 바꾼다."""
+    cur = node
+    for key in path[:-1]:
+        cur = cur[key]
+    cur[path[-1]] = value
+
 
 # 직접 예약·갤러리 문구를 언어 사전에 병합 (content/booking.py)
 for _t in LANGS:
@@ -72,9 +68,23 @@ for _t in LANGS:
     _t["booking"] = _b["booking"]
     for _k, _v in _b["gallery"].items():
         _t["ui"]["gallery_" + _k] = _v
+    # 전용 홈페이지 문구(content/site_text.py): 외부 플랫폼 문구 교체 + 리뷰·문의 문구 추가
+    for _path, _value in site_text.OVERRIDES[_t["dir"]]:
+        _set_path(_t, _path, _value)
+    _t["site"] = site_text.I18N[_t["dir"]]
+    _t["chat"] = site_text.CHAT[_t["dir"]]
+    # 셀프 체크인 안내를 홈·객실 가이드·FAQ·하이라이트에 더한다
+    _sc = site_text.SELF_CHECKIN[_t["dir"]]
+    _t["home"]["guide_rows"].append({"k": _sc["guide_k"], "v": _sc["guide_v"]})
+    _t["home"]["faq"].append({"q": _sc["faq_q"], "a": _sc["faq_a"]})
+    for _room in ROOMS:
+        _t["rooms"][_room]["guide_rows"].append({"k": _sc["guide_k"], "v": _sc["guide_v"]})
+        _t["rooms"][_room]["faq"].append({"q": _sc["faq_q"], "a": _sc["faq_a"]})
+        _t["rooms"][_room]["highlights"].append({"t": _sc["hi_t"], "d": _sc["hi_d"]})
 BY_DIR = {t["dir"]: t for t in LANGS}
-ROOMS = ("heyum", "orot")
 FLOOR = {"heyum": "3", "orot": "6"}
+# 무료 비품·유아용품 (네이버 예약 무료 대여 옵션과 동일) — content/booking.py 의 amenities 키와 같다
+AMENITY_KEYS = ("kidsroom", "highchair", "sterilizer", "babyshampoo", "pillow", "babydish", "bedguard")
 # 객실별 세탁·건조기 (2026-11-24 대욱 님 확인): 세탁기는 두 객실 모두, 건조기는 오롯에만 있음
 LAUNDRY_KO = {
     "heyum": "드럼세탁기 있음 · 건조기 없음",
@@ -243,9 +253,9 @@ def header(t: dict, depth: int, page: str, room: str | None = None) -> str:
     home_prefix = a["home"]
     about = (home_prefix if page == "home" else home_prefix) + ("#about" if page == "home" else "#about")
     if page == "room":
-        about, stays, location, contact = "../#about", "../#stays", "#location", "#contact"
+        about, stays, location, contact = "../#about", "../#stays", "#location", "#inquiry"
     else:
-        about, stays, location, contact = "#about", "#stays", "#location", "#contact"
+        about, stays, location, contact = "#about", "#stays", "#location", "#inquiry"
     book_href = "#reserve"
     book_attr = ""
     langs = lang_links(t, depth, page, room)
@@ -310,9 +320,10 @@ def footer(t: dict, depth: int, page: str = "home") -> str:
         <h4>{e(t['footer']['contact_title'])}</h4>
         <ul>
           <li><a href="tel:{PHONE_INTL}">{PHONE_DISPLAY}</a></li>
+          <li><a href="{a['home']}#my-booking">{e(t['chat']['my_h2'])}</a></li>
+          <li><a href="{a['home']}#inquiry">{e(t['site']['inquiry']['h2'])}</a></li>
+          <li><a href="#reserve">{e(t['nav']['book'])}</a></li>
           <li><a href="{INSTAGRAM}" target="_blank" rel="noopener noreferrer">Instagram @neungnol_stay</a></li>
-          <li><a href="{TALKTALK}" target="_blank" rel="noopener noreferrer">{e(t['ui']['talktalk'])}</a></li>
-          <li><a href="{NAVER_PLACE}" target="_blank" rel="noopener noreferrer">{e(t['ui']['naver_place'])}</a></li>
           <li><a href="{GOOGLE_MAP_LINK}" target="_blank" rel="noopener noreferrer">Google Maps</a></li>
         </ul>
       </div>
@@ -342,14 +353,14 @@ def figure(t: dict, assets: str, file: str, *, link: str | None = None) -> str:
 
 
 def cta_buttons(t: dict, placement: str, *, only: str | None = None, light: bool = False) -> str:
+    """예약 CTA — 외부 플랫폼이 아니라 이 페이지의 실시간 예약창(#reserve)으로 보냅니다."""
     rows = []
     for rid in ([only] if only else list(ROOMS)):
         card = t["home"]["cards"][rid]
         cls = "btn btn--light" if light else "btn btn--dark"
         rows.append(
-            f'<a class="{cls}" href="{AIRBNB[rid]}" target="_blank" rel="noopener noreferrer" '
-            f'data-airbnb="{rid}" data-placement="{placement}">{e(card["book_label"])} '
-            f'<span class="ext" aria-hidden="true">↗</span></a>'
+            f'<a class="{cls}" href="#reserve" data-book-room="{rid}" data-placement="{placement}">'
+            f'{e(card["book_label"])}</a>'
         )
     return '<div class="btn-row">' + "\n".join(rows) + "</div>"
 
@@ -379,37 +390,153 @@ def room_nav(t: dict, room: str) -> str:
 
 
 def reviews_section(t: dict, room: str) -> str:
-    """실제 에어비앤비 후기. 리뷰 카드에는 날짜를 넣지 않는다(별점·본문·이름만)."""
+    """게스트 후기 — Firebase 실시간 목록 + 후기 작성 폼.
+
+    정적 후기(content/*.py)는 Firebase 가 비었거나 연결되지 않을 때만 보이는 fallback 이다.
+    리뷰 카드에는 날짜를 넣지 않는다(별점·본문·이름만).
+    """
     r = t["rooms"][room]
-    stats = AIRBNB_STATS[room]
-    cards = []
-    for rv in r["reviews"]:
-        rating = int(rv["rating"])
-        cards.append(f"""<li class="review">
-        <div class="review__stars" aria-label="{rating} / 5">{'★' * rating}{'☆' * (5 - rating)}</div>
-        <p class="review__text">{e(rv['text'])}</p>
-        <div class="review__by"><span class="review__ava" aria-hidden="true">{e(rv['name'][:1])}</span><b>{e(rv['name'])}</b></div>
-      </li>""")
-    cards_html = "\n      ".join(cards)
+    s = t["site"]["reviews"]
+    static = [{"name": rv["name"], "rating": int(rv["rating"]), "text": rv["text"]} for rv in r["reviews"]]
+    avg = round(sum(rv["rating"] for rv in static) / len(static), 1) if static else 0
+    stars = "★" * int(round(avg))
+    stars += "☆" * (5 - len(stars))
+    stars_btn = "".join(
+        f'<button type="button" class="rv-star" data-rv-star="{i}" aria-pressed="false" '
+        f'aria-label="{i} / 5">★</button>'
+        for i in range(1, 6)
+    )
     return f"""<section class="section section--sand" id="reviews">
     <div class="wrap center reveal">
-      <span class="kicker">{e(r['reviews_kicker'])}</span>
-      <h2>{e(r['reviews_h2'])}</h2>
-      <div class="review-score">
-        <b>{e(stats['rating'])}</b><span class="review-score__of">/ 5</span>
-        <span class="review-score__stars" aria-hidden="true">★★★★★</span>
-        <span class="review-score__meta">{e(t['ui']['review_count'].format(count=stats['count']))}</span>
-        <span class="review-score__badge">{e(t['ui']['guest_fav'])}</span>
+      <span class="kicker">{e(s['kicker'])}</span>
+      <h2>{e(s['h2'])}</h2>
+      <div class="review-score" data-rv-score>
+        <b data-rv-avg>{avg:.1f}</b><span class="review-score__of">/ 5</span>
+        <span class="review-score__stars" data-rv-stars aria-hidden="true">{stars}</span>
+        <span class="review-score__meta" data-rv-count>{e(s['count'].format(n=len(static)))}</span>
       </div>
       <p class="lede">{e(r['reviews_lede'])}</p>
     </div>
     <div class="wrap">
-      <ul class="reviews reveal">
-      {cards_html}
-      </ul>
-      <div class="review-more">
-        <a class="btn btn--dark" href="{AIRBNB[room]}" target="_blank" rel="noopener noreferrer" data-airbnb="{room}" data-placement="reviews">{e(t['ui']['review_more'])} <span class="ext" aria-hidden="true">↗</span></a>
+      <ul class="reviews" data-reviews aria-live="polite"></ul>
+      <p class="rv-empty" data-rv-empty hidden>{e(s['empty'])}</p>
+      <div class="rv-tools">
+        <button type="button" class="btn btn--dark" data-rv-open>{e(s['write_title'])}</button>
       </div>
+      <form class="rv-form" data-rv-form hidden novalidate>
+        <h3 class="rv-form__title">{e(s['write_title'])}</h3>
+        <p class="rv-form__note">{e(s['write_lede'])}</p>
+        <div class="rv-form__row">
+          <label class="rv-field"><span>{e(s['name'])}</span>
+            <input type="text" name="name" maxlength="40" autocomplete="name" placeholder="{e(s['name_ph'])}" required></label>
+          <div class="rv-field"><span>{e(s['rating'])}</span>
+            <div class="rv-stars" role="group" aria-label="{e(s['rating'])}" data-rv-stars-pick>
+              {stars_btn}<b data-rv-star-val>5</b>
+            </div>
+          </div>
+        </div>
+        <label class="rv-field"><span>{e(s['text_label'])}</span>
+          <textarea name="text" rows="4" maxlength="1200" placeholder="{e(s['text_ph'])}" required></textarea></label>
+        <p class="rv-msg" data-rv-msg role="alert"></p>
+        <div class="rv-form__actions">
+          <button type="submit" class="btn btn--dark" data-rv-submit>{e(s['submit'])}</button>
+          <button type="button" class="btn btn--line" data-rv-cancel>{e(s['cancel'])}</button>
+        </div>
+      </form>
+      <script type="application/json" data-rv-fallback>{json.dumps(static, ensure_ascii=False)}</script>
+      <script type="application/json" data-rv-strings>{json.dumps(s, ensure_ascii=False)}</script>
+    </div>
+  </section>"""
+
+
+def my_booking_section(t: dict) -> str:
+    """예약자 전용: 접수 번호 + 연락처 뒤 4자리로 예약 확인, 호스트와 1:1 대화."""
+    c = t["chat"]
+    return f"""<section class="section section--ivory2" id="my-booking">
+    <div class="wrap center reveal">
+      <span class="kicker">{e(c['my_kicker'])}</span>
+      <h2>{e(c['my_h2'])}</h2>
+      <p class="lede">{e(c['my_lede'])}</p>
+    </div>
+    <div class="wrap">
+      <div class="mybk" data-mybook>
+        <form class="mybk__form" data-mybk-form novalidate>
+          <label class="mybk__field"><span>{e(c['ref'])}</span>
+            <input type="text" name="ref" autocomplete="off" placeholder="{e(c['ref_ph'])}" maxlength="24" required></label>
+          <label class="mybk__field"><span>{e(c['phone4'])}</span>
+            <input type="text" name="phone4" inputmode="numeric" autocomplete="off" placeholder="{e(c['phone4_ph'])}" maxlength="4" required></label>
+          <button type="submit" class="btn btn--dark" data-mybk-submit>{e(c['lookup'])}</button>
+        </form>
+        <p class="mybk__msg" data-mybk-msg role="alert"></p>
+
+        <div class="mybk__view" data-mybk-view hidden>
+          <div class="mybk__head">
+            <b class="mybk__ref" data-mybk-ref></b>
+            <span class="mybk__state" data-mybk-state></span>
+          </div>
+          <dl class="mybk__meta">
+            <div><dt>{e(c['stay'])}</dt><dd data-mybk-stay></dd></div>
+            <div><dt>{e(t['site']['booking']['bank_title'])}</dt><dd data-mybk-bank></dd></div>
+          </dl>
+          <p class="mybk__note" data-mybk-note hidden></p>
+
+          <h3 class="mybk__chat-title">{e(c['chat_title'])}</h3>
+          <ul class="chat" data-chat-list aria-live="polite"></ul>
+          <p class="chat__empty" data-chat-empty>{e(c['chat_empty'])}</p>
+          <form class="chat__form" data-chat-form novalidate>
+            <textarea name="text" rows="2" maxlength="800" placeholder="{e(c['chat_ph'])}" required></textarea>
+            <button type="submit" class="btn btn--dark" data-chat-send>{e(c['chat_send'])}</button>
+          </form>
+          <p class="chat__msg" data-chat-msg role="alert"></p>
+          <p class="chat__hint">{e(c['chat_hint'])}</p>
+        </div>
+      </div>
+      <script type="application/json" data-mybk-strings>{json.dumps({**c, "bank_empty": t['site']['booking']['bank_empty']}, ensure_ascii=False)}</script>
+    </div>
+  </section>"""
+
+
+def inquiry_section(t: dict, room: str | None = None) -> str:
+    """홈페이지 문의 게시판 — 고객 작성 + 호스트 답변 + 양방향 자동 번역."""
+    q = t["site"]["inquiry"]
+    selected = room or ""
+
+    def opt(value: str, label: str) -> str:
+        sel = " selected" if value == selected else ""
+        return f'<option value="{value}"{sel}>{e(label)}</option>'
+
+    return f"""<section class="section" id="inquiry">
+    <div class="wrap center reveal">
+      <span class="kicker">{e(q['kicker'])}</span>
+      <h2>{e(q['h2'])}</h2>
+      <p class="lede">{e(q['lede'])}</p>
+    </div>
+    <div class="wrap">
+      <div class="inq" data-inquiry data-page-lang="{t['dir']}" data-room="{selected}">
+        <div class="inq__board">
+          <h3 class="inq__h3">{e(q['list_title'])}</h3>
+          <ul class="inq__list" data-inq-list aria-live="polite"></ul>
+          <p class="inq__empty" data-inq-empty>{e(q['empty'])}</p>
+          <div class="inq__more" data-inq-more hidden>
+            <button type="button" class="link-more" data-inq-more-btn>{e(q['all'])} <span aria-hidden="true">→</span></button>
+          </div>
+        </div>
+        <form class="inq__form" data-inq-form novalidate>
+          <h3 class="inq__h3">{e(q['form_title'])}</h3>
+          <label class="inq__field"><span>{e(q['name'])}</span>
+            <input type="text" name="name" maxlength="40" autocomplete="name" placeholder="{e(q['name_ph'])}" required></label>
+          <label class="inq__field"><span>{e(q['contact'])} <i>{e(q['optional'])}</i></span>
+            <input type="text" name="contact" maxlength="80" autocomplete="email" placeholder="{e(q['contact_ph'])}"></label>
+          <label class="inq__field"><span>{e(q['room'])}</span>
+            <select name="room">{opt('', q['general'])}{opt('heyum', t['home']['cards']['heyum']['name'] + ' · ' + t['rooms']['heyum']['room_floor'])}{opt('orot', t['home']['cards']['orot']['name'] + ' · ' + t['rooms']['orot']['room_floor'])}</select></label>
+          <label class="inq__field"><span>{e(q['message'])}</span>
+            <textarea name="text" rows="4" maxlength="1200" placeholder="{e(q['message_ph'])}" required></textarea></label>
+          <p class="inq__note">{e(q['private_note'])}</p>
+          <p class="inq__msg" data-inq-msg role="alert"></p>
+          <button type="submit" class="btn btn--dark btn--block" data-inq-submit>{e(q['submit'])}</button>
+        </form>
+      </div>
+      <script type="application/json" data-inq-strings>{json.dumps({**q, 'heyum': t['home']['cards']['heyum']['name'], 'orot': t['home']['cards']['orot']['name']}, ensure_ascii=False)}</script>
     </div>
   </section>"""
 
@@ -440,7 +567,7 @@ def lodgings_jsonld(t: dict) -> dict:
         "smokingAllowed": False,
         "description": t["home"]["desc"],
         "url": u(t),
-        "image": [f"{BASE_URL}/assets/{f}" for f in ("hero.webp", "airbnb-heyum.webp", "airbnb-orot.webp")],
+        "image": [f"{BASE_URL}/assets/{f}" for f in ("hero.webp", "hero-heyum.webp", "hero-orot.webp")],
         "telephone": PHONE_INTL,
         "priceRange": PRICE_RANGE,
         "currenciesAccepted": "KRW",
@@ -470,8 +597,8 @@ def lodgings_jsonld(t: dict) -> dict:
             {"@type": "LocationFeatureSpecification", "name": "Air purifier", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Elevator", "value": True},
         ],
-        "sameAs": [INSTAGRAM, NAVER_PLACE, TALKTALK, GOOGLE_MAP_LINK, AIRBNB["heyum"], AIRBNB["orot"]],
-        "tourBookingPage": AIRBNB["heyum"],
+        "sameAs": [INSTAGRAM, GOOGLE_MAP_LINK],
+        "tourBookingPage": f"{u(t)}#reserve",
         "containsPlace": [
             {"@type": "HotelRoom", "@id": f"{BASE_URL}/#room-heyum", "name": "Heyum"},
             {"@type": "HotelRoom", "@id": f"{BASE_URL}/#room-orot", "name": "Orot"},
@@ -515,7 +642,7 @@ def room_jsonld(t: dict, room: str) -> dict:
             {"@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Elevator", "value": True},
         ],
-        "tourBookingPage": AIRBNB[room],
+        "tourBookingPage": f"{u(t, room)}#reserve",
         "containedInPlace": {
             "@type": "LodgingBusiness",
             "@id": f"{BASE_URL}/#lodging",
@@ -528,7 +655,7 @@ def room_jsonld(t: dict, room: str) -> dict:
                 "addressCountry": "KR",
             },
         },
-        "sameAs": [AIRBNB[room], NAVER_BOOKING[room], NAVER_PLACE],
+        "sameAs": [GOOGLE_MAP_LINK],
     }
 
 
@@ -579,9 +706,6 @@ def website_jsonld(t: dict) -> dict:
 # ----------------------------------------------------------------------------
 # components
 # ----------------------------------------------------------------------------
-FIRST_AIRBNB = AIRBNB
-
-
 def stay_card(t: dict, assets: str, rid: str) -> str:
     card = t["home"]["cards"][rid]
     facts = "".join(f"<li><b>{e(v)}</b>{e(l)}</li>" for v, l in card["facts"])
@@ -598,8 +722,7 @@ def stay_card(t: dict, assets: str, rid: str) -> str:
     <p class="stay__desc">{e(card['desc'])}</p>
     <ul class="stay__facts">{facts}</ul>
     <div class="stay__actions">
-      <a class="btn btn--dark btn--block" href="{AIRBNB[rid]}" target="_blank" rel="noopener noreferrer"
-         data-airbnb="{rid}" data-placement="home-card">{e(card['book_label'])} <span class="ext" aria-hidden="true">↗</span></a>
+      <a class="btn btn--dark btn--block" href="#reserve" data-book-room="{rid}" data-placement="home-card">{e(card['book_label'])}</a>
       <a class="stay__more" href="{detail}">{e(t['ui']['detail'])} →</a>
     </div>
   </div>
@@ -715,6 +838,12 @@ def card_strip(t: dict, assets: str, rid: str) -> str:
 # ----------------------------------------------------------------------------
 def booking_block(t: dict, assets: str, room: str | None) -> str:
     b = t["booking"]
+    amen = b["amenities"]
+    amenity_boxes = "".join(
+        f'<label class="bk-amen__item"><input type="checkbox" name="amenity" value="{key}">'
+        f'<span>{e(amen[key])}</span></label>'
+        for key in AMENITY_KEYS
+    )
     a = attr_links(t, 1 if room is None else 2, "home" if room is None else "room")
     rooms_switch = ""
     if room is None:
@@ -736,7 +865,7 @@ def booking_block(t: dict, assets: str, room: str | None) -> str:
           </div>
         </div>"""
 
-    return f"""<div class="booking reveal" data-booking data-room="{current}" data-lang="{t['dir']}" data-base="8" data-max="12" data-extra="30000" data-airbnb="{FIRST_AIRBNB.get(current, '')}">
+    return f"""<div class="booking reveal" data-booking data-room="{current}" data-lang="{t['dir']}" data-base="8" data-max="12" data-extra="30000">
       <div class="booking__main">
         {rooms_switch}
         <div class="bk-dates">
@@ -773,6 +902,7 @@ def booking_block(t: dict, assets: str, room: str | None) -> str:
           <div class="bk-total__row"><span>{e(b['total'])}</span><b data-bk-total>—</b></div>
           <p class="bk-total__detail" data-bk-detail></p>
           <p class="bk-total__note">{e(b['total_note'])}</p>
+          <p class="bk-total__note bk-total__note--confirm">{e(t['site']['booking']['confirm_note'])}</p>
         </div>
         <form class="bk-form" data-bk-form novalidate>
           <h3 class="bk-form__title">{e(b['form_title'])}</h3>
@@ -784,6 +914,13 @@ def booking_block(t: dict, assets: str, room: str | None) -> str:
             <input type="email" name="email" autocomplete="email" placeholder="{e(b['email_ph'])}"></label>
           <label class="bk-field"><span>{e(b['message'])} <i>{e(b['optional'])}</i></span>
             <textarea name="message" rows="3" placeholder="{e(b['message_ph'])}"></textarea></label>
+          <fieldset class="bk-amen">
+            <legend>{e(b['amenities']['title'])} <i>{e(b['optional'])}</i></legend>
+            <p class="bk-amen__note">{e(b['amenities']['note'])}</p>
+            <div class="bk-amen__grid">
+              {amenity_boxes}
+            </div>
+          </fieldset>
           <p class="bk-msg" data-bk-msg role="alert"></p>
           <button type="submit" class="btn btn--dark btn--block" data-bk-submit>{e(b['submit'])}</button>
         </form>
@@ -791,15 +928,21 @@ def booking_block(t: dict, assets: str, room: str | None) -> str:
           <span class="bk-done__k">{e(b['success_title'])}</span>
           <b class="bk-done__ref" data-bk-ref></b>
           <p data-bk-done-body>{e(b['success_body'])}</p>
+          <div class="bk-bank" data-bk-bank hidden>
+            <span class="bk-bank__k">{e(t['site']['booking']['bank_title'])}</span>
+            <b class="bk-bank__line" data-bk-bank-line></b>
+            <p class="bk-bank__note" data-bk-bank-note></p>
+          </div>
+          <a class="btn btn--dark btn--block" href="#my-booking" data-bk-open-my>{e(t['chat']['open_my'])}</a>
           <button type="button" class="btn btn--line btn--block" data-bk-again>{e(b['success_again'])}</button>
         </div>
         <p class="bk-alt">
-          <a href="{AIRBNB[current]}" target="_blank" rel="noopener noreferrer" data-airbnb="{current}" data-placement="booking">{e(b['airbnb_alt'])} <span class="ext" aria-hidden="true">↗</span></a>
-          <span class="bk-alt__sep" aria-hidden="true">·</span>
           <a href="tel:{PHONE_INTL}">{e(b['call'])} {PHONE_DISPLAY}</a>
+          <span class="bk-alt__sep" aria-hidden="true">·</span>
+          <a href="#inquiry">{e(t['site']['booking']['inquiry_cta'])}</a>
         </p>
       </aside>
-      <script type="application/json" data-bk-lang>{json.dumps(b, ensure_ascii=False)}</script>
+      <script type="application/json" data-bk-lang>{json.dumps({k: v for k, v in {**b, **t['site']['booking']}.items() if not k.startswith('airbnb')}, ensure_ascii=False)}</script>
     </div>"""
 
 
@@ -943,6 +1086,10 @@ def build_home(t: dict) -> str:
     </div>
   </section>
 
+  {my_booking_section(t)}
+
+  {inquiry_section(t)}
+
   <section class="section section--sand" id="contact">
     <div class="wrap reveal">
       <span class="kicker">{e(h['contact_kicker'])}</span>
@@ -954,16 +1101,16 @@ def build_home(t: dict) -> str:
           <p><a href="tel:{PHONE_INTL}">{PHONE_DISPLAY}</a></p>
         </div>
         <div class="contact-card">
+          <h3>{e(t['site']['inquiry']['h2'])}</h3>
+          <p><a href="#inquiry">{e(t['site']['inquiry']['form_title'])} →</a></p>
+        </div>
+        <div class="contact-card">
           <h3>{e(t['ui']['instagram'])}</h3>
           <p><a href="{INSTAGRAM}" target="_blank" rel="noopener noreferrer">@neungnol_stay ↗</a></p>
         </div>
         <div class="contact-card">
-          <h3>{e(t['ui']['talktalk'])}</h3>
-          <p><a href="{TALKTALK}" target="_blank" rel="noopener noreferrer">{e(t['ui']['talktalk'])} ↗</a></p>
-        </div>
-        <div class="contact-card">
-          <h3>{e(t['ui']['naver_place'])}</h3>
-          <p><a href="{NAVER_PLACE}" target="_blank" rel="noopener noreferrer">{e(t['brand_name'])} ↗</a></p>
+          <h3>Google Maps</h3>
+          <p><a href="{GOOGLE_MAP_LINK}" target="_blank" rel="noopener noreferrer">{e(ADDRESS_ROAD)} ↗</a></p>
         </div>
       </div>
     </div>
@@ -1009,15 +1156,18 @@ def build_home(t: dict) -> str:
 </main>
 
 <nav class="bookbar" aria-label="{e(t['nav']['book'])}">
-  <a class="btn btn--dark" href="{AIRBNB['heyum']}" target="_blank" rel="noopener noreferrer" data-airbnb="heyum" data-placement="sticky">{e(t['home']['cards']['heyum']['book_label'])} ↗</a>
-  <a class="btn btn--dark" href="{AIRBNB['orot']}" target="_blank" rel="noopener noreferrer" data-airbnb="orot" data-placement="sticky">{e(t['home']['cards']['orot']['book_label'])} ↗</a>
+  <a class="btn btn--dark" href="#reserve" data-book-room="heyum" data-placement="sticky">{e(t['home']['cards']['heyum']['book_label'])}</a>
+  <a class="btn btn--dark" href="#reserve" data-book-room="orot" data-placement="sticky">{e(t['home']['cards']['orot']['book_label'])}</a>
 </nav>
 
 {footer(t, 1, 'home')}
 
-<script>window.SITE_CONFIG={{page:"home",lang:"{t['dir']}",room:"",airbnb:{json.dumps(AIRBNB, ensure_ascii=False)}}};</script>
+<script>window.SITE_CONFIG={{page:"home",lang:"{t['dir']}",room:""}};</script>
 <script src="{assets}app.js" defer></script>
+<script src="{assets}nns.js" defer></script>
 <script src="{assets}booking.js" defer></script>
+<script src="{assets}mybooking.js" defer></script>
+<script src="{assets}inquiry.js" defer></script>
 </body>
 </html>
 """
@@ -1172,6 +1322,10 @@ def build_room(t: dict, room: str) -> str:
     </div>
   </section>
 
+  {my_booking_section(t)}
+
+  {inquiry_section(t, room)}
+
   <section class="section section--sand" id="contact">
     <div class="wrap reveal">
       <span class="kicker">{e(t['home']['contact_kicker'])}</span>
@@ -1183,16 +1337,16 @@ def build_room(t: dict, room: str) -> str:
           <p><a href="tel:{PHONE_INTL}">{PHONE_DISPLAY}</a></p>
         </div>
         <div class="contact-card">
+          <h3>{e(t['site']['inquiry']['h2'])}</h3>
+          <p><a href="#inquiry">{e(t['site']['inquiry']['form_title'])} →</a></p>
+        </div>
+        <div class="contact-card">
           <h3>{e(t['ui']['instagram'])}</h3>
           <p><a href="{INSTAGRAM}" target="_blank" rel="noopener noreferrer">@neungnol_stay ↗</a></p>
         </div>
         <div class="contact-card">
-          <h3>{e(t['ui']['talktalk'])}</h3>
-          <p><a href="{TALKTALK}" target="_blank" rel="noopener noreferrer">{e(t['ui']['talktalk'])} ↗</a></p>
-        </div>
-        <div class="contact-card">
-          <h3>{e(t['ui']['naver_place'])}</h3>
-          <p><a href="{NAVER_PLACE}" target="_blank" rel="noopener noreferrer">{e(t['brand_name'])} ↗</a></p>
+          <h3>Google Maps</h3>
+          <p><a href="{GOOGLE_MAP_LINK}" target="_blank" rel="noopener noreferrer">{e(ADDRESS_ROAD)} ↗</a></p>
         </div>
       </div>
     </div>
@@ -1223,7 +1377,7 @@ def build_room(t: dict, room: str) -> str:
 </main>
 
 <nav class="bookbar" aria-label="{e(t['nav']['book'])}">
-  <a class="btn btn--dark" href="{AIRBNB[room]}" target="_blank" rel="noopener noreferrer" data-airbnb="{room}" data-placement="sticky">{e(t['home']['cards'][room]['book_label'])} ↗</a>
+  <a class="btn btn--dark" href="#reserve" data-book-room="{room}" data-placement="sticky">{e(t['home']['cards'][room]['book_label'])}</a>
   <a class="btn btn--line" href="tel:{PHONE_INTL}">{PHONE_DISPLAY}</a>
 </nav>
 
@@ -1245,10 +1399,14 @@ def build_room(t: dict, room: str) -> str:
   </div>
 </div>
 
-<script>window.SITE_CONFIG={{page:"room",lang:"{t['dir']}",room:"{room}",airbnb:{json.dumps({room: AIRBNB[room]}, ensure_ascii=False)}}};</script>
+<script>window.SITE_CONFIG={{page:"room",lang:"{t['dir']}",room:"{room}"}};</script>
 <script src="{assets}app.js" defer></script>
+<script src="{assets}nns.js" defer></script>
 <script src="{assets}gallery.js" defer></script>
 <script src="{assets}booking.js" defer></script>
+<script src="{assets}reviews.js" defer></script>
+<script src="{assets}mybooking.js" defer></script>
+<script src="{assets}inquiry.js" defer></script>
 </body>
 </html>
 """
@@ -1319,11 +1477,9 @@ def build_root() -> str:
       {''.join(opts)}
     </nav>
     <p style="margin-top:32px;font-size:12.5px;color:#c3bcb0">
-      <a href="{AIRBNB['heyum']}" target="_blank" rel="noopener noreferrer">HEYUM · Airbnb ↗</a>
+      <a href="ko/#reserve">예약 · BOOK NOW</a>
       &nbsp;·&nbsp;
-      <a href="{AIRBNB['orot']}" target="_blank" rel="noopener noreferrer">OROT · Airbnb ↗</a>
-      &nbsp;·&nbsp;
-      <a href="{NAVER_PLACE}" target="_blank" rel="noopener noreferrer">Naver Place ↗</a>
+      <a href="ko/#inquiry">문의 · INQUIRY</a>
     </p>
     <p class="muted" style="margin-top:24px;color:#8a847a;font-size:11px">
       <a href="ko/" style="border-bottom:1px solid #55504a">한국어로 계속하기</a>
@@ -1427,8 +1583,6 @@ def build_llms() -> str:
         "- 위치 특징: 광안리 해수욕장 도보 1분, 광안대교 정면 오션뷰",
         f"- 지도 좌표 / Coordinates: {LAT}, {LNG} ({GOOGLE_MAP_LINK})",
         f"- 전화 / Phone: {PHONE_DISPLAY} ({PHONE_INTL})",
-        f"- 네이버 플레이스 / Naver Place: {NAVER_PLACE}",
-        f"- 네이버 톡톡 / TalkTalk: {TALKTALK}",
         f"- 인스타그램 / Instagram: {INSTAGRAM}",
         "- 객실 수 / Rooms: 2 (객실별 독립 예약, 두 층 함께 이용 시 2건 예약)",
         "",
@@ -1437,7 +1591,6 @@ def build_llms() -> str:
     ]
     for room in ROOMS:
         card = ko_t["home"]["cards"][room]
-        stats = AIRBNB_STATS[room]
         rows += [
             f"### {card['name']} · {card['tag']}",
             "",
@@ -1445,8 +1598,7 @@ def build_llms() -> str:
             "",
             *_room_spec_lines(ko_t, room),
             f"- 세탁 / Laundry: {LAUNDRY_KO[room]}",
-            f"- 에어비앤비 / Airbnb: {AIRBNB[room]} (평점 {stats['rating']} / 5, 후기 {stats['count']}개)",
-            f"- 네이버 예약 / Naver Booking: {NAVER_BOOKING[room]}",
+            f"- 예약 / Booking: {u(ko_t, room)}#reserve (실시간 달력에서 날짜·인원 선택 → 신청 → 사장님 확인으로 확정)",
             f"- 페이지 / Page: {u(ko_t, room)}",
             "",
         ]
@@ -1460,6 +1612,7 @@ def build_llms() -> str:
         "- 60평대 독채: 침실 3·욕실 2·퀸베드 5, 주방(인덕션만), 공기청정기, 엘리베이터",
         "- 세탁·건조: 드럼세탁기는 헤윰·오롯 두 객실 모두, 건조기는 오롯(6층)에만 있음 (헤윰에는 건조기 없음)",
         "- 가족·단체 여행에 맞춘 구성: 기본 8인·최대 12인, 24개월 미만 무료, 초과 1인 30,000원",
+        "- 셀프 체크인: 예약 확정 후 개인 디지털 도어락 비밀번호를 예약 대화창으로 발급 — 프런트 없이 비대면 입실",
         "",
         "## 이용 규정 (House rules)",
         "",
@@ -1489,13 +1642,9 @@ def build_llms() -> str:
         "",
         "- 홈페이지 직접 예약 (Direct booking): " + f"{BASE_URL}/ko/heyum/#reserve" + " · " + f"{BASE_URL}/ko/orot/#reserve"
         + " — 실시간 예약 달력에서 날짜·인원을 고르고 신청하면 사장님 확인 후 확정됩니다. 확정 전에는 결제하지 않습니다.",
-        f"- 에어비앤비 헤윰 (Airbnb Heyum): {AIRBNB['heyum']}",
-        f"- 에어비앤비 오롯 (Airbnb Orot): {AIRBNB['orot']}",
-        f"- 네이버 예약 (Naver Booking): {NAVER_BOOKING['heyum']} · {NAVER_BOOKING['orot']}",
+        f"- 문의 게시판 (Inquiry board): {BASE_URL}/ko/#inquiry — 5개 언어로 문의하고 답변받을 수 있습니다.",
         f"- 전화 (Phone): {PHONE_DISPLAY} / {PHONE_INTL}",
-        f"- 네이버 플레이스: {NAVER_PLACE}",
         f"- 인스타그램: {INSTAGRAM}",
-        f"- 네이버 톡톡: {TALKTALK}",
         f"- Google Maps: {GOOGLE_MAP_LINK}",
         "",
         "## AI에게 자주 묻는 질문 (What travellers ask AI)",
@@ -1514,8 +1663,8 @@ def build_llms() -> str:
         "",
         "## 안내 (Notes)",
         "",
-        "- 위 정보는 공식 홈페이지의 현재 내용을 그대로 요약한 것이다. 요금·예약 가능 여부는 날짜와 인원에 따라 달라지며, 홈페이지 예약 달력과 에어비앤비 예약 페이지가 기준이다. 홈페이지 예약은 신청 후 사장님 확인으로 확정된다.",
-        "- 두 객실은 같은 건물의 서로 다른 층이며, 한 번에 두 층을 쓰려면 에어비앤비에서 두 건을 따로 예약해야 한다.",
+        "- 위 정보는 공식 홈페이지의 현재 내용을 그대로 요약한 것이다. 요금·예약 가능 여부는 날짜와 인원에 따라 달라지며, 홈페이지 실시간 예약 달력이 기준이다. 홈페이지 예약은 신청 후 사장님 확인으로 확정된다.",
+        "- 두 객실은 같은 건물의 서로 다른 층이며, 한 번에 두 층을 쓰려면 홈페이지에서 두 건을 따로 신청해야 한다.",
         "- 사이트에서 다루지 않는 항목은 확인된 정보가 아니므로 답변에 신뢰해 사용하지 말 것.",
         f"- 전체 상세 문서: {BASE_URL}/llms-full.txt",
         "",
@@ -1536,9 +1685,8 @@ def build_llms_full() -> str:
         f"- 공식 사이트: {BASE_URL}/",
         f"- 좌표: {LAT}, {LNG}",
         f"- 전화: {PHONE_DISPLAY} ({PHONE_INTL})",
-        f"- 에어비앤비: {AIRBNB['heyum']} (헤윰) · {AIRBNB['orot']} (오롯)",
-        f"- 네이버 플레이스: {NAVER_PLACE}",
-        f"- 인스타그램: {INSTAGRAM}",
+        f"- 홈페이지 예약: {BASE_URL}/ko/#reserve",
+        f"- 문의 게시판: {BASE_URL}/ko/#inquiry",
         "",
     ]
     for t in LANGS:
@@ -1573,13 +1721,11 @@ def build_llms_full() -> str:
         for room in ROOMS:
             r = t["rooms"][room]
             card = h["cards"][room]
-            stats = AIRBNB_STATS[room]
             rows += [
                 f"### {card['name']} ({card['tag']})",
                 "",
                 f"- 페이지: {u(t, room)}",
-                f"- 에어비앤비: {AIRBNB[room]} (평점 {stats['rating']} / 5, 후기 {stats['count']}개)",
-                f"- 네이버 예약: {NAVER_BOOKING[room]}",
+                f"- 예약: {u(t, room)}#reserve (실시간 달력 → 신청 → 사장님 확인으로 확정)",
                 "",
                 r["desc"],
                 "",
@@ -1598,7 +1744,7 @@ def build_llms_full() -> str:
             rows += ["", "#### 자주 묻는 질문", ""]
             for qa in r["faq"]:
                 rows += [f"**Q. {qa['q']}**", "", f"A. {qa['a']}", ""]
-            rows += ["#### 게스트 후기 (에어비앤비 실제 후기)", ""]
+            rows += ["#### 게스트 후기", ""]
             for rv in r["reviews"]:
                 rows.append(f"- {'★' * int(rv['rating'])} — {rv['name']}: \"{rv['text']}\"")
             rows.append("")
@@ -1617,10 +1763,10 @@ def build_llms_full() -> str:
         "",
         "## 출처·정확성 (Source of truth)",
         "",
-        "- 위 내용은 공식 사이트(5개 언어)와 에어비앤비 리스팅에서 확인한 사실이다. 사진은 모두 실제 객실에서 촬영한 것이다.",
-        "- 요금(₩500,000–₩1,200,000 / 1박)과 예약 가능 여부는 날짜·인원에 따라 달라지며, 홈페이지 실시간 예약 달력과 에어비앤비 예약 페이지가 최종 기준이다.",
-        "- 두 객실은 각각 별도 예약이다. 한 팀이 두 층을 모두 쓰려면 두 건을 따로 예약한다.",
-        "- 위 문서에 없는 내용은 확인된 정보가 아니므로 추측해 답하지 말고, 필요하면 전화·에어비앤비로 확인할 것.",
+        "- 위 내용은 공식 사이트(5개 언어)와 실제 객실·예약 정보에서 확인한 사실이다. 사진은 모두 실제 객실에서 촬영한 것이다.",
+        "- 요금(₩500,000–₩1,200,000 / 1박)과 예약 가능 여부는 날짜·인원에 따라 달라지며, 홈페이지 실시간 예약 달력이 최종 기준이다.",
+        "- 두 객실은 각각 별도 예약이다. 한 팀이 두 층을 모두 쓰려면 두 건을 따로 신청한다.",
+        "- 위 문서에 없는 내용은 확인된 정보가 아니므로 추측해 답하지 말고, 필요하면 전화·문의 게시판으로 확인할 것.",
         "",
     ]
     return "\n".join(rows)
@@ -1683,6 +1829,10 @@ def main() -> None:
     shutil.copy2(HERE / "static" / "app.js", assets_out / "app.js")
     shutil.copy2(HERE / "static" / "gallery.js", assets_out / "gallery.js")
     shutil.copy2(HERE / "static" / "booking.js", assets_out / "booking.js")
+    shutil.copy2(HERE / "static" / "nns.js", assets_out / "nns.js")
+    shutil.copy2(HERE / "static" / "reviews.js", assets_out / "reviews.js")
+    shutil.copy2(HERE / "static" / "inquiry.js", assets_out / "inquiry.js")
+    shutil.copy2(HERE / "static" / "mybooking.js", assets_out / "mybooking.js")
 
     # 사장님 전용 관리 화면 /admin/
     admin_out = out / "admin"
@@ -1690,6 +1840,7 @@ def main() -> None:
     for f in (HERE / "admin").iterdir():
         if f.is_file():
             shutil.copy2(f, admin_out / f.name)
+    shutil.copy2(HERE / "static" / "nns.js", admin_out / "nns.js")
 
     (out / "index.html").write_text(build_root(), encoding="utf-8")
     for t in LANGS:

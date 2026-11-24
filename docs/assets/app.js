@@ -21,18 +21,7 @@
     }
   }
 
-  /* Every Airbnb button is an external booking jump. */
-  document.addEventListener("click", function (ev) {
-    var el = ev.target.closest ? ev.target.closest("[data-airbnb]") : null;
-    if (!el) return;
-    var which = el.getAttribute("data-airbnb");
-    track(which === "orot" ? "orot_airbnb_click" : "heyum_airbnb_click", {
-      room: which,
-      link_url: el.getAttribute("href"),
-      link_text: (el.textContent || "").trim().slice(0, 60),
-      placement: el.getAttribute("data-placement") || "unknown"
-    });
-  }, false);
+  /* Booking CTA clicks are tracked in booking.js (same-page reservation widget). */
 
   /* Language switcher */
   document.querySelectorAll("[data-lang-switch]").forEach(function (a) {

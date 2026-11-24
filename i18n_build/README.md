@@ -28,7 +28,13 @@ python3 i18n_build/build.py --out docs
 | `i18n_build/photos.py` | 사진 크기·언어별 alt·갤러리 순서·객실 대표 사진 |
 | `i18n_build/prep_plans.py` | 도면 원본(네이버 플레이스 `business_005/006.jpg`)에서 빈 여백을 잘라 `assets/plan-hewyum.webp`·`plan-orot.webp` 재생성 (2200px, 비율 유지) |
 | `i18n_build/static/style.css` | 부티크 호텔 스타일 디자인 시스템 |
-| `i18n_build/static/app.js` | GA4 이벤트(`heyum_airbnb_click`, `orot_airbnb_click`, `language_switch`, `room_detail_view`, `floor_plan_zoom`) + 도면 확대 보기(라이트박스) |
+| `i18n_build/static/app.js` | GA4 이벤트(`language_switch`, `room_detail_view`, `floor_plan_zoom`) + 도면 확대 보기(라이트박스) |
+| `i18n_build/static/nns.js` | 공용 헬퍼: Firebase RTDB 연결, 무료 번역 엔드포인트(3단계 fallback, localStorage 캐시), GA4 이벤트 |
+| `i18n_build/static/reviews.js` | 객실 페이지 게스트 후기: Firebase 실시간 목록·평균 별점·후기 작성 폼, 다른 언어 후기 자동 번역 |
+| `i18n_build/static/inquiry.js` | 문의 게시판: 고객 작성(원문+한국어 번역 저장)·공개 목록·관리자 답변 자동 번역 표시 |
+| `i18n_build/content/site_text.py` | 전용 홈페이지 문구: 외부 플랫폼 문구 교체(OVERRIDES) + 리뷰·문의·예약 문구(I18N) |
+| `i18n_build/sync_ical.py` | 에어비앤비 iCal → Firebase `blocks` (출처 airbnb). 확정 예약·다른 출처 차단은 보존 |
+| `i18n_build/seed_firebase.py` | 초기 시드: 게스트 후기 6+6, 네이버 실판매 요금 180일 |
 | `i18n_build/check.py` | 16페이지 전수 검증(HTTP·SEO·JSON-LD·링크·에어비앤비 사진/버튼·PC/모바일 렌더링) |
 | `i18n_build/shots.py` | 검수용 스크린샷 → `i18n_build/screenshots/review/` |
 | `i18n_build/setup_browser_deps.py` | (샌드박스 전용) Playwright chromium 실행에 필요한 라이브러리를 사용자 공간에 설치 |
@@ -37,7 +43,10 @@ python3 i18n_build/build.py --out docs
 
 ```bash
 export LD_LIBRARY_PATH="$PWD/.cache/chromedeps/usr/lib/x86_64-linux-gnu"   # 이 환경에서만 필요
-python3 i18n_build/check.py
+python3 i18n_build/check.py                 # 전체
+python3 i18n_build/check.py --phase 1       # 정적(SEO·링크·리뷰/문의 마크업·갤러리)
+python3 i18n_build/check.py --phase 2       # 렌더링(PC·모바일·CTA·리뷰 목록)
+python3 i18n_build/check.py --phase 3       # 관리자·Firebase e2e(리뷰/문의/번역/예약/요금/색상)
 ```
 
 검사 항목
@@ -54,7 +63,11 @@ python3 i18n_build/check.py
 10. 상세 페이지 상단 사진도 동일한 에어비앤비 대표 사진인지
 11. **객실 페이지 상단·하단의 `← 전체 객실로 돌아가기` / `다른 객실 보기` 버튼** (클릭 시 실제 이동까지)
 12. **객실별 에어비앤비 리뷰 섹션** — 카드 6개·별점·게스트 이름·리뷰 더 보기 링크, 그리고 **리뷰 영역에 날짜 표기(연도·월·`~ 전`)가 없는지**
-13. **AI 검색 자산** — `llms.txt`·`llms-full.txt` HTTP 200·필수 항목(주소·두 에어비앤비 링크·5개 언어 URL), `robots.txt` 의 AI 크롤러 Allow, 홈 `FAQPage` 문항 수 = 화면 문항 수, `LodgingBusiness` 의 `knowsLanguage`·`sameAs`·`amenityFeature`
+13. **전용 홈페이지화** — 16페이지에 에어비앤비/네이버 링크·문구 0건, 카드 예약 버튼은 `#reserve`(객실 선택 포함), 리뷰·문의 섹션 존재
+14. **게스트 후기** — Firebase 실시간 목록 + 작성 폼, 정적 6건은 fallback, 날짜 표기 없음
+15. **문의 게시판** — 5개 언어 섹션, 원문/번역 저장, 관리자 답변의 고객 언어 번역 표시
+16. **관리자 확장** — 리뷰/문의 탭, 입금 계좌, 입실 안내문(sms·mailto·복사), 날짜별 요금 수정, 출처 색상(네이버 초록·에어비앤비 파랑)
+17. **AI 검색 자산** — `llms.txt`·`llms-full.txt` HTTP 200·필수 항목(주소·두 에어비앤비 링크·5개 언어 URL), `robots.txt` 의 AI 크롤러 Allow, 홈 `FAQPage` 문항 수 = 화면 문항 수, `LodgingBusiness` 의 `knowsLanguage`·`sameAs`·`amenityFeature`
 14. **금지 표기** — `nungnol`·`NUNG NOL`·`누놀` 0건, 삭제된 연박 할인·소음·건물 주차 문구 0건
 
 ## 배포

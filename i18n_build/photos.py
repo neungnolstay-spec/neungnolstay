@@ -33,9 +33,9 @@ SIZES = {
     "o12.webp": (475, 320),
     "plan-hewyum.webp": (2200, 1661),
     "plan-orot.webp": (2200, 1661),
-    # 에어비앤비 실제 대표 사진(01_living.jpg)을 webp로 변환한 것 — 카드/상세 상단에 사용
-    "airbnb-heyum.webp": (1200, 1512),
-    "airbnb-orot.webp": (1200, 1593),
+    # 실제 객실 대표 사진(01_living.jpg)을 webp로 변환한 것 — 카드/상세 상단에 사용
+    "hero-heyum.webp": (1200, 1512),
+    "hero-orot.webp": (1200, 1593),
 }
 
 # alt[file][lang]
@@ -208,14 +208,14 @@ ALT = {
         "zh-cn": "Orot 儿童房",
         "zh-tw": "Orot 兒童房",
     },
-    "airbnb-heyum.webp": {
+    "hero-heyum.webp": {
         "ko": "능놀스테이 헤윰 대표 사진, 통창 너머로 광안리 바다가 보이는 다이닝과 거실",
         "en": "Heyum at Neungnol Stay — dining and living space with the Gwangalli sea beyond the windows",
         "ja": "ヌンノルステイ ヘユムのメイン写真、窓の先に広安里の海が広がるダイニングとリビング",
         "zh-cn": "Neungnol Stay Heyum 主图，窗外可见广安里大海的餐区与客厅",
         "zh-tw": "Neungnol Stay Heyum 主圖，窗外可見廣安里大海的餐區與客廳",
     },
-    "airbnb-orot.webp": {
+    "hero-orot.webp": {
         "ko": "능놀스테이 오롯 대표 사진, 창가 다이닝과 거실, 왼쪽 창으로 바다가 보인다",
         "en": "Orot at Neungnol Stay — dining and living space with the sea through the left window",
         "ja": "ヌンノルステイ オロッのメイン写真、窓辺のダイニングとリビング、左の窓から海が見える",
@@ -246,6 +246,6 @@ GALLERY = {
 
 HOME_GALLERY = ["h02.webp", "o01.webp", "h05.webp", "o07.webp", "h11.webp", "o04.webp", "h06.webp", "h07.webp"]
 
-HERO = {"home": "hero.webp", "heyum": "airbnb-heyum.webp", "orot": "airbnb-orot.webp"}
+HERO = {"home": "hero.webp", "heyum": "hero-heyum.webp", "orot": "hero-orot.webp"}
 
 PLAN = {"heyum": "plan-hewyum.webp", "orot": "plan-orot.webp"}

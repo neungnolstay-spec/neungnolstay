@@ -22,6 +22,61 @@
     orot: { wd: 500000, fri: 600000, sat: 1100000 }
   };
   var DEFAULT_EXTRA = 30000;
+  /* 예약·차단 출처 — 색상으로 구분 (네이버 초록 · 에어비앤비 파랑 · 직접 차콜/앰버) */
+  var SOURCE = {
+    naver: { label: "네이버 예약", short: "네이버", color: "#03C75A" },
+    airbnb: { label: "에어비앤비", short: "에어비", color: "#0077FF" },
+    direct: { label: "직접 예약", short: "직접", color: "#1C1C1C" },
+    website: { label: "직접 예약", short: "직접", color: "#1C1C1C" },
+    manual: { label: "직접 예약", short: "직접", color: "#1C1C1C" },
+    other: { label: "기타 차단", short: "차단", color: "#8a847a" }
+  };
+  var PENDING_COLOR = "#D97706";
+  /* 무료 비품·유아용품 (content/booking.py 의 amenities 키와 동일) */
+  var AMENITY = {
+    kidsroom: "키즈룸 개방",
+    highchair: "아기 하이체어",
+    sterilizer: "젖병소독기",
+    babyshampoo: "유아샴푸",
+    pillow: "유아동 베개",
+    babydish: "유아식기",
+    bedguard: "아기침대 안전가드"
+  };
+  function amenityLabels(b) {
+    var arr = (b && b.amenitiesRequested) || [];
+    if (typeof arr === "string") arr = [arr];
+    return arr.map(function (k) { return AMENITY[k] || String(k); });
+  }
+  function amenityRow(b) {
+    var labels = amenityLabels(b);
+    if (!labels.length) return null;
+    var box = el("div", "bk__amen");
+    labels.forEach(function (l) { box.appendChild(el("span", null, "✓ " + l)); });
+    return box;
+  }
+  var DEFAULT_TEMPLATES = {
+    heyum: "안녕하세요 {name}님, 능놀스테이 헤윰입니다.\n\n" +
+      "입실 {checkin} 15:00 / 퇴실 {checkout} 11:00\n" +
+      "주소: 부산광역시 수영구 민락수변로 13 (3층)\n\n" +
+      "· 건물 현관 도어락: {doorlock}\n" +
+      "· 헤윰 객실 도어락: {roomlock}\n" +
+      "· 주차: 민락회센터·민락어패류주차장 1대 무료 (도보 1분, 차종 사전 협의)\n\n" +
+      "· 요청하신 무료 비품: {amenities}\n\n" +
+      "입금 계좌: {account}\n" +
+      "문의: {phone}\n\n" +
+      "편안히 쉬다 가실 수 있도록 준비해 두겠습니다. 감사합니다.",
+    orot: "안녕하세요 {name}님, 능놀스테이 오롯입니다.\n\n" +
+      "입실 {checkin} 16:00 / 퇴실 {checkout} 12:00\n" +
+      "주소: 부산광역시 수영구 민락수변로 13 (6층)\n\n" +
+      "· 건물 현관 도어락: {doorlock}\n" +
+      "· 오롯 객실 도어락: {roomlock}\n" +
+      "· 주차: 민락회센터·민락어패류주차장 1대 무료 (도보 1분, 차종 사전 협의)\n\n" +
+      "· 요청하신 무료 비품: {amenities}\n\n" +
+      "입금 계좌: {account}\n" +
+      "문의: {phone}\n\n" +
+      "편안히 쉬다 가실 수 있도록 준비해 두겠습니다. 감사합니다."
+  };
+  var PHONE = "010-3098-2302";
 
   var $ = function (sel, root) { return (root || document).querySelector(sel); };
   var $$ = function (sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); };
@@ -32,7 +87,11 @@
     settings: null,
     blocks: {},
     bookings: {},
+    reviews: {},
+    inquiries: {},
     room: "heyum",
+    reviewRoom: "heyum",
+    inqFilter: "all",
     view: startOfMonth(new Date()),
     tab: "cal",
     filter: "all",
@@ -190,6 +249,8 @@
         state.settings = v.settings || null;
         state.blocks = v.blocks || {};
         state.bookings = v.bookings || {};
+        state.reviews = v.reviews || {};
+        state.inquiries = v.inquiries || {};
         state.ready = true;
         state.lastSync = Date.now();
         setSync("live", "실시간 연결");
@@ -247,6 +308,22 @@
       return b;
     });
   }
+  function srcKey(b) {
+    var s = String((b && b.source) || "direct");
+    if (s === "website" || s === "manual" || s === "homepage") return "direct";
+    return SOURCE[s] ? s : "direct";
+  }
+  function srcOfBooking(b) {
+    var k = srcKey(b);
+    return SOURCE[k];
+  }
+  function blockSource(room, date) {
+    var b = state.blocks[room] && state.blocks[room][date];
+    if (!b) return null;
+    var s = String((b && b.source) || "other");
+    if (!SOURCE[s] || s === "direct") s = s === "naver" || s === "airbnb" ? s : "other";
+    return SOURCE[s];
+  }
   function coveringBookings(room, date) {
     return bookingsArr().filter(function (b) {
       if (b.room !== room) return false;
@@ -258,15 +335,25 @@
     var list = coveringBookings(room, date);
     var conf = list.filter(function (b) { return b.status === "confirmed"; });
     var pend = list.filter(function (b) { return b.status === "pending"; });
-    var blocked = !!(state.blocks[room] && state.blocks[room][date]);
-    if (conf.length) return { kind: "confirmed", items: conf.concat(pend), blocked: blocked };
-    if (pend.length) return { kind: "pending", items: pend, blocked: blocked };
-    if (blocked) return { kind: "blocked", items: [], blocked: true };
-    return { kind: "open", items: [], blocked: false };
+    var block = state.blocks[room] && state.blocks[room][date];
+    if (conf.length) {
+      /* 확정 예약이 차단보다 우선 (직접·네이버·에어비앤비 색으로 표시) */
+      return { kind: "confirmed", items: conf.concat(pend), blocked: !!block, src: srcKey(conf[0]), label: srcOfBooking(conf[0]).short };
+    }
+    if (block) {
+      var bs = blockSource(room, date);
+      return { kind: "blocked", items: pend, blocked: true, src: (block.source || "other"), label: bs.short };
+    }
+    if (pend.length) {
+      return { kind: "pending", items: pend, blocked: false, src: "pending", label: "대기" };
+    }
+    return { kind: "open", items: [], blocked: false, src: null, label: "" };
   }
   function rateOf(room, date) {
     var ov = state.settings && state.settings.overrides && state.settings.overrides[room];
     if (ov && Number(ov[date]) > 0) return Number(ov[date]);
+    var nr = state.settings && state.settings.naverRates && state.settings.naverRates[room];
+    if (nr && Number(nr[date]) > 0) return Number(nr[date]);
     var r = (state.settings && state.settings.rates && state.settings.rates[room]) || DEFAULT_RATES[room];
     var d = parseD(date).getDay();
     if (d === 6) return Number(r.sat) || DEFAULT_RATES[room].sat;
@@ -276,6 +363,10 @@
   function isOverride(room, date) {
     var ov = state.settings && state.settings.overrides && state.settings.overrides[room];
     return !!(ov && Number(ov[date]) > 0);
+  }
+  function isNaverRate(room, date) {
+    var nr = state.settings && state.settings.naverRates && state.settings.naverRates[room];
+    return !!(nr && Number(nr[date]) > 0);
   }
 
   /* ---------- calendar ---------- */
@@ -302,12 +393,17 @@
       if (st.kind === "blocked") cell.classList.add("is-blocked");
       if (st.kind === "pending") cell.classList.add("is-pending");
       if (st.kind === "confirmed") cell.classList.add("is-booked");
+      if (st.src) {
+        cell.setAttribute("data-source", st.src);
+        cell.classList.add("is-src-" + st.src);
+      }
       cell.appendChild(el("span", "day__n", d));
       cell.appendChild(el("span", "day__p", Math.round(rateOf(state.room, key) / 10000) + "만" + (isOverride(state.room, key) ? " *" : "")));
       if (st.kind !== "open") {
-        var label = { blocked: "차단", pending: "대기", confirmed: "확정" }[st.kind];
-        var cls = "day__s day__s--" + st.kind;
-        cell.appendChild(el("span", cls, label));
+        var cls = "day__s day__s--" + (st.kind === "blocked" ? st.src || "blocked" : st.kind);
+        var badge = el("span", cls, st.label);
+        if (st.src && (st.src === "naver" || st.src === "airbnb")) badge.style.background = SOURCE[st.src].color;
+        cell.appendChild(badge);
       }
       if (state.sel && key >= state.sel.a && key <= state.sel.b) cell.classList.add("is-sel");
       grid.appendChild(cell);
@@ -358,9 +454,13 @@
       }
       rows.forEach(function (b) {
         var row = el("div", "mrow");
+        var src = srcOfBooking(b);
+        var chip = el("i", "mrow__src");
+        chip.style.background = b.status === "confirmed" ? src.color : PENDING_COLOR;
+        row.appendChild(chip);
         row.appendChild(el("b", null, dateKo(b.checkin).replace(/ \(.\)/, "") + " → " + dateKo(b.checkout).replace(/ \(.\)/, "")));
         row.appendChild(el("span", null, (b.name || "이름 없음") + " · " + (b.nights || daysBetween(b.checkin, b.checkout)) + "박 · " +
-          (b.status === "confirmed" ? "확정" : "대기")));
+          (b.status === "confirmed" ? src.short + " 확정" : "승인 대기")));
         var btn = el("button", null, "보기");
         btn.addEventListener("click", function () { showTab("bookings"); });
         row.appendChild(btn);
@@ -396,15 +496,29 @@
       var box = el("div", "bk " + (bk.status === "confirmed" ? "bk--confirmed" : "bk--pending"));
       var top = el("div", "bk__top");
       top.appendChild(el("span", "bk__name", bk.name || "이름 없음"));
-      top.appendChild(el("span", "bk__state bk__state--" + bk.status, bk.status === "confirmed" ? "확정" : "대기"));
+      var src = srcOfBooking(bk);
+      var srcBadge = el("span", "bk__src", src.label);
+      srcBadge.style.background = src.color;
+      top.appendChild(srcBadge);
+      top.appendChild(el("span", "bk__state bk__state--" + bk.status, bk.status === "confirmed" ? "확정" : "승인 대기"));
       box.appendChild(top);
       box.appendChild(el("p", "bk__msg", dateKo(bk.checkin) + " → " + dateKo(bk.checkout) + " · " +
         (bk.phone || "연락처 없음") + " · " + money(bk.total)));
+      var amenBox = amenityRow(bk);
+      if (amenBox) box.appendChild(amenBox);
       var acts = el("div", "bk__acts");
       if (bk.status === "pending") {
         var ok = el("button", "btn btn--ok btn--sm", "예약 확정");
         ok.addEventListener("click", function () { setStatus(bk.id, "confirmed"); closeSheet(); });
         acts.appendChild(ok);
+      }
+      var chatBtn = el("button", "btn btn--line btn--sm", "💬 대화");
+      chatBtn.addEventListener("click", function () { openChatSheet(bk); });
+      acts.appendChild(chatBtn);
+      if (bk.status === "confirmed") {
+        var send = el("button", "btn btn--line btn--sm", "🔑 입실 안내");
+        send.addEventListener("click", function () { openCheckinSheet(bk); });
+        acts.appendChild(send);
       }
       var cancel = el("button", "btn btn--danger btn--sm", "예약 취소");
       cancel.addEventListener("click", function () {
@@ -418,15 +532,27 @@
       body.appendChild(box);
     });
 
-    /* 차단 / 해제 */
-    var btnBlock = el("button", "btn", "외부예약 차단 (에어비앤비·네이버 등)");
-    btnBlock.addEventListener("click", function () {
-      var updates = {};
-      dateRange(a, b).forEach(function (d) {
-        updates[PATH + "/blocks/" + state.room + "/" + d] = { reason: "external", createdAt: Date.now() };
+    /* 외부 예약 / 차단 — 출처별 색상으로 달력에 표시된다 */
+    var srcRow = el("div", "sheet__row sheet__row--wrap");
+    [
+      ["naver", "네이버 예약 (초록)"],
+      ["airbnb", "에어비앤비 (파랑)"],
+      ["other", "기타 차단 (회색)"]
+    ].forEach(function (pair) {
+      var srcBtn = el("button", "btn btn--src", pair[1]);
+      srcBtn.style.borderColor = SOURCE[pair[0]].color;
+      srcBtn.style.color = SOURCE[pair[0]].color;
+      srcBtn.addEventListener("click", function () {
+        var updates = {};
+        dateRange(a, b).forEach(function (d) {
+          updates[PATH + "/blocks/" + state.room + "/" + d] = {
+            source: pair[0], reason: "external", createdAt: Date.now()
+          };
+        });
+        db.ref().update(updates).then(function () { toast(n + "일 " + SOURCE[pair[0]].label + "으로 막았습니다."); closeSheet(); },
+          function () { toast("저장하지 못했습니다. 연결을 확인해 주세요."); });
       });
-      db.ref().update(updates).then(function () { toast(n + "일 차단했습니다."); closeSheet(); },
-        function () { toast("차단하지 못했습니다. 연결을 확인해 주세요."); });
+      srcRow.appendChild(srcBtn);
     });
     var btnUnblock = el("button", "btn btn--line", "차단 해제");
     btnUnblock.addEventListener("click", function () {
@@ -436,36 +562,57 @@
         function () { toast("해제하지 못했습니다."); });
     });
     body.appendChild(el("div", "sheet__divider"));
-    body.appendChild(btnBlock);
+    body.appendChild(el("p", "sheet__h", "외부 예약·차단 등록"));
+    body.appendChild(srcRow);
     body.appendChild(btnUnblock);
 
-    /* 요금 */
+    /* 요금 — 날짜(또는 드래그한 구간)의 1박 요금을 직접 수정 */
     body.appendChild(el("div", "sheet__divider"));
+    body.appendChild(el("p", "sheet__h", "1박 요금 수정"));
+    var nrMap = (state.settings && state.settings.naverRates && state.settings.naverRates[state.room]) || {};
+    var naverRate = Number(nrMap[a]) || 0;
+    var tiers = (state.settings && state.settings.rates && state.settings.rates[state.room]) || DEFAULT_RATES[state.room];
+    var dow = parseD(a).getDay();
+    var baseRate = Number(dow === 6 ? tiers.sat : dow === 5 ? tiers.fri : tiers.wd) || DEFAULT_RATES[state.room].wd;
+    var cur = rateOf(state.room, a);
+    var curSource = isOverride(state.room, a) ? "직접 지정" : (naverRate ? "네이버 실판매" : "기본 요금");
+
     var priceWrap = el("div", "sheet__field");
-    priceWrap.appendChild(el("span", null, "특정일 1박 요금 (원)"));
+    priceWrap.appendChild(el("span", null, a === b ? "이 날짜의 1박 요금 (원)" : n + "일 각각의 1박 요금 (원)"));
     var input = document.createElement("input");
     input.type = "number";
     input.step = "10000";
     input.min = "0";
-    input.value = String(rateOf(state.room, a));
+    input.value = String(cur);
     priceWrap.appendChild(input);
     body.appendChild(priceWrap);
-    var row = el("div", "sheet__row");
-    var savePrice = el("button", "btn btn--line", "요금 적용");
+
+    var info = el("p", "sheet__price-info",
+      "현재 적용: " + curSource + " " + money(cur) +
+      " · 네이버 실판매 " + (naverRate ? money(naverRate) : "없음") +
+      " · 기본 " + money(baseRate));
+    body.appendChild(info);
+
+    var row = el("div", "sheet__row sheet__row--wrap");
+    var savePrice = el("button", "btn btn--dark", "요금 적용");
     savePrice.addEventListener("click", function () {
-      var val = parseInt(input.value, 10);
+      var val = parseInt(String(input.value).replace(/[^0-9]/g, ""), 10);
       if (!val || val < 0) return toast("요금을 입력해 주세요.");
       var updates = {};
       dateRange(a, b).forEach(function (d) { updates[PATH + "/settings/overrides/" + state.room + "/" + d] = val; });
-      db.ref().update(updates).then(function () { toast(n + "일 요금을 " + money(val) + "로 저장했습니다."); closeSheet(); },
-        function () { toast("요금을 저장하지 못했습니다."); });
+      db.ref().update(updates).then(function () {
+        toast(n + "일 요금을 " + money(val) + "로 저장했습니다.");
+        closeSheet();
+      }, function () { toast("요금을 저장하지 못했습니다."); });
     });
-    var resetPrice = el("button", "btn btn--line", "기본 요금으로");
+    var resetPrice = el("button", "btn btn--line", "지정 해제 (자동 요금)");
     resetPrice.addEventListener("click", function () {
       var updates = {};
       dateRange(a, b).forEach(function (d) { updates[PATH + "/settings/overrides/" + state.room + "/" + d] = null; });
-      db.ref().update(updates).then(function () { toast("기본 요금으로 되돌렸습니다."); closeSheet(); },
-        function () { toast("변경하지 못했습니다."); });
+      db.ref().update(updates).then(function () {
+        toast("직접 지정을 해제했습니다. 네이버 실판매(없으면 기본) 요금이 적용됩니다.");
+        closeSheet();
+      }, function () { toast("변경하지 못했습니다."); });
     });
     row.appendChild(savePrice);
     row.appendChild(resetPrice);
@@ -531,16 +678,28 @@
     var memo = field("메모", "text", "", "에어비앤비 예약 등");
 
     var stWrap = el("label", "sheet__field");
-    stWrap.appendChild(el("span", null, "상태"));
+    stWrap.appendChild(el("span", null, "출처"));
+    var srcSel = document.createElement("select");
+    [["direct", "직접 예약 (차콜)"], ["naver", "네이버 예약 (초록)"], ["airbnb", "에어비앤비 (파랑)"]].forEach(function (opt) {
+      var o = document.createElement("option");
+      o.value = opt[0];
+      o.textContent = opt[1];
+      srcSel.appendChild(o);
+    });
+    stWrap.appendChild(srcSel);
+    body.appendChild(stWrap);
+
+    var stWrap2 = el("label", "sheet__field");
+    stWrap2.appendChild(el("span", null, "상태"));
     var select = document.createElement("select");
-    [["confirmed", "확정 (날짜 마감)"], ["pending", "대기"]].forEach(function (opt) {
+    [["confirmed", "확정 (날짜 마감)"], ["pending", "승인 대기"]].forEach(function (opt) {
       var o = document.createElement("option");
       o.value = opt[0];
       o.textContent = opt[1];
       select.appendChild(o);
     });
-    stWrap.appendChild(select);
-    body.appendChild(stWrap);
+    stWrap2.appendChild(select);
+    body.appendChild(stWrap2);
 
     var save = el("button", "btn btn--dark", "등록하기");
     save.addEventListener("click", function () {
@@ -563,7 +722,7 @@
         total: price,
         currency: "KRW",
         status: select.value,
-        source: "manual",
+        source: srcSel.value,
         createdAt: Date.now()
       };
       db.ref(PATH + "/bookings").push(payload, function (err) {
@@ -601,9 +760,12 @@
       var top = el("div", "bk__top");
       top.appendChild(el("span", "bk__name", b.name || "이름 없음"));
       top.appendChild(el("span", "bk__room", ROOM_NAME[b.room] || b.room));
-      var stateLabel = { pending: "확인 대기", confirmed: "확정", cancelled: "취소" }[b.status] || b.status;
+      var stateLabel = { pending: "승인 대기", confirmed: "확정", cancelled: "취소" }[b.status] || b.status;
+      var src = srcOfBooking(b);
+      var srcBadge = el("span", "bk__src", src.label);
+      srcBadge.style.background = src.color;
+      top.appendChild(srcBadge);
       top.appendChild(el("span", "bk__state bk__state--" + b.status, stateLabel));
-      if (b.source === "manual") top.appendChild(el("span", "bk__state", "수동"));
       card.appendChild(top);
 
       var grid = el("div", "bk__grid");
@@ -653,6 +815,8 @@
       card.appendChild(contact);
 
       if (b.message) card.appendChild(el("p", "bk__msg", b.message));
+      var amen = amenityRow(b);
+      if (amen) card.appendChild(amen);
 
       var memoRow = el("div", "bk__memo");
       var memo = document.createElement("textarea");
@@ -671,6 +835,14 @@
         var ok = el("button", "btn btn--ok btn--sm", "예약 확정");
         ok.addEventListener("click", function () { setStatus(b.id, "confirmed"); });
         acts.appendChild(ok);
+      }
+      var openChat = el("button", "btn btn--line btn--sm", "💬 대화창 열기");
+      openChat.addEventListener("click", function () { openChatSheet(b); });
+      acts.appendChild(openChat);
+      if (b.status === "confirmed") {
+        var send = el("button", "btn btn--line btn--sm", "입실 안내 보내기");
+        send.addEventListener("click", function () { openCheckinSheet(b); });
+        acts.appendChild(send);
       }
       if (b.status !== "cancelled") {
         var cancel = el("button", "btn btn--danger btn--sm", "예약 취소");
@@ -779,8 +951,503 @@
       " · 확정 " + b.filter(function (x) { return x.status === "confirmed"; }).length + ")";
     var mk = $("#metaBlocks");
     if (mk) mk.textContent = blocks + "일";
+    var mc = $("#metaCommunity");
+    if (mc) {
+      var rv = reviewsArr("heyum").length + reviewsArr("orot").length;
+      var iq = inquiriesArr().length;
+      var open = inquiriesArr().filter(function (q) { return !String(q.answerKo || "").trim(); }).length;
+      mc.textContent = "리뷰 " + rv + " · 문의 " + iq + " (미답변 " + open + ")";
+    }
     var ms = $("#metaSync");
     if (ms) ms.textContent = state.lastSync ? ts(state.lastSync) : "—";
+  }
+
+  /* ---------- reviews ---------- */
+  function reviewsArr(room) {
+    var raw = state.reviews[room] || {};
+    return Object.keys(raw).map(function (id) {
+      var r = raw[id] || {};
+      r.id = id;
+      return r;
+    }).sort(function (a, b) { return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0); });
+  }
+  function starsOf(n) {
+    var v = Math.max(0, Math.min(5, Math.round(Number(n) || 0)));
+    return "★★★★★".slice(0, v) + "☆☆☆☆☆".slice(0, 5 - v);
+  }
+
+  function renderReviews() {
+    var list = $("#reviewList");
+    var empty = $("#reviewEmpty");
+    if (!list) return;
+    list.textContent = "";
+    var rows = reviewsArr(state.reviewRoom);
+    if (empty) empty.hidden = rows.length > 0;
+    rows.forEach(function (r) {
+      var card = el("article", "bk bk--review");
+      var top = el("div", "bk__top");
+      top.appendChild(el("span", "bk__name", r.name || "이름 없음"));
+      top.appendChild(el("span", "bk__stars", starsOf(r.rating)));
+      var lang = String(r.lang || "ko");
+      top.appendChild(el("span", "bk__state", lang === "ko" ? "한국어" : lang.toUpperCase()));
+      top.appendChild(el("span", "bk__state", ts(r.createdAt)));
+      if (r.source === "guest") top.appendChild(el("span", "bk__state bk__state--pending", "고객 작성"));
+      card.appendChild(top);
+
+      var body = el("p", "bk__msg bk__msg--text", String(r.textKo || r.text || ""));
+      card.appendChild(body);
+      if (r.text && r.textKo && r.text !== r.textKo) {
+        card.appendChild(el("p", "bk__orig", "원문: " + r.text));
+      }
+
+      var acts = el("div", "bk__acts");
+      var edit = el("button", "btn btn--line btn--sm", "수정");
+      edit.addEventListener("click", function () { openReviewSheet(state.reviewRoom, r); });
+      acts.appendChild(edit);
+      var del = el("button", "btn btn--danger btn--sm", "삭제");
+      del.addEventListener("click", function () {
+        if (!window.confirm("이 리뷰를 삭제할까요? 홈페이지에서도 바로 사라집니다.")) return;
+        db.ref(PATH + "/reviews/" + state.reviewRoom + "/" + r.id).remove().then(function () { toast("리뷰를 삭제했습니다."); },
+          function () { toast("삭제하지 못했습니다."); });
+      });
+      acts.appendChild(del);
+      card.appendChild(acts);
+      list.appendChild(card);
+    });
+
+    var total = 0;
+    ["heyum", "orot"].forEach(function (r) { total += reviewsArr(r).length; });
+    var badge = $("#reviewBadge");
+    if (badge) { badge.textContent = String(total); badge.hidden = total === 0; }
+  }
+
+  function openReviewSheet(room, review) {
+    var sheet = $("#sheet");
+    var title = $("#sheetTitle");
+    var sub = $("#sheetSub");
+    var body = $("#sheetBody");
+    if (!sheet || !body) return;
+    var isEdit = !!(review && review.id);
+    if (title) title.textContent = isEdit ? "리뷰 수정" : "리뷰 직접 등록";
+    if (sub) sub.textContent = ROOM_NAME[room] + (isEdit ? "" : " · 홈페이지에 바로 표시");
+    body.textContent = "";
+
+    var nameWrap = el("label", "sheet__field");
+    nameWrap.appendChild(el("span", null, "작성자 이름"));
+    var nameInp = document.createElement("input");
+    nameInp.type = "text";
+    nameInp.value = (review && review.name) || "";
+    nameInp.placeholder = "예: 김민수";
+    nameWrap.appendChild(nameInp);
+    body.appendChild(nameWrap);
+
+    var rateWrap = el("label", "sheet__field");
+    rateWrap.appendChild(el("span", null, "별점"));
+    var rateSel = document.createElement("select");
+    [5, 4, 3, 2, 1].forEach(function (n) {
+      var o = document.createElement("option");
+      o.value = String(n);
+      o.textContent = starsOf(n) + " (" + n + ")";
+      if (Number((review && review.rating) || 5) === n) o.selected = true;
+      rateSel.appendChild(o);
+    });
+    rateWrap.appendChild(rateSel);
+    body.appendChild(rateWrap);
+
+    var textWrap = el("label", "sheet__field");
+    textWrap.appendChild(el("span", null, "후기 내용 (한국어)"));
+    var ta = document.createElement("textarea");
+    ta.rows = 6;
+    ta.value = (review && (review.textKo || review.text)) || "";
+    ta.placeholder = "후기 내용을 적어 주세요";
+    textWrap.appendChild(ta);
+    body.appendChild(textWrap);
+
+    var save = el("button", "btn btn--dark", isEdit ? "수정 저장" : "등록하기");
+    save.addEventListener("click", function () {
+      var name = nameInp.value.trim();
+      var text = ta.value.trim();
+      if (!name) return toast("이름을 입력해 주세요.");
+      if (text.length < 5) return toast("후기 내용을 5자 이상 적어 주세요.");
+      var payload = {
+        name: name,
+        rating: Number(rateSel.value) || 5,
+        text: text,
+        textKo: text,
+        lang: "ko",
+        source: "host",
+        updatedAt: Date.now()
+      };
+      var ref = isEdit ? db.ref(PATH + "/reviews/" + room + "/" + review.id) : db.ref(PATH + "/reviews/" + room).push();
+      if (!isEdit) payload.createdAt = Date.now();
+      ref.update(payload).then(function () { toast(isEdit ? "리뷰를 수정했습니다." : "리뷰를 등록했습니다."); closeSheet(); },
+        function () { toast("저장하지 못했습니다."); });
+    });
+    body.appendChild(save);
+    var cancel = el("button", "btn btn--line", "닫기");
+    cancel.addEventListener("click", closeSheet);
+    body.appendChild(cancel);
+    sheet.hidden = false;
+  }
+
+  /* ---------- inquiries ---------- */
+  function inquiriesArr() {
+    return Object.keys(state.inquiries).map(function (id) {
+      var q = state.inquiries[id] || {};
+      q.id = id;
+      return q;
+    }).sort(function (a, b) { return (Number(b.createdAt) || 0) - (Number(a.createdAt) || 0); });
+  }
+
+  function renderInquiries() {
+    var list = $("#inquiryList");
+    var empty = $("#inquiryEmpty");
+    if (!list) return;
+    list.textContent = "";
+    var all = inquiriesArr();
+    var rows = all.filter(function (q) {
+      if (state.inqFilter === "open") return !String(q.answerKo || "").trim();
+      if (state.inqFilter === "answered") return !!String(q.answerKo || "").trim();
+      return true;
+    });
+    if (empty) empty.hidden = rows.length > 0;
+
+    rows.forEach(function (q) {
+      var card = el("article", "bk bk--inq");
+      var top = el("div", "bk__top");
+      top.appendChild(el("span", "bk__name", q.name || "이름 없음"));
+      var lang = String(q.lang || "");
+      if (lang && lang !== "ko") top.appendChild(el("span", "bk__state", lang.toUpperCase()));
+      if (q.room && ROOM_NAME[q.room]) top.appendChild(el("span", "bk__state", ROOM_NAME[q.room]));
+      top.appendChild(el("span", "bk__state", ts(q.createdAt)));
+      top.appendChild(el("span", "bk__state " + (String(q.answerKo || "").trim() ? "bk__state--confirmed" : "bk__state--pending"),
+        String(q.answerKo || "").trim() ? "답변완료" : "미답변"));
+      card.appendChild(top);
+
+      var orig = el("p", "bk__msg bk__msg--text", String(q.text || ""));
+      card.appendChild(orig);
+      if (q.textKo && q.textKo !== q.text) {
+        var koBox = el("div", "bk__trans");
+        koBox.appendChild(el("span", "bk__trans-k", "한국어 번역"));
+        koBox.appendChild(el("p", "bk__msg bk__msg--text", String(q.textKo)));
+        card.appendChild(koBox);
+      } else if (lang && lang !== "ko") {
+        var transBtn = el("button", "btn btn--line btn--sm", "한국어로 번역");
+        transBtn.addEventListener("click", function () {
+          transBtn.disabled = true;
+          transBtn.textContent = "번역 중…";
+          if (!window.NNS) { transBtn.textContent = "번역을 사용할 수 없습니다"; return; }
+          window.NNS.translate(String(q.text || ""), "ko", function (err, res) {
+            transBtn.disabled = false;
+            if (err || !res || !res.text) { transBtn.textContent = "번역 실패 (다시 시도)"; return; }
+            var box = el("div", "bk__trans");
+            box.appendChild(el("span", "bk__trans-k", "한국어 번역"));
+            box.appendChild(el("p", "bk__msg bk__msg--text", res.text));
+            card.insertBefore(box, card.querySelector(".bk__acts"));
+            transBtn.hidden = true;
+            db.ref(PATH + "/inquiries/" + q.id + "/textKo").set(res.text);
+          });
+        });
+        card.appendChild(transBtn);
+      }
+
+      if (q.contact) {
+        var contact = el("div", "bk__acts");
+        contact.appendChild(el("span", "bk__contact", "연락처: " + q.contact));
+        var copyC = el("button", "btn btn--line btn--sm", "복사");
+        copyC.addEventListener("click", function () {
+          if (navigator.clipboard) navigator.clipboard.writeText(String(q.contact)).then(function () { toast("복사했습니다."); });
+        });
+        contact.appendChild(copyC);
+        if (/@/.test(String(q.contact))) {
+          var mail = document.createElement("a");
+          mail.className = "btn btn--line btn--sm";
+          mail.href = "mailto:" + q.contact;
+          mail.textContent = "메일";
+          contact.appendChild(mail);
+        }
+        card.appendChild(contact);
+      }
+
+      var ansWrap = el("div", "bk__memo");
+      var ans = document.createElement("textarea");
+      ans.placeholder = "답변 (한국어로 작성하면 고객 화면에서 그 나라 언어로 번역됩니다)";
+      ans.rows = 3;
+      ans.value = String(q.answerKo || "");
+      ansWrap.appendChild(ans);
+      card.appendChild(ansWrap);
+
+      var acts = el("div", "bk__acts");
+      var save = el("button", "btn btn--ok btn--sm", "답변 저장");
+      save.addEventListener("click", function () {
+        var text = ans.value.trim();
+        if (!text) return toast("답변 내용을 적어 주세요.");
+        db.ref(PATH + "/inquiries/" + q.id).update({
+          answerKo: text,
+          answeredAt: Date.now(),
+          status: "answered"
+        }).then(function () { toast("답변을 저장했습니다."); }, function () { toast("저장하지 못했습니다."); });
+      });
+      acts.appendChild(save);
+
+      if (String(q.answerKo || "").trim() && lang && lang !== "ko" && window.NNS) {
+        var prev = el("button", "btn btn--line btn--sm", "고객 언어로 미리보기");
+        prev.addEventListener("click", function () {
+          prev.disabled = true;
+          prev.textContent = "번역 중…";
+          window.NNS.translate(String(q.answerKo), lang === "zh-cn" ? "zh-cn" : lang === "zh-tw" ? "zh-tw" : lang, function (err, res) {
+            prev.disabled = false;
+            prev.textContent = "고객 언어로 미리보기";
+            if (err || !res) return toast("번역하지 못했습니다.");
+            window.alert("고객 화면 표시 (" + lang + ")\n\n" + res.text);
+          });
+        });
+        acts.appendChild(prev);
+      }
+
+      var del = el("button", "btn btn--danger btn--sm", "문의 삭제");
+      del.addEventListener("click", function () {
+        if (!window.confirm("이 문의를 삭제할까요? 홈페이지에서도 사라집니다.")) return;
+        db.ref(PATH + "/inquiries/" + q.id).remove().then(function () { toast("문의를 삭제했습니다."); },
+          function () { toast("삭제하지 못했습니다."); });
+      });
+      acts.appendChild(del);
+      card.appendChild(acts);
+      list.appendChild(card);
+    });
+
+    var open = all.filter(function (q) { return !String(q.answerKo || "").trim(); }).length;
+    var badge = $("#inquiryBadge");
+    if (badge) { badge.textContent = String(open); badge.hidden = open === 0; }
+  }
+
+  /* ---------- check-in message ---------- */
+  function templateFor(room) {
+    var t = state.settings && state.settings.checkinTemplates;
+    var tpl = t && typeof t[room] === "string" ? t[room] : "";
+    return tpl || DEFAULT_TEMPLATES[room] || DEFAULT_TEMPLATES.heyum;
+  }
+  function bankLine() {
+    var b = state.settings && state.settings.bank;
+    if (!b) return "";
+    return [b.bank, b.account, b.holder].filter(Boolean).join(" ");
+  }
+  function fillTemplate(tpl, bk) {
+    var room = bk.room || "heyum";
+    var n = Number(bk.nights) || daysBetween(bk.checkin, bk.checkout);
+    var guests = (Number(bk.adults) || 0) + (Number(bk.children) || 0);
+    var map = {
+      "{name}": String(bk.name || ""),
+      "{checkin}": dateKo(bk.checkin),
+      "{checkout}": dateKo(bk.checkout),
+      "{room}": ROOM_NAME[room] || room,
+      "{nights}": String(n),
+      "{guests}": String(guests),
+      "{account}": bankLine(),
+      "{amenities}": amenityLabels(bk).join(", ") || "없음",
+      "{phone}": PHONE,
+      "{doorlock}": "○○○○",
+      "{roomlock}": "○○○○"
+    };
+    return String(tpl).replace(/\{[a-z]+\}/g, function (m) { return map[m] !== undefined ? map[m] : m; });
+  }
+
+  /* ---------- booking chat (host) ---------- */
+  function openChatSheet(bk) {
+    var sheet = $("#sheet");
+    var title = $("#sheetTitle");
+    var sub = $("#sheetSub");
+    var body = $("#sheetBody");
+    if (!sheet || !body) return;
+    if (title) title.textContent = "대화 · " + (bk.name || "예약자");
+    if (sub) sub.textContent = (ROOM_NAME[bk.room] || bk.room) + " · " + dateKo(bk.checkin) + " → " + dateKo(bk.checkout) +
+      " · " + ({ pending: "승인 대기", confirmed: "확정", cancelled: "취소" }[bk.status] || bk.status);
+    body.textContent = "";
+
+    var list = el("ul", "chat chat--host");
+    body.appendChild(list);
+    var empty = el("p", "hint", "아직 메시지가 없습니다. 먼저 인사를 건네 보세요.");
+    body.appendChild(empty);
+
+    var wrap = el("div", "sheet__field");
+    wrap.appendChild(el("span", null, "메시지 (한국어로 쓰면 게스트 화면에서 자동 번역됩니다)"));
+    var ta = document.createElement("textarea");
+    ta.rows = 3;
+    ta.placeholder = "예: 입실 안내 드립니다. 도착 시간 알려 주세요.";
+    wrap.appendChild(ta);
+    body.appendChild(wrap);
+
+    var send = el("button", "btn btn--dark", "메시지 보내기");
+    var sending = false;
+    send.addEventListener("click", function () {
+      var text = ta.value.trim();
+      if (!text) return toast("메시지를 입력해 주세요.");
+      if (sending) return;
+      sending = true;
+      send.disabled = true;
+      db.ref(PATH + "/bookingChats/" + bk.id).push({
+        from: "host", text: text, textKo: text, lang: "ko", kind: "message", createdAt: Date.now()
+      }, function (err) {
+        sending = false;
+        send.disabled = false;
+        if (err) return toast("메시지를 보내지 못했습니다.");
+        ta.value = "";
+        toast("메시지를 보냈습니다.");
+      });
+    });
+    body.appendChild(send);
+
+    sheet.hidden = false;
+
+    function renderChat(raw) {
+      list.textContent = "";
+      var items = Object.keys(raw || {}).map(function (k) { return raw[k] || {}; })
+        .sort(function (a, b) { return (a.createdAt || 0) - (b.createdAt || 0); });
+      items.forEach(function (m) {
+        var mine = m.from === "host";
+        var li = el("li", "chat__item " + (mine ? "is-host" : "is-me"));
+        if (m.kind === "checkin") li.classList.add("is-checkin");
+        var head = el("div", "chat__head");
+        head.appendChild(document.createTextNode(mine ? "호스트(나)" : (bk.name || "게스트")));
+        head.appendChild(el("span", "chat__when", ts(m.createdAt)));
+        if (m.kind === "checkin") head.appendChild(el("span", "chat__kind", "CHECK-IN"));
+        li.appendChild(head);
+        li.appendChild(el("p", "chat__text", String(m.textKo || m.text || "")));
+        if (!mine && m.lang && m.lang !== "ko" && m.textKo && m.textKo !== m.text) {
+          li.appendChild(el("p", "bk__orig", "원문: " + m.text));
+        }
+        list.appendChild(li);
+      });
+      empty.hidden = items.length > 0;
+    }
+
+    var chatRef = db.ref(PATH + "/bookingChats/" + bk.id);
+    var handler = function (snap) { renderChat(snap.val()); };
+    chatRef.on("value", handler, function () {});
+    var closeBtn = $("#sheetClose");
+    function cleanup() {
+      try { chatRef.off("value", handler); } catch (e) { /* noop */ }
+      if (closeBtn) closeBtn.removeEventListener("click", cleanup);
+    }
+    if (closeBtn) closeBtn.addEventListener("click", cleanup);
+    sheet.addEventListener("click", function once(ev) {
+      if (ev.target === sheet) { cleanup(); sheet.removeEventListener("click", once); }
+    });
+  }
+
+  function openCheckinSheet(bk) {
+    var sheet = $("#sheet");
+    var title = $("#sheetTitle");
+    var sub = $("#sheetSub");
+    var body = $("#sheetBody");
+    if (!sheet || !body) return;
+    if (title) title.textContent = "입실 안내 · " + (bk.name || "예약자");
+    if (sub) sub.textContent = (ROOM_NAME[bk.room] || bk.room) + " · " + dateKo(bk.checkin) + " → " + dateKo(bk.checkout);
+    body.textContent = "";
+
+    var hint = el("p", "sheet__hint", "도어락 비밀번호(○○○○)는 보안상 저장하지 않습니다. 보내기 전에 직접 채워 주세요.");
+    body.appendChild(hint);
+
+    var wrap = el("label", "sheet__field");
+    wrap.appendChild(el("span", null, "보낼 안내문 (수정 가능)"));
+    var ta = document.createElement("textarea");
+    ta.rows = 12;
+    ta.value = fillTemplate(templateFor(bk.room || "heyum"), bk);
+    wrap.appendChild(ta);
+    body.appendChild(wrap);
+
+    var phone = String(bk.phone || "").replace(/[^0-9+]/g, "");
+    var sms = document.createElement("a");
+    sms.className = "btn btn--dark btn--sm";
+    sms.textContent = "문자 앱으로 보내기";
+    var mail = document.createElement("a");
+    mail.className = "btn btn--line btn--sm";
+    mail.textContent = "이메일로 보내기";
+    var copy = el("button", "btn btn--line btn--sm", "안내문 복사하기");
+
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    function refresh() {
+      var text = ta.value;
+      sms.href = "sms:" + phone + (isIOS ? "&body=" : "?body=") + encodeURIComponent(text);
+      mail.href = "mailto:" + (bk.email || "") + "?subject=" + encodeURIComponent("능놀스테이 입실 안내") +
+        "&body=" + encodeURIComponent(text);
+      if (!phone) { sms.classList.add("is-off"); sms.removeAttribute("href"); }
+      if (!bk.email) { mail.classList.add("is-off"); mail.removeAttribute("href"); }
+    }
+    ta.addEventListener("input", refresh);
+    refresh();
+
+    copy.addEventListener("click", function () {
+      var text = ta.value;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { toast("안내문을 복사했습니다."); });
+      } else {
+        ta.select();
+        try { document.execCommand("copy"); toast("안내문을 복사했습니다."); } catch (e) { /* noop */ }
+      }
+    });
+
+    var sendChat = el("button", "btn btn--ok btn--sm", "대화창으로 보내기");
+    sendChat.addEventListener("click", function () {
+      db.ref(PATH + "/bookingChats/" + bk.id).push({
+        from: "host", kind: "checkin", text: ta.value, textKo: ta.value, lang: "ko", createdAt: Date.now()
+      }, function (err) {
+        if (err) return toast("대화창으로 보내지 못했습니다.");
+        toast("입실 안내를 대화창으로 보냈습니다.");
+      });
+    });
+
+    var row = el("div", "sheet__row sheet__row--wrap");
+    row.appendChild(sendChat);
+    row.appendChild(sms);
+    row.appendChild(mail);
+    row.appendChild(copy);
+    body.appendChild(row);
+    if (!phone && !bk.email) {
+      body.appendChild(el("p", "sheet__hint", "이 예약에는 연락처와 이메일이 없습니다. 안내문을 복사해 직접 보내 주세요."));
+    }
+    sheet.hidden = false;
+    window.setTimeout(function () { ta.focus(); }, 60);
+  }
+
+  /* ---------- settings forms ---------- */
+  function renderSettingsForms() {
+    var bank = (state.settings && state.settings.bank) || {};
+    var bf = $("#bankForm");
+    if (bf && !bf.dataset.filled) {
+      bf.elements.bank.value = bank.bank || "";
+      bf.elements.account.value = bank.account || "";
+      bf.elements.holder.value = bank.holder || "";
+      bf.elements.note.value = bank.note || "";
+      bf.dataset.filled = "1";
+    }
+    var cf = $("#checkinForm");
+    if (cf && !cf.dataset.filled && state.ready) {
+      cf.elements.heyum.value = templateFor("heyum");
+      cf.elements.orot.value = templateFor("orot");
+      cf.dataset.filled = "1";
+    }
+
+    var ical = (state.settings && state.settings.icalSync) || null;
+    var synced = $("#icalSynced");
+    var hey = $("#icalHeyum");
+    var oro = $("#icalOrot");
+    var note = $("#icalNote");
+    if (synced) synced.textContent = ical && ical.syncedAtText ? ical.syncedAtText + " (에어비앤비 동기화 기준일)" : "아직 동기화 기록이 없습니다";
+    if (hey) hey.textContent = ical && ical.rooms && ical.rooms.heyum ? (ical.rooms.heyum.nights + "박 차단 · " + (ical.rooms.heyum.ical || "")) : "—";
+    if (oro) oro.textContent = ical && ical.rooms && ical.rooms.orot ? (ical.rooms.orot.nights + "박 차단 · " + (ical.rooms.orot.ical || "")) : "—";
+    if (note) note.textContent = ical && ical.note ? ical.note : "에어비앤비 예약·차단 날짜는 달력에 파란색으로 표시됩니다.";
+
+    var nr = (state.settings && state.settings.naverRates) || {};
+    var info = $("#naverRateInfo");
+    if (info) {
+      var h = Object.keys(nr.heyum || {}).length;
+      var o = Object.keys(nr.orot || {}).length;
+      var at = (state.settings && state.settings.naverRatesUpdatedAt) || "";
+      info.textContent = h || o
+        ? "헤윰 " + h + "일 · 오롯 " + o + "일 요금 반영" + (at ? " (" + at + ")" : "") + " — 날짜별 실판매 요금이 달력에 그대로 표시됩니다."
+        : "아직 날짜별 실판매 요금이 반영되지 않았습니다.";
+    }
   }
 
   /* ---------- render ---------- */
@@ -791,7 +1458,10 @@
     if (!$("#app") || $("#app").hidden) return;
     renderCalendar();
     renderBookings();
+    renderReviews();
+    renderInquiries();
     renderRates();
+    renderSettingsForms();
     renderMeta();
   }
 
@@ -886,6 +1556,77 @@
 
   var saveRatesBtn = $("#saveRates");
   if (saveRatesBtn) saveRatesBtn.addEventListener("click", saveRates);
+
+  /* reviews tab */
+  var reviewRoomSeg = $("#reviewRoomSeg");
+  if (reviewRoomSeg) {
+    reviewRoomSeg.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest("[data-review-room]") : null;
+      if (!b) return;
+      state.reviewRoom = b.getAttribute("data-review-room");
+      $$("[data-review-room]", reviewRoomSeg).forEach(function (x) { x.classList.toggle("is-on", x === b); });
+      renderReviews();
+    });
+  }
+  var newReview = $("#newReview");
+  if (newReview) newReview.addEventListener("click", function () { openReviewSheet(state.reviewRoom, null); });
+
+  /* inquiries tab */
+  var inqFilterSeg = $("#inqFilterSeg");
+  if (inqFilterSeg) {
+    inqFilterSeg.addEventListener("click", function (ev) {
+      var b = ev.target.closest ? ev.target.closest("[data-inq-filter]") : null;
+      if (!b) return;
+      state.inqFilter = b.getAttribute("data-inq-filter");
+      $$("[data-inq-filter]", inqFilterSeg).forEach(function (x) { x.classList.toggle("is-on", x === b); });
+      renderInquiries();
+    });
+  }
+
+  /* bank + check-in templates */
+  var bankForm = $("#bankForm");
+  if (bankForm) {
+    bankForm.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var msg = $("#bankMsg");
+      var payload = {
+        bank: bankForm.elements.bank.value.trim(),
+        account: bankForm.elements.account.value.trim(),
+        holder: bankForm.elements.holder.value.trim(),
+        note: bankForm.elements.note.value.trim(),
+        updatedAt: Date.now()
+      };
+      if (!payload.account) {
+        if (msg) { msg.textContent = "계좌번호를 입력해 주세요."; msg.className = "msg is-error"; }
+        return;
+      }
+      db.ref(PATH + "/settings/bank").set(payload).then(function () {
+        if (msg) { msg.textContent = "입금 계좌를 저장했습니다. 예약 접수 화면에 바로 표시됩니다."; msg.className = "msg is-ok"; }
+        toast("입금 계좌를 저장했습니다.");
+      }, function () {
+        if (msg) { msg.textContent = "저장하지 못했습니다."; msg.className = "msg is-error"; }
+      });
+    });
+  }
+
+  var checkinForm = $("#checkinForm");
+  if (checkinForm) {
+    checkinForm.addEventListener("submit", function (ev) {
+      ev.preventDefault();
+      var msg = $("#checkinMsg");
+      var payload = {
+        heyum: checkinForm.elements.heyum.value,
+        orot: checkinForm.elements.orot.value,
+        updatedAt: Date.now()
+      };
+      db.ref(PATH + "/settings/checkinTemplates").set(payload).then(function () {
+        if (msg) { msg.textContent = "입실 안내문을 저장했습니다."; msg.className = "msg is-ok"; }
+        toast("입실 안내문을 저장했습니다.");
+      }, function () {
+        if (msg) { msg.textContent = "저장하지 못했습니다."; msg.className = "msg is-error"; }
+      });
+    });
+  }
 
   /* calendar interaction: tap or drag */
   var calGrid = $("#calGrid");

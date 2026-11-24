@@ -61,7 +61,10 @@
   var submitBtn = root.querySelector("[data-bk-submit]");
   var doneEl = root.querySelector("[data-bk-done]");
   var refEl = root.querySelector("[data-bk-ref]");
-  var altLink = root.querySelector(".bk-alt a[data-airbnb]");
+  var altLink = null;
+  var bankBox = root.querySelector("[data-bk-bank]");
+  var bankLine = root.querySelector("[data-bk-bank-line]");
+  var bankNote = root.querySelector("[data-bk-bank-note]");
 
   /* ---------- dates ---------- */
   function ymd(d) {
@@ -111,7 +114,8 @@
     Object.keys(state.bookings).forEach(function (id) {
       var bk = state.bookings[id];
       if (!bk || bk.room !== room) return;
-      if (bk.status !== "pending" && bk.status !== "confirmed") return;
+      /* 예약 승인제: 사장님이 확정한 예약만 달력을 닫는다 (신청 대기는 표시만) */
+      if (bk.status !== "confirmed") return;
       var d = parseD(bk.checkin), end = parseD(bk.checkout);
       var guard = 0;
       while (d < end && guard++ < 400) {
@@ -133,6 +137,9 @@
   function rateOf(room, dateStr) {
     var ov = state.settings && state.settings.overrides && state.settings.overrides[room];
     if (ov && Number(ov[dateStr]) > 0) return Number(ov[dateStr]);
+    /* 네이버 플레이스 실판매 요금 시드(settings.naverRates) → 없으면 기본 평일/금/토 */
+    var nr = state.settings && state.settings.naverRates && state.settings.naverRates[room];
+    if (nr && Number(nr[dateStr]) > 0) return Number(nr[dateStr]);
     var r = ratesFor(room);
     var d = parseD(dateStr).getDay();
     if (d === 6) return r.sat;
@@ -274,6 +281,30 @@
     msgEl.className = "bk-msg" + (kind ? " bk-msg--" + kind : "");
   }
 
+  function selectRoom(room) {
+    if (!room || room === state.room) return;
+    state.room = room;
+    root.setAttribute("data-room", room);
+    state.ci = null;
+    state.co = null;
+    root.querySelectorAll("[data-bk-room]").forEach(function (b) {
+      var on = b.getAttribute("data-bk-room") === room;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+    setMsg("");
+    renderAll();
+  }
+
+  /* 홈·객실 카드의 예약 버튼: 이 페이지의 예약창으로 이동하면서 그 객실을 선택한다 */
+  document.addEventListener("click", function (ev) {
+    var btn = ev.target.closest ? ev.target.closest("[data-book-room]") : null;
+    if (!btn || root.contains(btn)) return;
+    var room = btn.getAttribute("data-book-room");
+    selectRoom(room);
+    track("booking_cta", { room: room, placement: btn.getAttribute("data-placement") || "" });
+  });
+
   root.addEventListener("click", function (ev) {
     var day = ev.target.closest ? ev.target.closest(".bk-day[data-date]") : null;
     if (day && !day.disabled) {
@@ -297,22 +328,7 @@
     if (roomBtn) {
       var room = roomBtn.getAttribute("data-bk-room");
       if (room === state.room) return;
-      state.room = room;
-      root.setAttribute("data-room", room);
-      state.ci = null;
-      state.co = null;
-      root.querySelectorAll("[data-bk-room]").forEach(function (b) {
-        var on = b === roomBtn;
-        b.classList.toggle("is-on", on);
-        b.setAttribute("aria-pressed", on ? "true" : "false");
-      });
-      if (altLink) {
-        var url = (cfg.airbnb && cfg.airbnb[room]) || altLink.getAttribute("href");
-        altLink.setAttribute("href", url);
-        altLink.setAttribute("data-airbnb", room);
-      }
-      setMsg("");
-      renderAll();
+      selectRoom(room);
       track("booking_room_switch", { room: room });
       return;
     }
@@ -407,6 +423,8 @@
 
       var n = nights();
       var total = sumPrice(state.room, state.ci, state.co) + extraGuests() * state.extra * n;
+      var amenities = [];
+      form.querySelectorAll('input[name="amenity"]:checked').forEach(function (cb) { amenities.push(cb.value); });
       var payload = {
         room: state.room,
         checkin: state.ci,
@@ -419,10 +437,11 @@
         phone: phone,
         email: email,
         message: message,
+        amenitiesRequested: amenities,
         total: total,
         currency: "KRW",
         status: "pending",
-        source: "website",
+        source: "direct",
         lang: state.lang,
         createdAt: Date.now()
       };
@@ -440,6 +459,7 @@
         var key = ref && ref.key ? ref.key : "";
         var refNo = "NN-" + state.ci.replace(/-/g, "").slice(2) + "-" + key.slice(-4).toUpperCase();
         if (refEl) refEl.textContent = refNo;
+        showBank();
         if (form) form.hidden = true;
         if (doneEl) doneEl.hidden = false;
         track("booking_request_sent", { room: state.room, nights: n, guests: guestCount(), value: total, ref: refNo });
@@ -451,6 +471,29 @@
         done(new Error("push"));
       }
     });
+  }
+
+  /* ---------- bank ---------- */
+  function showBank() {
+    if (!bankBox) return;
+    var bank = state.settings && state.settings.bank;
+    var line = "";
+    if (bank) {
+      var parts = [];
+      if (bank.bank) parts.push(bank.bank);
+      if (bank.account) parts.push(bank.account);
+      if (bank.holder) parts.push(bank.holder);
+      line = parts.join(" ");
+    }
+    if (line) {
+      bankBox.hidden = false;
+      if (bankLine) bankLine.textContent = line;
+      if (bankNote) bankNote.textContent = bank && bank.note ? bank.note : "";
+    } else {
+      bankBox.hidden = false;
+      if (bankLine) bankLine.textContent = S.bank_empty || "";
+      if (bankNote) bankNote.textContent = "";
+    }
   }
 
   /* ---------- firebase ---------- */
