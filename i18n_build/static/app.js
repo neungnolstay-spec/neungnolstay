@@ -136,7 +136,9 @@
     planOpen.addEventListener("click", open);
     if (closeBtn) closeBtn.addEventListener("click", close);
     if (zoomBtn) zoomBtn.addEventListener("click", function () {
-      setActual(!stage.classList.contains("is-actual"));
+      var on = !stage.classList.contains("is-actual");
+      setActual(on);
+      if (on) window.requestAnimationFrame(centreOnPlan);
     });
     lb.addEventListener("click", function (ev) {
       if (ev.target === lb || ev.target === stage) close();
