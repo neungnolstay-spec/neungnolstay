@@ -40,6 +40,11 @@ AIRBNB = {
     "heyum": "https://www.airbnb.co.kr/rooms/827083520643586714",
     "orot": "https://www.airbnb.co.kr/rooms/842458938331176391",
 }
+# 에어비앤비 실제 평점·후기 수 (2026-11-24 리스팅 기준). 리뷰 본문은 content/*.py 의 rooms.*.reviews.
+AIRBNB_STATS = {
+    "heyum": {"rating": "4.98", "count": 103},
+    "orot": {"rating": "4.96", "count": 104},
+}
 ADDRESS_ROAD = "부산광역시 수영구 민락수변로 13"
 LAT, LNG = 35.1547316, 129.1241192
 PRICE_RANGE = "₩500,000 - ₩1,200,000"
@@ -326,6 +331,66 @@ def cta_buttons(t: dict, placement: str, *, only: str | None = None, light: bool
             f'<span class="ext" aria-hidden="true">↗</span></a>'
         )
     return '<div class="btn-row">' + "\n".join(rows) + "</div>"
+
+
+def other_room(room: str) -> str:
+    return "orot" if room == "heyum" else "heyum"
+
+
+def room_nav_links(t: dict, room: str, cls: str) -> str:
+    """객실 페이지에서 홈 객실 목록으로 돌아가거나 다른 객실로 바로 넘어가는 두 링크."""
+    other = other_room(room)
+    other_label = f"{t['home']['cards'][other]['name']} ({t['rooms'][other]['room_floor']})"
+    return (
+        f'<a class="{cls}" href="../index.html#stays" data-rooms-back>'
+        f'<span aria-hidden="true">←</span> {e(t["ui"]["back_all_rooms"])}</a>\n'
+        f'<a class="{cls}" href="../{other}/" data-room-switch="{other}">'
+        f'{e(t["ui"]["view_other_room"])} · {e(other_label)} <span aria-hidden="true">→</span></a>'
+    )
+
+
+def room_nav(t: dict, room: str) -> str:
+    return f"""<div class="room-nav">
+    <div class="wrap room-nav__inner">
+      {room_nav_links(t, room, 'room-nav__link')}
+    </div>
+  </div>"""
+
+
+def reviews_section(t: dict, room: str) -> str:
+    """실제 에어비앤비 후기. 리뷰 카드에는 날짜를 넣지 않는다(별점·본문·이름만)."""
+    r = t["rooms"][room]
+    stats = AIRBNB_STATS[room]
+    cards = []
+    for rv in r["reviews"]:
+        rating = int(rv["rating"])
+        cards.append(f"""<li class="review">
+        <div class="review__stars" aria-label="{rating} / 5">{'★' * rating}{'☆' * (5 - rating)}</div>
+        <p class="review__text">{e(rv['text'])}</p>
+        <div class="review__by"><span class="review__ava" aria-hidden="true">{e(rv['name'][:1])}</span><b>{e(rv['name'])}</b></div>
+      </li>""")
+    cards_html = "\n      ".join(cards)
+    return f"""<section class="section section--ivory2" id="reviews">
+    <div class="wrap center reveal">
+      <span class="kicker">{e(r['reviews_kicker'])}</span>
+      <h2>{e(r['reviews_h2'])}</h2>
+      <div class="review-score">
+        <b>{e(stats['rating'])}</b><span class="review-score__of">/ 5</span>
+        <span class="review-score__stars" aria-hidden="true">★★★★★</span>
+        <span class="review-score__meta">{e(t['ui']['review_count'].format(count=stats['count']))}</span>
+        <span class="review-score__badge">{e(t['ui']['guest_fav'])}</span>
+      </div>
+      <p class="lede">{e(r['reviews_lede'])}</p>
+    </div>
+    <div class="wrap">
+      <ul class="reviews reveal">
+      {cards_html}
+      </ul>
+      <div class="review-more">
+        <a class="btn btn--dark" href="{AIRBNB[room]}" target="_blank" rel="noopener noreferrer" data-airbnb="{room}" data-placement="reviews">{e(t['ui']['review_more'])} <span class="ext" aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </section>"""
 
 
 def map_block(t: dict) -> str:
@@ -716,6 +781,8 @@ def build_room(t: dict, room: str) -> str:
 {header(t, 2, 'room', room)}
 
 <main id="top">
+  {room_nav(t, room)}
+
   <div class="wrap crumbs">
     <nav aria-label="Breadcrumb">
       <ol>
@@ -769,6 +836,8 @@ def build_room(t: dict, room: str) -> str:
       {gallery}
     </div></div>
   </section>
+
+  {reviews_section(t, room)}
 
   <section class="section section--ivory2" id="plan">
     <div class="wrap center reveal">
@@ -855,6 +924,9 @@ def build_room(t: dict, room: str) -> str:
         <p class="lede">{e(r['booking_p'])}</p>
         {cta_buttons(t, 'room-cta', only=room, light=True)}
         <p class="cta-note">{e(t['ui']['airbnb_note'])}</p>
+        <div class="cta-nav">
+          {room_nav_links(t, room, 'btn btn--light')}
+        </div>
       </div>
       <div class="cta-card">
         <h3>{e(name)}</h3>
@@ -1043,6 +1115,8 @@ def check_content_keys():
         for rid in ROOMS:
             assert len(t["rooms"][rid]["faq"]) == len(ko.T["rooms"][rid]["faq"]), (t["dir"], rid)
             assert len(t["rooms"][rid]["facts"]) == 8, (t["dir"], rid)
+            assert len(t["rooms"][rid]["reviews"]) == 6, (t["dir"], rid)
+            assert all(rv["name"] and rv["text"] for rv in t["rooms"][rid]["reviews"]), (t["dir"], rid)
 
 
 def main() -> None:

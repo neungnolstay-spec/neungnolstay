@@ -429,6 +429,130 @@ def check_ten_items(base: str) -> None:
         browser.close()
 
 
+def check_room_nav_reviews(base: str) -> None:
+    """객실 페이지의 뒤로가기·다른 객실 버튼과 에어비앤비 리뷰 섹션(날짜 미표시) 확인."""
+    date_patterns = [
+        r"20\d\d",                                   # 2023·2024·2026 …
+        r"January|February|March|April|May|June|July|August|September|October|November|December",
+        r"\d+\s*(일|주|개월|달|시간|분)\s*전",           # 3주 전, 2개월 전 …
+        r"\d+\s*(日|週間|か月|ヶ月|年)\s*前",           # 3日前 …
+        r"\d+\s*(天|週|周|个月|個月|年)\s*前",           # 3天前 …
+    ]
+    blocked_char = {"ko": r"[년월]", "ja": r"[年月]", "zh-Hans": r"[年月]", "zh-Hant": r"[年月]"}
+    for t in build.LANGS:
+        d = t["dir"]
+        for room in build.ROOMS:
+            other = "orot" if room == "heyum" else "heyum"
+            path = f"/{d}/{room}/"
+            status, body = fetch(local(base, path))
+            if status != 200:
+                continue
+            # 1) 뒤로가기 · 다른 객실 보기 버튼 (상단 바 + 예약 CTA)
+            backs = re.findall(r'href="\.\./index\.html#stays"[^>]*data-rooms-back', body)
+            if len(backs) < 2:
+                fail(f"{path} 전체 객실로 돌아가는 버튼 {len(backs)}개 (상단·하단 2개 필요)")
+            if body.count(f'href="../{other}/"') < 1:
+                fail(f"{path} 다른 객실({other}) 링크 없음")
+            if 'data-room-switch=' not in body:
+                fail(f"{path} 다른 객실 전환 버튼 표시 없음")
+            top = body.find('class="room-nav"')
+            hero = body.find('class="room-hero"')
+            if top < 0 or hero < 0 or top > hero:
+                fail(f"{path} 상단 객실 이동 바가 히어로 위에 없음")
+            if 'class="cta-nav"' not in body:
+                fail(f"{path} 예약 CTA 안의 객실 이동 버튼 없음")
+
+            # 2) 리뷰 섹션
+            start = body.find('id="reviews"')
+            if start < 0:
+                fail(f"{path} 리뷰 섹션 없음")
+                continue
+            end = body.find("</section>", start)
+            block = body[start:end]
+            cards = re.findall(r'<li class="review">', block)
+            if len(cards) != 6:
+                fail(f"{path} 리뷰 카드 {len(cards)}개 (6개 필요)")
+            if block.count('class="review__stars"') != len(cards):
+                fail(f"{path} 리뷰 카드에 별점 누락")
+            if block.count('class="review__by"') != len(cards):
+                fail(f"{path} 리뷰 카드에 게스트 이름 누락")
+            if build.AIRBNB_STATS[room]["rating"] not in block:
+                fail(f"{path} 리뷰 요약에 에어비앤비 평점 없음")
+            if f"data-airbnb=\"{room}\" data-placement=\"reviews\"" not in block:
+                fail(f"{path} 에어비앤비 리뷰 더 보기 링크 없음")
+            text = re.sub(r"<[^>]+>", " ", block)
+            for pat in date_patterns:
+                hit = re.search(pat, text)
+                if hit:
+                    fail(f"{path} 리뷰 영역에 날짜 표기 의심: {hit.group(0)!r}")
+            if t["html_lang"] in blocked_char:
+                hit = re.search(blocked_char[t["html_lang"]], text)
+                if hit:
+                    fail(f"{path} 리뷰 영역에 날짜 단위 글자: {hit.group(0)!r}")
+            CHECK_ITEMS.append(f"{path}: 리뷰 6개 · 뒤로가기/다른 객실 버튼 · 날짜 표기 없음")
+
+
+def check_room_nav_browser(base: str) -> None:
+    """실제 렌더링에서 상단 이동 바 위치와 다른 객실 전환 클릭을 확인."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        notes.append("Playwright 미설치 — 객실 이동 바 브라우저 검증 생략")
+        return
+    SHOTS.mkdir(exist_ok=True)
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        for vp_name, w, h in (("pc", 1440, 900), ("mobile", 390, 844)):
+            ctx = browser.new_context(viewport={"width": w, "height": h}, reduced_motion="reduce")
+            page = ctx.new_page()
+            page.goto(base + "/ko/heyum/", wait_until="networkidle")
+            metrics = page.evaluate("""() => {
+                const bar = document.querySelector('.room-nav');
+                const hero = document.querySelector('.room-hero');
+                const sw = document.querySelector('.room-nav__link[data-room-switch]');
+                const back = document.querySelector('.room-nav__link[data-rooms-back]');
+                const r = sw.getBoundingClientRect();
+                return {barTop: Math.round(bar.getBoundingClientRect().top),
+                        heroTop: Math.round(hero.getBoundingClientRect().top),
+                        swH: Math.round(r.height), swW: Math.round(r.width),
+                        switchHref: sw.getAttribute('href'), backHref: back.getAttribute('href'),
+                        overflow: document.documentElement.scrollWidth - window.innerWidth};
+            }""")
+            if metrics["heroTop"] <= metrics["barTop"]:
+                fail(f"[room-nav {vp_name}] 이동 바가 히어로 위에 있지 않음 {metrics}")
+            if metrics["swH"] < 34 or metrics["swW"] < 80:
+                fail(f"[room-nav {vp_name}] 다른 객실 버튼이 너무 작음 {metrics}")
+            if metrics["overflow"] > 2:
+                fail(f"[room-nav {vp_name}] 가로 넘침 {metrics['overflow']}px")
+            page.screenshot(path=str(SHOTS / f"room-nav-{vp_name}.png"))
+            CHECK_ITEMS.append(f"{vp_name}: 상단 객실 이동 바 (다른 객실 버튼 {metrics['swW']}x{metrics['swH']}px)")
+
+            # 다른 객실 버튼 클릭 → 오롯 페이지로 실제 이동
+            page.click(".room-nav__link[data-room-switch]")
+            page.wait_for_load_state("networkidle")
+            if not page.url.endswith("/ko/orot/"):
+                fail(f"[room-nav {vp_name}] 다른 객실 버튼 클릭 후 URL {page.url}")
+            else:
+                CHECK_ITEMS.append(f"{vp_name}: '다른 객실 보기' 클릭 → /ko/orot/ 이동")
+
+            # 리뷰 섹션 렌더링 · 카드 배치
+            page.goto(base + "/ko/heyum/", wait_until="networkidle")
+            page.locator("#reviews").scroll_into_view_if_needed()
+            page.wait_for_timeout(500)
+            page.locator("#reviews").screenshot(path=str(SHOTS / f"reviews-heyum-{vp_name}.png"))
+            cards = page.evaluate("""() => [...document.querySelectorAll('#reviews .review')].map(el => {
+                const r = el.getBoundingClientRect();
+                return {w: Math.round(r.width), h: Math.round(r.height), x: Math.round(r.x)};
+            })""")
+            if len(cards) != 6:
+                fail(f"[reviews {vp_name}] 카드 {len(cards)}개")
+            else:
+                rows = {c["x"] for c in cards}
+                CHECK_ITEMS.append(f"{vp_name}: 리뷰 카드 6개 ({len(rows)}열, {cards[0]['w']}px 폭)")
+            ctx.close()
+        browser.close()
+
+
 def main() -> None:
     class Handler(SimpleHTTPRequestHandler):
         def __init__(self, *a, **kw):
@@ -447,8 +571,10 @@ def main() -> None:
         for path in PAGES:
             check_seo(base, path)
         check_sitemap_robots(base)
+        check_room_nav_reviews(base)
         check_browser(base)
         check_ten_items(base)
+        check_room_nav_browser(base)
     finally:
         srv.shutdown()
 

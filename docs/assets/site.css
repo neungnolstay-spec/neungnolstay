@@ -382,3 +382,67 @@ html.plan-open,html.plan-open body{overflow:hidden}
   .spec--2{gap:0}
   .choose__list{grid-template-columns:1fr}
 }
+
+/* ---------- room page: back to all rooms / other room ---------- */
+.room-nav{background:var(--ivory);border-bottom:1px solid var(--line)}
+.room-nav__inner{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:12px 0}
+.room-nav__link{
+  display:inline-flex;align-items:center;gap:9px;min-height:40px;
+  font-family:var(--sans);font-size:10.5px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted);transition:color .25s,border-color .25s,background .25s;
+}
+.room-nav__link span{color:var(--gold);font-size:12px;line-height:1}
+.room-nav__link[data-room-switch]{
+  color:var(--charcoal);border:1px solid var(--line);padding:0 16px;letter-spacing:.1em;
+}
+.room-nav__link[data-room-switch]:hover{background:var(--charcoal);color:#fff;border-color:var(--charcoal)}
+.room-nav__link[data-room-switch]:hover span{color:var(--gold-soft)}
+.room-nav__link[data-rooms-back]:hover{color:var(--charcoal)}
+.cta-nav{
+  display:flex;flex-wrap:wrap;gap:10px;margin-top:24px;padding-top:22px;
+  border-top:1px solid rgba(255,255,255,.14);
+}
+.cta-nav .btn{font-size:10px;letter-spacing:.14em;text-transform:uppercase;min-height:46px}
+.cta-nav .btn span{color:var(--gold-soft)}
+
+/* ---------- room page: Airbnb guest reviews ---------- */
+.review-score{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:baseline;justify-content:center;margin:4px 0 18px}
+.review-score b{font-family:var(--display);font-size:clamp(2.3rem,4.4vw,3rem);font-weight:400;line-height:1;color:var(--charcoal)}
+.review-score__of{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted-2)}
+.review-score__stars{color:var(--gold);font-size:12px;letter-spacing:.24em;align-self:center}
+.review-score__meta{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);align-self:center}
+.review-score__badge{
+  align-self:center;font-size:9px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(169,138,91,.45);padding:5px 10px;white-space:nowrap;
+}
+.reviews{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,22px);margin-top:clamp(24px,3vw,36px)}
+.review{
+  display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid var(--line-soft);
+  padding:clamp(22px,2.4vw,30px);
+}
+.review__stars{color:var(--gold);font-size:11px;letter-spacing:.28em;line-height:1}
+.review__text{margin:0;flex:1;font-size:13.4px;line-height:1.95;color:#3f3b35;font-weight:300;overflow-wrap:break-word;word-break:keep-all}
+html[lang="zh-Hans"] .review__text,html[lang="zh-Hant"] .review__text,html[lang="ja"] .review__text{word-break:normal}
+.review__by{display:flex;align-items:center;gap:10px;padding-top:14px;border-top:1px solid var(--line-soft)}
+.review__ava{
+  width:26px;height:26px;flex:0 0 auto;display:grid;place-items:center;
+  background:var(--sand);color:var(--muted);font-size:11px;line-height:1;
+}
+.review__by b{font-family:var(--sans);font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--charcoal)}
+.review-more{display:flex;justify-content:center;margin-top:clamp(22px,3vw,32px)}
+.review-more .btn{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;min-height:48px}
+
+@media(max-width:940px){
+  .reviews{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:820px){
+  .room-nav__inner{gap:8px;padding:10px 0}
+  .room-nav__link{font-size:9.5px;letter-spacing:.12em;min-height:38px}
+  .room-nav__link[data-room-switch]{padding:0 12px}
+  .cta-nav .btn{flex:1 1 100%;justify-content:center}
+}
+@media(max-width:640px){
+  .reviews{grid-template-columns:1fr}
+  .review-score{gap:8px 12px}
+  .review-score__badge{order:3}
+}

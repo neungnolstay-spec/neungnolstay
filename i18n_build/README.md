@@ -23,7 +23,7 @@ python3 i18n_build/build.py --out docs
 | 파일 | 역할 |
 |---|---|
 | `i18n_build/build.py` | 페이지 생성기. **BASE_URL·GA4·GTM·GSC·네이버 인증값은 이 파일 상단 한 곳** |
-| `i18n_build/content/ko.py` … `zhtw.py` | 언어별 문구(5개). 키 집합이 다르면 빌드가 중단됩니다 |
+| `i18n_build/content/ko.py` … `zhtw.py` | 언어별 문구(5개). 키 집합이 다르면 빌드가 중단됩니다. 객실별 에어비앤비 리뷰 본문(`rooms.*.reviews`)도 여기에 있고, 평점·후기 수는 `build.py` 의 `AIRBNB_STATS` |
 | `i18n_build/photos.py` | 사진 크기·언어별 alt·갤러리 순서·객실 대표 사진 |
 | `i18n_build/prep_plans.py` | 도면 원본(네이버 플레이스 `business_005/006.jpg`)에서 빈 여백을 잘라 `assets/plan-hewyum.webp`·`plan-orot.webp` 재생성 (2200px, 비율 유지) |
 | `i18n_build/static/style.css` | 부티크 호텔 스타일 디자인 시스템 |
@@ -51,6 +51,8 @@ python3 i18n_build/check.py
 8. **각 카드 사진 아래 예약 버튼, 정확한 에어비앤비 URL 연결**
 9. PC(1440)·모바일(390) 가로 넘침·콘솔 오류·하단 고정 예약 바
 10. 상세 페이지 상단 사진도 동일한 에어비앤비 대표 사진인지
+11. **객실 페이지 상단·하단의 `← 전체 객실로 돌아가기` / `다른 객실 보기` 버튼** (클릭 시 실제 이동까지)
+12. **객실별 에어비앤비 리뷰 섹션** — 카드 6개·별점·게스트 이름·리뷰 더 보기 링크, 그리고 **리뷰 영역에 날짜 표기(연도·월·`~ 전`)가 없는지**
 
 ## 배포
 

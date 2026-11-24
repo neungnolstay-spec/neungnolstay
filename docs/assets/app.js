@@ -45,6 +45,16 @@
     });
   });
 
+  /* Room switcher: jump to the other room from a room page */
+  document.querySelectorAll("[data-room-switch]").forEach(function (a) {
+    a.addEventListener("click", function () {
+      track("room_switch", {
+        from_room: room,
+        to_room: a.getAttribute("data-room-switch")
+      });
+    });
+  });
+
   /* Room detail view */
   if (page === "room" && room) {
     var seen = false;
