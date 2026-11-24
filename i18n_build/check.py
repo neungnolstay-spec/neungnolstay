@@ -354,18 +354,20 @@ def check_view_toggle(base: str) -> None:
         notes.append("Playwright 미설치 — PC/모바일 전환 검증 생략")
         return
     SHOTS.mkdir(exist_ok=True)
-    # 1) 언어별 문구·버튼·스크립트 포함 여부(정적)
+    # 1) 언어별 문구·버튼·스크립트 포함 여부(정적) — 홈·헤윰·오롯 15페이지
     for t in build.LANGS:
-        html_text = (DOCS / t["dir"] / "index.html").read_text(encoding="utf-8")
         for key in ("view_pc", "view_mo", "view_label"):
             if not t["ui"].get(key):
                 fail(f"[{t['dir']}] ui.{key} 문구 없음")
-        for val in ("pc", "mo"):
-            if f'data-view="{val}"' not in html_text:
-                fail(f"/{t['dir']}/ PC·모바일 전환 버튼(data-view={val}) 없음")
-        if "view.js" not in html_text or "nns_view" not in html_text:
-            fail(f"/{t['dir']}/ 전환 스크립트(view.js) 또는 초기 스크립트 없음")
-    CHECK_ITEMS.append("5개 언어 16페이지: PC/모바일 전환 버튼·문구·스크립트 포함")
+        for rel in ("", "heyum/", "orot/"):
+            path = DOCS / t["dir"] / rel / "index.html"
+            html_text = path.read_text(encoding="utf-8")
+            for val in ("pc", "mo"):
+                if f'data-view="{val}"' not in html_text:
+                    fail(f"/{t['dir']}/{rel} PC·모바일 전환 버튼(data-view={val}) 없음")
+            if "view.js" not in html_text or "nns_view" not in html_text:
+                fail(f"/{t['dir']}/{rel} 전환 스크립트(view.js) 또는 초기 스크립트 없음")
+    CHECK_ITEMS.append("5개 언어 15페이지(홈·헤윰·오롯): PC/모바일 전환 버튼·문구·스크립트 포함")
 
     with sync_playwright() as pw:
         browser = pw.chromium.launch()

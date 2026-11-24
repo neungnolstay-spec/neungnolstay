@@ -571,7 +571,6 @@
         if (!app) app = firebase.initializeApp(FB_CONFIG, "nns-booking");
         db = app.database();
         var fail = function () { offline(); };
-        window.__BK = state; /* DEBUG */
         liveRefs.push(db.ref(PATH + "/blocks"));
         liveRefs[0].on("value", function (snap) { onBlocks(snap.val()); }, fail);
         ["rates", "overrides", "naverRates", "bank"].forEach(function (k) {

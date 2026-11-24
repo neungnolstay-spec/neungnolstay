@@ -9,8 +9,8 @@
     },
 
     "neungnol_booking_v1": {
-      ".read": "auth != null && auth.token.email == 'eodnrdlrnrnf@gmail.com' && auth.token.email_verified == true",
-      ".write": "auth != null && auth.token.email == 'eodnrdlrnrnf@gmail.com' && auth.token.email_verified == true",
+      ".read": "auth != null && auth.token.email_verified == true && (auth.token.email == 'eodnrdlrnrnf@gmail.com' || auth.token.email == 'anseodnr@naver.com')",
+      ".write": "auth != null && auth.token.email_verified == true && (auth.token.email == 'eodnrdlrnrnf@gmail.com' || auth.token.email == 'anseodnr@naver.com')",
 
       "blocks": {
         ".read": true

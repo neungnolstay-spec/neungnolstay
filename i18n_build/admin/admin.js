@@ -16,8 +16,8 @@
   var PATH = "/neungnol_booking_v1";
   /* 관리자 계정 — Firebase Auth 로그인(Google 또는 이메일)이 끝나야 DB에 접근할 수 있다 */
   var ADMIN_EMAIL = "eodnrdlrnrnf@gmail.com";
-  /* TEMP-VERIFY: 검증용 임시 계정(이메일 인증 전 허용). 검증 후 제거 */
-  var VERIFY_BYPASS = { "nns-verify@neungnol.test": 1 };
+  /* 관리자로 인정하는 계정 — Firebase Auth에서 이메일 인증이 끝난 계정만 통과 */
+  var ADMIN_EMAILS = ["eodnrdlrnrnf@gmail.com", "anseodnr@naver.com"];
   var SESSION_KEY = "nns_admin_session";
   var SESSION_MS = 12 * 3600 * 1000;
   var ROOM_NAME = { heyum: "헤윰 · 3층", orot: "오롯 · 6층" };
@@ -1567,7 +1567,7 @@
 
   function afterAuth(user) {
     var email = String((user && user.email) || "").toLowerCase();
-    var allowed = !!(user && ((email === ADMIN_EMAIL && user.emailVerified) || VERIFY_BYPASS[email]));
+    var allowed = !!(user && ADMIN_EMAILS.indexOf(email) >= 0 && user.emailVerified);
     var resend = $("#authResend");
     if (resend) resend.hidden = true;
     if (allowed) {
@@ -1582,7 +1582,7 @@
     var o = $("#authOut");
     if (o) o.hidden = !user;
     if (!user) { authMsg(""); return; }
-    if (email !== ADMIN_EMAIL) {
+    if (ADMIN_EMAILS.indexOf(email) < 0) {
       authMsg("이 계정(" + email + ")은 관리자 계정이 아닙니다. 로그아웃 후 " + ADMIN_EMAIL + " 로 로그인해 주세요.");
     } else {
       authMsg("이메일 인증이 아직 끝나지 않았습니다. " + email + " 받은편지함의 인증 메일 링크를 누른 뒤 새로고침해 주세요.");
@@ -1661,10 +1661,10 @@
           showPanel("auth");
         }, function () {});
       });
-    }).catch(function (e) {
+    }).catch(function () {
       showPanel("auth");
       setSync("off", "연결 실패");
-      authMsg("Firebase를 불러오지 못했습니다. 네트워크를 확인해 주세요. [" + ((e && (e.message || e.code)) || e) + "]");
+      authMsg("Firebase를 불러오지 못했습니다. 네트워크를 확인해 주세요.");
     });
   }
 
