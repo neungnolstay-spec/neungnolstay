@@ -446,3 +446,6 @@ html[lang="zh-Hans"] .review__text,html[lang="zh-Hant"] .review__text,html[lang=
   .review-score{gap:8px 12px}
   .review-score__badge{order:3}
 }
+
+/* anchor jumps land below the sticky header */
+.section[id]{scroll-margin-top:86px}

@@ -370,7 +370,7 @@ def reviews_section(t: dict, room: str) -> str:
         <div class="review__by"><span class="review__ava" aria-hidden="true">{e(rv['name'][:1])}</span><b>{e(rv['name'])}</b></div>
       </li>""")
     cards_html = "\n      ".join(cards)
-    return f"""<section class="section section--ivory2" id="reviews">
+    return f"""<section class="section section--sand" id="reviews">
     <div class="wrap center reveal">
       <span class="kicker">{e(r['reviews_kicker'])}</span>
       <h2>{e(r['reviews_h2'])}</h2>
