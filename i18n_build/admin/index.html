@@ -19,6 +19,28 @@
   <div class="lock__box">
     <span class="lock__brand">NEUNGNOL STAY</span>
     <h1>객실·예약 관리</h1>
+
+    <!-- 사장님 계정 인증 (Firebase Auth) -->
+    <div class="auth" id="authPanel" hidden>
+      <p class="lock__sub">사장님 계정으로 한 번만 로그인해 주세요. 이 기기에서는 다음부터 기억됩니다.</p>
+      <button type="button" class="auth__google" id="authGoogle">
+        <span class="auth__g">G</span> Google 계정으로 로그인
+      </button>
+      <div class="auth__or"><span>또는 이메일로</span></div>
+      <form class="auth__form" id="authForm" autocomplete="on">
+        <input type="email" id="authEmail" value="eodnrdlrnrnf@gmail.com" placeholder="이메일" autocomplete="username" spellcheck="false">
+        <input type="password" id="authPass" placeholder="비밀번호 (6자 이상)" autocomplete="current-password">
+        <div class="auth__row">
+          <button type="submit" class="auth__btn auth__btn--dark" id="authLogin">로그인</button>
+          <button type="button" class="auth__btn" id="authSignup">비밀번호 만들기</button>
+        </div>
+      </form>
+      <p class="lock__msg" id="authMsg"></p>
+      <button type="button" class="auth__link" id="authResend" hidden>인증 메일 다시 보내기</button>
+      <button type="button" class="auth__link" id="authOut" hidden>다른 계정으로 로그인</button>
+    </div>
+
+    <div id="pinPanel">
     <p class="lock__sub">사장님 전용 화면입니다. PIN 4자리를 입력해 주세요.</p>
     <div class="pin" id="pinDots" aria-live="polite"><i></i><i></i><i></i><i></i></div>
     <p class="lock__msg" id="lockMsg"></p>
@@ -38,6 +60,7 @@
     </div>
     <p class="lock__hint">초기 PIN은 <b>0000</b> 입니다. 로그인 후 설정에서 바꿀 수 있습니다.</p>
     <p class="lock__off" id="lockOff" hidden>데이터베이스에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
+    </div>
     <a class="lock__back" href="../ko/">← 홈페이지로</a>
   </div>
 </div>

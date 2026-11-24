@@ -109,6 +109,15 @@ ul{margin:0;padding:0;list-style:none}
 .btn--light{border-color:rgba(255,255,255,.45);color:#fff}
 .btn--light:hover{background:#fff;color:var(--charcoal)}
 .btn--block{width:100%}
+/* 방문한 링크도 버튼 글자색을 그대로 유지 (a:visited{color:inherit} 가 어두운 배경 위 글자를
+   배경색으로 물들여 '헤윰 예약하기' 같은 라벨이 보이지 않던 문제 방지) */
+.btn--dark:visited,.btn--navy:visited,.btn--light:visited{color:#fff}
+.btn--line:visited{color:var(--charcoal)}
+/* 예약 버튼: 순백색·굵은 글씨로 또렷하게 */
+.btn--book{color:#fff;font-weight:700;letter-spacing:.14em}
+.btn--book:visited{color:#fff}
+.btn--book:hover{color:#fff}
+.btn--light.btn--book:hover{color:var(--charcoal)}
 .ext{font-size:11px;letter-spacing:0}
 .btn-row{display:flex;flex-wrap:wrap;gap:10px}
 .link-more{
@@ -318,6 +327,7 @@ html.plan-open,html.plan-open body{overflow:hidden}
     border-top:1px solid rgba(201,176,138,.28);
   }
   .bookbar .btn{flex:1;min-height:50px;padding:12px 8px;font-size:10.5px;letter-spacing:.1em}
+  .bookbar .btn--book{font-size:11.5px;font-weight:700;letter-spacing:.07em}
   .bookbar .btn--line{color:#f4efe6;border-color:rgba(255,255,255,.3)}
   .bookbar .btn--line:hover{background:transparent;color:#fff}
   body{padding-bottom:72px}

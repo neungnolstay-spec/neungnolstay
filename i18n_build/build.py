@@ -357,7 +357,7 @@ def cta_buttons(t: dict, placement: str, *, only: str | None = None, light: bool
     rows = []
     for rid in ([only] if only else list(ROOMS)):
         card = t["home"]["cards"][rid]
-        cls = "btn btn--light" if light else "btn btn--dark"
+        cls = "btn btn--book btn--light" if light else "btn btn--book btn--dark"
         rows.append(
             f'<a class="{cls}" href="#reserve" data-book-room="{rid}" data-placement="{placement}">'
             f'{e(card["book_label"])}</a>'
@@ -722,7 +722,7 @@ def stay_card(t: dict, assets: str, rid: str) -> str:
     <p class="stay__desc">{e(card['desc'])}</p>
     <ul class="stay__facts">{facts}</ul>
     <div class="stay__actions">
-      <a class="btn btn--dark btn--block" href="#reserve" data-book-room="{rid}" data-placement="home-card">{e(card['book_label'])}</a>
+      <a class="btn btn--book btn--dark btn--block" href="#reserve" data-book-room="{rid}" data-placement="home-card">{e(card['book_label'])}</a>
       <a class="stay__more" href="{detail}">{e(t['ui']['detail'])} →</a>
     </div>
   </div>
@@ -1156,8 +1156,8 @@ def build_home(t: dict) -> str:
 </main>
 
 <nav class="bookbar" aria-label="{e(t['nav']['book'])}">
-  <a class="btn btn--dark" href="#reserve" data-book-room="heyum" data-placement="sticky">{e(t['home']['cards']['heyum']['book_label'])}</a>
-  <a class="btn btn--dark" href="#reserve" data-book-room="orot" data-placement="sticky">{e(t['home']['cards']['orot']['book_label'])}</a>
+  <a class="btn btn--book btn--dark" href="#reserve" data-book-room="heyum" data-placement="sticky">{e(t['home']['cards']['heyum']['book_label'])}</a>
+  <a class="btn btn--book btn--dark" href="#reserve" data-book-room="orot" data-placement="sticky">{e(t['home']['cards']['orot']['book_label'])}</a>
 </nav>
 
 {footer(t, 1, 'home')}
@@ -1377,7 +1377,7 @@ def build_room(t: dict, room: str) -> str:
 </main>
 
 <nav class="bookbar" aria-label="{e(t['nav']['book'])}">
-  <a class="btn btn--dark" href="#reserve" data-book-room="{room}" data-placement="sticky">{e(t['home']['cards'][room]['book_label'])}</a>
+  <a class="btn btn--book btn--dark" href="#reserve" data-book-room="{room}" data-placement="sticky">{e(t['home']['cards'][room]['book_label'])}</a>
   <a class="btn btn--line" href="tel:{PHONE_INTL}">{PHONE_DISPLAY}</a>
 </nav>
 

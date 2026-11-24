@@ -1,0 +1,66 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "neungnol_v1": {
+      ".read": true,
+      ".write": true
+    },
+
+    "neungnol_booking_v1": {
+      ".read": "auth != null && auth.token.email == 'eodnrdlrnrnf@gmail.com' && auth.token.email_verified == true",
+      ".write": "auth != null && auth.token.email == 'eodnrdlrnrnf@gmail.com' && auth.token.email_verified == true",
+
+      "blocks": {
+        ".read": true
+      },
+
+      "settings": {
+        "rates": { ".read": true },
+        "overrides": { ".read": true },
+        "naverRates": { ".read": true },
+        "bank": { ".read": true }
+      },
+
+      "reviews": {
+        ".read": true,
+        "$room": {
+          "$id": {
+            ".write": "!data.exists() && newData.child('text').isString() && newData.child('text').val().length >= 2 && newData.child('text').val().length <= 3000"
+          }
+        }
+      },
+
+      "inquiries": {
+        ".read": true,
+        "$id": {
+          ".write": "!data.exists() && newData.child('text').isString() && newData.child('text').val().length >= 2 && newData.child('text').val().length <= 3000"
+        }
+      },
+
+      "lookup": {
+        ".read": true,
+        "$h": {
+          ".write": "!data.exists() && newData.child('id').isString() && newData.child('id').val().length >= 8"
+        }
+      },
+
+      "bookings": {
+        "$id": {
+          ".read": true,
+          ".write": "!data.exists() && newData.child('status').val() == 'pending' && newData.child('name').isString() && newData.child('phone').isString() && newData.child('room').isString() && newData.child('checkin').isString() && newData.child('checkout').isString() && newData.child('memo').val() == null"
+        }
+      },
+
+      "bookingChats": {
+        "$id": {
+          ".read": true,
+          "$m": {
+            ".write": "!data.exists() && newData.child('from').val() == 'guest' && newData.child('text').isString() && newData.child('text').val().length >= 1 && newData.child('text').val().length <= 2000"
+          }
+        }
+      }
+    }
+  }
+}

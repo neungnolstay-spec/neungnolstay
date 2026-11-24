@@ -108,21 +108,13 @@
 
   /* ---------- availability & rates ---------- */
   function blocksFor(room) {
+    /* 마감일은 /blocks 하나로만 판단한다.
+       - 외부 예약(iCal)·직접 차단: 관리자가 등록
+       - 확정 예약: 관리자가 확정할 때 reason="booking" 으로 자동 기록
+       예약자 개인정보(/bookings)는 공개로 읽지 않는다. */
     var out = {};
     var b = state.blocks[room] || {};
     Object.keys(b).forEach(function (k) { if (b[k]) out[k] = true; });
-    Object.keys(state.bookings).forEach(function (id) {
-      var bk = state.bookings[id];
-      if (!bk || bk.room !== room) return;
-      /* 예약 승인제: 사장님이 확정한 예약만 달력을 닫는다 (신청 대기는 표시만) */
-      if (bk.status !== "confirmed") return;
-      var d = parseD(bk.checkin), end = parseD(bk.checkout);
-      var guard = 0;
-      while (d < end && guard++ < 400) {
-        out[ymd(d)] = true;
-        d = addDays(d, 1);
-      }
-    });
     return out;
   }
   function ratesFor(room) {
@@ -463,6 +455,9 @@
         if (form) form.hidden = true;
         if (doneEl) doneEl.hidden = false;
         track("booking_request_sent", { room: state.room, nights: n, guests: guestCount(), value: total, ref: refNo });
+        /* 내 예약 조회용 지문 — 접수번호 + 연락처 뒤 4자리로만 찾을 수 있다
+           (예약 목록을 공개하지 않기 위한 장치) */
+        writeLookup(refNo, phone, key);
       };
 
       try {
@@ -496,10 +491,35 @@
     }
   }
 
+  /* ---------- 내 예약 조회 지문 ----------
+     접수번호 + 연락처 뒤 4자리 → SHA-256 지문(/lookup)으로 예약 id를 찾는다.
+     이렇게 하면 예약 목록을 공개하지 않아도 본인 예약만 열 수 있다. */
+  function sha256hex(s) {
+    try {
+      if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) return Promise.reject(new Error("nocrypto"));
+      return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (buf) {
+        return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+          return ("00" + b.toString(16)).slice(-2);
+        }).join("");
+      });
+    } catch (e) { return Promise.reject(e); }
+  }
+  function lookupKey(refNo, phone) {
+    var p4 = String(phone || "").replace(/[^0-9]/g, "").slice(-4);
+    return sha256hex("neungnol|" + String(refNo || "").trim().toUpperCase() + "|" + p4);
+  }
+  function writeLookup(refNo, phone, key) {
+    if (!db || !refNo || !key) return;
+    lookupKey(refNo, phone).then(function (h) {
+      db.ref(PATH + "/lookup/" + h).set({ id: key, createdAt: Date.now() }).catch(function () {});
+    }, function () { /* 지문 미지원 브라우저에서는 조회 지문을 생략 */ });
+  }
+
   /* ---------- firebase ---------- */
   var db = null;
   var started = false;
   var timeoutId = null;
+  var liveRefs = [];
 
   function track(name, params) {
     var payload = Object.assign({ page_language: state.lang, room: state.room }, params || {});
@@ -515,19 +535,29 @@
     setMsg(msg || S.err_offline || "", "error");
   }
 
-  function onData(value) {
+  /* 공개 화면은 마감일(/blocks)과 공개 설정값(요금·계좌)만 읽는다.
+     예약 목록(/bookings)은 잠겨 있어 읽지 않는다. */
+  function markLive() {
     try {
       state.live = true;
-      var v = value || {};
-      state.settings = v.settings || null;
-      state.blocks = v.blocks || {};
-      state.bookings = v.bookings || {};
       setMsg("");
       if (submitBtn) submitBtn.disabled = false;
+    } catch (e) { /* noop */ }
+  }
+
+  function onBlocks(value) {
+    state.blocks = value || {};
+    markLive();
+    renderAll();
+  }
+
+  function onSetting(key) {
+    return function (value) {
+      state.settings = state.settings || {};
+      state.settings[key] = value;
+      markLive();
       renderAll();
-    } catch (e) {
-      /* 렌더링 오류가 예약 화면 전체를 멈추지 않게 */
-    }
+    };
   }
 
   function boot() {
@@ -540,10 +570,13 @@
         (firebase.apps || []).forEach(function (a) { if (a.name === "nns-booking") app = a; });
         if (!app) app = firebase.initializeApp(FB_CONFIG, "nns-booking");
         db = app.database();
-        db.ref(PATH).on("value", function (snap) {
-          onData(snap.val());
-        }, function () {
-          offline();
+        var fail = function () { offline(); };
+        liveRefs.push(db.ref(PATH + "/blocks"));
+        liveRefs[0].on("value", function (snap) { onBlocks(snap.val()); }, fail);
+        ["rates", "overrides", "naverRates", "bank"].forEach(function (k) {
+          var r = db.ref(PATH + "/settings/" + k);
+          liveRefs.push(r);
+          r.on("value", onSetting(k), fail);
         });
       } catch (e) {
         offline();
@@ -585,10 +618,9 @@
   window.addEventListener("pagehide", function () {
     if (timeoutId) window.clearTimeout(timeoutId);
     try {
-      if (db) {
-        db.ref(PATH).off();
-        db.goOffline();
-      }
+      liveRefs.forEach(function (r) { try { r.off(); } catch (e) { /* noop */ } });
+      liveRefs = [];
+      if (db) db.goOffline();
     } catch (e) { /* teardown */ }
   });
 })();

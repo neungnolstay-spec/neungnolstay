@@ -229,28 +229,40 @@
     window.scrollTo({ top: top, behavior: "smooth" });
   }
 
+  /* 접수번호 + 연락처 뒤 4자리 → SHA-256 지문으로 예약 id를 찾는다.
+     (예약 목록은 비공개이므로 목록을 받아 비교하지 않는다) */
+  function sha256hex(s) {
+    try {
+      if (!(window.crypto && window.crypto.subtle && window.TextEncoder)) return Promise.reject(new Error("nocrypto"));
+      return window.crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)).then(function (buf) {
+        return Array.prototype.map.call(new Uint8Array(buf), function (b) {
+          return ("00" + b.toString(16)).slice(-2);
+        }).join("");
+      });
+    } catch (e) { return Promise.reject(e); }
+  }
+
   function lookup(refInput, phone4) {
     var ref = String(refInput || "").trim().toUpperCase().replace(/\s+/g, "");
     var p4 = digits(phone4).slice(-4);
-    if (!ref || p4.length !== 4) { setMsg(txt("lookup_err", "Please check the details.")); return; }
+    var err = function () { setMsg(txt("lookup_err", "Please check the details.")); };
+    if (!ref || p4.length !== 4) { err(); return; }
     setMsg(txt("lookup_loading", "Searching…"), true);
-    var done = function (bookings) {
-      var hit = null;
-      Object.keys(bookings || {}).forEach(function (id) {
-        var b = bookings[id] || {};
-        if (refOf(id, b) !== ref) return;
-        if (digits(b.phone).slice(-4) !== p4) return;
-        hit = { id: id, b: b };
-      });
-      if (!hit) { setMsg(txt("lookup_err", "Please check the details.")); return; }
-      setMsg("");
-      showBooking(hit.id, hit.b);
-      NNS.track("booking_lookup", { status: hit.b.status || "" });
-    };
-    NNS.withDb("nns-mybooking", function (err, db) {
-      if (err || !db) { setMsg(txt("lookup_err", "Please check the details.")); return; }
-      db.ref(NNS.PATH + "/bookings").once("value", function (snap) { done(snap.val()); },
-        function () { setMsg(txt("lookup_err", "Please check the details.")); });
+    NNS.withDb("nns-mybooking", function (e0, db) {
+      if (e0 || !db) { err(); return; }
+      sha256hex("neungnol|" + ref + "|" + p4).then(function (h) {
+        db.ref(NNS.PATH + "/lookup/" + h).once("value", function (snap) {
+          var v = snap.val();
+          if (!v || !v.id) { err(); return; }
+          db.ref(NNS.PATH + "/bookings/" + v.id).once("value", function (s2) {
+            var b = s2.val();
+            if (!b || refOf(v.id, b) !== ref || digits(b.phone).slice(-4) !== p4) { err(); return; }
+            setMsg("");
+            showBooking(v.id, b);
+            NNS.track("booking_lookup", { status: b.status || "" });
+          }, err);
+        }, err);
+      }, err);
     });
   }
 
@@ -264,8 +276,8 @@
   /* 번역·계좌 안내용 설정은 한 번만 읽어 둔다 */
   NNS.withDb("nns-mybooking", function (err, db) {
     if (err || !db) return;
-    db.ref(NNS.PATH + "/settings").once("value", function (snap) {
-      var v = snap.val() || {};
+    db.ref(NNS.PATH + "/settings/bank").once("value", function (snap) {
+      var v = { bank: snap.val() || null };
       window.__mybkSettings = v;
       window.__mybkBankEmpty = (v && v.bank && v.bank.account) ? "" : txt("bank_empty", "");
     }, function () {});
