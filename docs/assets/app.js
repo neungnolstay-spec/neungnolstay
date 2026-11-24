@@ -1,4 +1,4 @@
-/* NUNG NOL STAY — shared behaviour for the static multilingual site.
+/* NEUNGNOL STAY — shared behaviour for the static multilingual site.
    Analytics events fire through gtag() when a GA4 property is configured
    (see GA4_MEASUREMENT_ID in i18n_build/build.py). Keep this file dependency-free. */
 (function () {

@@ -1,4 +1,4 @@
-# NUNG NOL STAY — 글로벌 다국어 SEO 사이트 (i18n_build)
+# NEUNGNOL STAY — 글로벌 다국어 SEO 사이트 (i18n_build)
 
 부산 광안리 **능놀스테이** 공식 사이트의 정적 멀티페이지 버전입니다.
 루트의 기존 1페이지 SPA(`index.html`, `app.js` 등)는 그대로 보존되어 있고,

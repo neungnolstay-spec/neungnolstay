@@ -42,10 +42,10 @@ SIZES = {
 ALT = {
     "hero.webp": {
         "ko": "능놀스테이 헤윰 3층 거실 통창 너머로 보이는 광안리 바다와 야경",
-        "en": "Night view of Gwangalli beach through the floor-to-ceiling windows of Heyum on the 3rd floor at Nungnol Stay",
+        "en": "Night view of Gwangalli beach through the floor-to-ceiling windows of Heyum on the 3rd floor at Neungnol Stay",
         "ja": "ヌンノルステイ ヘユム3階のリビング、全面窓越しに広がる広安里の海と夜景",
-        "zh-cn": "从 Nungnol Stay Heyum 三楼客厅落地窗望去的广安里海景与夜景",
-        "zh-tw": "從 Nungnol Stay Heyum 三樓客廳落地窗望去的廣安里海景與夜景",
+        "zh-cn": "从 Neungnol Stay Heyum 三楼客厅落地窗望去的广安里海景与夜景",
+        "zh-tw": "從 Neungnol Stay Heyum 三樓客廳落地窗望去的廣安里海景與夜景",
     },
     "h01.webp": {
         "ko": "능놀스테이 헤윰 거실과 다이닝, 창밖으로 광안리 해변이 보이는 전경",
@@ -210,17 +210,17 @@ ALT = {
     },
     "airbnb-heyum.webp": {
         "ko": "능놀스테이 헤윰 대표 사진, 통창 너머로 광안리 바다가 보이는 다이닝과 거실",
-        "en": "Heyum at Nungnol Stay — dining and living space with the Gwangalli sea beyond the windows",
+        "en": "Heyum at Neungnol Stay — dining and living space with the Gwangalli sea beyond the windows",
         "ja": "ヌンノルステイ ヘユムのメイン写真、窓の先に広安里の海が広がるダイニングとリビング",
-        "zh-cn": "Nungnol Stay Heyum 主图，窗外可见广安里大海的餐区与客厅",
-        "zh-tw": "Nungnol Stay Heyum 主圖，窗外可見廣安里大海的餐區與客廳",
+        "zh-cn": "Neungnol Stay Heyum 主图，窗外可见广安里大海的餐区与客厅",
+        "zh-tw": "Neungnol Stay Heyum 主圖，窗外可見廣安里大海的餐區與客廳",
     },
     "airbnb-orot.webp": {
         "ko": "능놀스테이 오롯 대표 사진, 창가 다이닝과 거실, 왼쪽 창으로 바다가 보인다",
-        "en": "Orot at Nungnol Stay — dining and living space with the sea through the left window",
+        "en": "Orot at Neungnol Stay — dining and living space with the sea through the left window",
         "ja": "ヌンノルステイ オロッのメイン写真、窓辺のダイニングとリビング、左の窓から海が見える",
-        "zh-cn": "Nungnol Stay Orot 主图，窗边餐区与客厅，左侧窗外可见大海",
-        "zh-tw": "Nungnol Stay Orot 主圖，窗邊餐區與客廳，左側窗外可見大海",
+        "zh-cn": "Neungnol Stay Orot 主图，窗边餐区与客厅，左侧窗外可见大海",
+        "zh-tw": "Neungnol Stay Orot 主圖，窗邊餐區與客廳，左側窗外可見大海",
     },
     "plan-hewyum.webp": {
         "ko": "능놀스테이 헤윰 3층 도면",

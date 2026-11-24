@@ -167,13 +167,13 @@ def head(t: dict, depth: int, page: str, title: str, desc: str, keywords: str,
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="keywords" content="{e(keywords)}">
-<meta name="author" content="NUNG NOL STAY">
+<meta name="author" content="NEUNGNOL STAY">
 <link rel="canonical" href="{canonical}">
 {hreflang_block(page, room)}
 <meta name="robots" content="index,follow,max-image-preview:large">
 <meta name="theme-color" content="#1c1c1c">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="NUNG NOL STAY">
+<meta property="og:site_name" content="NEUNGNOL STAY">
 <meta property="og:title" content="{e(og_title)}">
 <meta property="og:description" content="{e(desc)}">
 <meta property="og:url" content="{canonical}">
@@ -199,7 +199,7 @@ def head(t: dict, depth: int, page: str, title: str, desc: str, keywords: str,
 
 def brand_sub_label(t: dict) -> str:
     name = t["brand_name"].upper().replace(" ", "")
-    return t["brand_name"] if name != "NUNGNOLSTAY" else "BUSAN · GWANGALLI"
+    return t["brand_name"] if name != "NEUNGNOLSTAY" else "BUSAN · GWANGALLI"
 
 
 def lang_links(t: dict, depth: int, page: str, room: str | None) -> str:
@@ -244,7 +244,7 @@ def header(t: dict, depth: int, page: str, room: str | None = None) -> str:
     return f"""<header class="site-head">
   <div class="wrap">
     <a class="brand" href="{a['home']}" aria-label="{e(t['brand_name'])} - {e(t['brand_latin'])}">
-      <b>NUNG NOL STAY</b><span>{e(brand_sub_label(t))}</span>
+      <b>NEUNGNOL STAY</b><span>{e(brand_sub_label(t))}</span>
     </a>
     <nav class="nav" aria-label="{e(nav['home'])}">
       {desktop}
@@ -273,7 +273,7 @@ def footer(t: dict, depth: int, page: str = "home") -> str:
     <div class="foot-grid">
       <div>
         <a class="brand" href="{a['home']}">
-          <b>NUNG NOL STAY</b><span>{e(brand_sub_label(t))}</span>
+          <b>NEUNGNOL STAY</b><span>{e(brand_sub_label(t))}</span>
         </a>
         <p>{e(t['footer']['about'])}</p>
       </div>
@@ -413,7 +413,7 @@ def lodgings_jsonld(t: dict) -> dict:
         "@type": "LodgingBusiness",
         "@id": f"{BASE_URL}/#lodging",
         "name": t["brand_name"],
-        "alternateName": "NUNG NOL STAY",
+        "alternateName": "NEUNGNOL STAY",
         "description": t["home"]["desc"],
         "url": u(t),
         "image": [f"{BASE_URL}/assets/{f}" for f in ("hero.webp", "airbnb-heyum.webp", "airbnb-orot.webp")],
@@ -518,7 +518,7 @@ def website_jsonld(t: dict) -> dict:
     return {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "NUNG NOL STAY",
+        "name": "NEUNGNOL STAY",
         "alternateName": t["brand_name"],
         "url": u(t),
         "inLanguage": t["hreflang"],
@@ -981,13 +981,13 @@ def build_root() -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NUNG NOL STAY · 능놀스테이 | 부산 광안리 바다 바로 앞 오션뷰 풀빌라</title>
+<title>NEUNGNOL STAY · 능놀스테이 | 부산 광안리 바다 바로 앞 오션뷰 풀빌라</title>
 <meta name="description" content="부산 광안리 해수욕장 바로 앞, 바다가 보이는 60평대 독채 오션뷰 풀빌라 능놀스테이. 한국어 · English · 日本語 · 简体中文 · 繁體中文.">
 <link rel="canonical" href="{BASE_URL}/">
 {alts}
 <link rel="alternate" hreflang="x-default" href="{BASE_URL}/">
 <meta property="og:type" content="website">
-<meta property="og:title" content="NUNG NOL STAY | A Private Stay by Gwangalli Beach">
+<meta property="og:title" content="NEUNGNOL STAY | A Private Stay by Gwangalli Beach">
 <meta property="og:description" content="Ocean-view private pool villa right on Gwangalli Beach. Choose your language.">
 <meta property="og:url" content="{BASE_URL}/">
 <meta property="og:image" content="{BASE_URL}/assets/hero.webp">
@@ -1025,7 +1025,7 @@ def build_root() -> str:
 <main class="choose">
   <div class="choose__bg" aria-hidden="true"><img src="assets/hero.webp" alt="" aria-hidden="true" width="1590" height="1290"></div>
   <div class="wrap choose__inner">
-    <span class="kicker">NUNG NOL STAY · BUSAN GWANGALLI</span>
+    <span class="kicker">NEUNGNOL STAY · BUSAN GWANGALLI</span>
     <h1>A PRIVATE STAY<br>BY GWANGALLI BEACH</h1>
     <p>부산 수영구 민락수변로 13 · 3층 헤윰과 6층 오롯.<br>Choose your language · 言語を選択 · 选择语言 · 選擇語言</p>
     <h2 class="kicker kicker--plain" style="color:#c9b08a;margin-top:34px">LANGUAGE</h2>

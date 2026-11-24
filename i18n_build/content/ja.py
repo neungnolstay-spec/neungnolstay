@@ -9,7 +9,7 @@ T = {
     "label_short": "JA",
     "og_locale": "ja_JP",
     "brand_name": "ヌンノルステイ",
-    "brand_latin": "NUNG NOL STAY",
+    "brand_latin": "NEUNGNOL STAY",
     "brand_sub": "釜山 広安里 · ビーチ目の前のオーシャンビュー・プールヴィラ",
         "nav": {
         "home": "HOME",
@@ -89,7 +89,7 @@ T = {
                 "facts": [["約200㎡", "面積"], ["8〜12名", "定員"], ["16:00 / 12:00", "チェックイン / アウト"]],
             },
         },
-        "features_kicker": "Why Nungnol",
+        "features_kicker": "Why Neungnol",
         "features_h2": "海をいちばん近くに置く4つのこと",
         "features_lede": "眺めが良いだけの宿ではなく、海を見て、戻ってきて、また海を見る一日になるように整えました。",
         "features": [
@@ -351,7 +351,7 @@ T = {
         "about": "釜山・広安里海水浴場の目の前、海が見える約200㎡の貸切オーシャンビュー・プールヴィラ。3階ヘユムと6階オロッ。",
         "contact_title": "お問い合わせ",
         "explore_title": "見る",
-        "rights": "© 2026 NUNG NOL STAY. All rights reserved.",
+        "rights": "© 2026 NEUNGNOL STAY. All rights reserved.",
         "disclaimer": "料金・空室状況はAirbnbの予約ページ基準です。",
     },
 }

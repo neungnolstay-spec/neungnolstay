@@ -9,7 +9,7 @@ T = {
     "label_short": "KO",
     "og_locale": "ko_KR",
     "brand_name": "능놀스테이",
-    "brand_latin": "NUNG NOL STAY",
+    "brand_latin": "NEUNGNOL STAY",
     "brand_sub": "부산 광안리 · 바다 바로 앞 오션뷰 풀빌라",
         "nav": {
         "home": "HOME",
@@ -89,7 +89,7 @@ T = {
                 "facts": [["60평대", "면적"], ["8~12인", "인원"], ["16:00 / 12:00", "입실 / 퇴실"]],
             },
         },
-        "features_kicker": "Why Nungnol",
+        "features_kicker": "Why Neungnol",
         "features_h2": "바다를 가장 가까이 두는 네 가지",
         "features_lede": "전망만 좋은 숙소가 아니라, 바다를 보고 돌아와 다시 바다를 보는 하루가 되도록 구성했습니다.",
         "features": [
@@ -351,7 +351,7 @@ T = {
         "about": "부산 광안리 해수욕장 바로 앞, 바다가 보이는 60평대 독채 오션뷰 풀빌라. 3층 헤윰과 6층 오롯.",
         "contact_title": "문의",
         "explore_title": "둘러보기",
-        "rights": "© 2026 NUNG NOL STAY. All rights reserved.",
+        "rights": "© 2026 NEUNGNOL STAY. All rights reserved.",
         "disclaimer": "요금·예약 가능 여부는 에어비앤비 예약 페이지 기준입니다.",
     },
 }
