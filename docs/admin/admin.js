@@ -242,12 +242,16 @@
     elx.textContent = text;
   }
 
+  /* 인증(auth)과 DB는 같은 Firebase 앱 인스턴스를 써야 권한이 전달된다 */
+  function ensureApp() {
+    if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FB_CONFIG);
+    return firebase.app();
+  }
+
   function connect() {
     if (db) return;
     loadSdk().then(function () {
-      var app = null;
-      (firebase.apps || []).forEach(function (a) { if (a.name === "nns-admin") app = a; });
-      if (!app) app = firebase.initializeApp(FB_CONFIG, "nns-admin");
+      var app = ensureApp();
       db = app.database();
       db.ref(PATH).on("value", function (snap) {
         var v = snap.val() || {};
@@ -1549,7 +1553,7 @@
     if (c === "auth/popup-closed-by-user") return "로그인 창을 닫았습니다. 다시 시도해 주세요.";
     if (c === "auth/popup-blocked") return "팝업이 차단되었습니다. 이메일·비밀번호로 로그인해 주세요.";
     if (c === "auth/unauthorized-domain") return "이 주소는 Firebase에 승인되지 않았습니다.";
-    if (c === "auth/email-already-in-use") return "이미 계정이 있습니다. [로그인]을 눌러 주세요. (구글로 만든 계정이면 구글 버튼)이용";
+    if (c === "auth/email-already-in-use") return "이미 계정이 있습니다. [로그인]을 눌러 주세요. 구글로 만든 계정이면 구글 버튼을 씨 주세요.";
     if (c === "auth/wrong-password" || c === "auth/invalid-login-credentials" || c === "auth/invalid-credential") return "이메일 또는 비밀번호가 맞지 않습니다.";
     if (c === "auth/weak-password") return "비밀번호는 6자 이상으로 정해 주세요.";
     if (c === "auth/invalid-email") return "이메일 주소를 확인해 주세요.";
@@ -1586,7 +1590,7 @@
 
   function bootAuth() {
     loadSdk().then(function () {
-      auth = firebase.auth();
+      auth = ensureApp().auth();
       auth.onAuthStateChanged(function (user) {
         state.user = user || null;
         afterAuth(user);
