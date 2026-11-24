@@ -60,7 +60,7 @@
 
 - 거실: 100인치 빔 프로젝터, 공기청정기, 소파, 대형 좌식 테이블, 자쿠지, 유아 하이체어
 - 침실: 퀸베드 5, 옷장, 화장대 3, 헤어드라이기 3
-- 주방: 냉장고, 전자레인지, 전기밥솥, 얼음정수기, 커피머신, 전기포트, 인덕션, 식기·조리도구, 와인잔
+- 주방: 냉장고, 전자레인지, 전기밥솥, 얼음정수기, 전기포트, 인덕션, 식기·조리도구, 와인잔
 - 세탁: 드럼세탁기 (건조기 없음)
 - 욕실: 샴푸·바디워시, 핸드워시, 클렌징폼·오일, 수건·샤워타올
 - 키즈: 정글짐·트램폴린, 미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV (유튜브·넷플릭스)
@@ -134,7 +134,7 @@ A. 예약이 확정되면 호스트가 개인 디지털 도어락 비밀번호�
 
 - 거실: 100인치 빔 프로젝터, 공기청정기, 소파, 대형 좌식 테이블, 자쿠지, 유아 하이체어
 - 침실: 퀸베드 5, 옷장, 화장대 3, 헤어드라이기 3
-- 주방: 냉장고, 전자레인지, 전기밥솥, 얼음정수기, 커피머신, 전기포트, 인덕션, 식기·조리도구, 와인잔
+- 주방: 냉장고, 전자레인지, 전기밥솥, 얼음정수기, 전기포트, 인덕션, 식기·조리도구, 와인잔
 - 세탁: 드럼세탁기, 건조기
 - 욕실: 샴푸·바디워시, 핸드워시, 클렌징폼·오일, 수건·샤워타올
 - 키즈: 정글짐·트램폴린, 미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV (유튜브·넷플릭스)
@@ -303,7 +303,7 @@ On Millaksubyeon-ro, where the beach road runs. Open the windows on the 3rd floo
 
 - Living room: 100-inch projector, Air purifier, Sofa, Large floor table, Jacuzzi, Baby high chair
 - Bedrooms: 5 queen beds, Wardrobes, 3 vanities, 3 hair dryers
-- Kitchen: Fridge, Microwave, Rice cooker, Ice water purifier, Coffee machine, Kettle, Induction hob, Tableware & cookware, Wine glasses
+- Kitchen: Fridge, Microwave, Rice cooker, Ice water purifier, Kettle, Induction hob, Tableware & cookware, Wine glasses
 - Laundry: Drum washing machine (no dryer)
 - Bathrooms: Shampoo & body wash, Hand wash, Cleansing foam & oil, Towels & shower towels
 - Kids: Jungle gym & trampoline, Slide & swing, 32-inch floor console, 50-inch TV (YouTube, Netflix)
@@ -377,7 +377,7 @@ The 6th floor. The beach and the water open up below you, and the jacuzzi that f
 
 - Living room: 100-inch projector, Air purifier, Sofa, Large floor table, Jacuzzi, Baby high chair
 - Bedrooms: 5 queen beds, Wardrobes, 3 vanities, 3 hair dryers
-- Kitchen: Fridge, Microwave, Rice cooker, Ice water purifier, Coffee machine, Kettle, Induction hob, Tableware & cookware, Wine glasses
+- Kitchen: Fridge, Microwave, Rice cooker, Ice water purifier, Kettle, Induction hob, Tableware & cookware, Wine glasses
 - Laundry: Drum washing machine, Clothes dryer
 - Bathrooms: Shampoo & body wash, Hand wash, Cleansing foam & oil, Towels & shower towels
 - Kids: Jungle gym & trampoline, Slide & swing, 32-inch floor console, 50-inch TV (YouTube, Netflix)
@@ -546,7 +546,7 @@ A. Yes — Heyum (3F) and Orot (6F) both have a drum washing machine. A clothes 
 
 - リビング: 100インチプロジェクター, 空気清浄機, ソファ, 大型座卓, ジャグジー, ベビーハイチェア
 - ベッドルーム: クイーンベッド5台, クローゼット, 洗面台3, ドライヤー3
-- キッチン: 冷蔵庫, 電子レンジ, 炊飯器, 製氷浄水器, コーヒーマシン, 電気ケトル, IH, 食器・調理器具, ワイングラス
+- キッチン: 冷蔵庫, 電子レンジ, 炊飯器, 製氷浄水器, 電気ケトル, IH, 食器・調理器具, ワイングラス
 - ランドリー: ドラム式洗濯機（乾燥機なし）
 - バスルーム: シャンプー・ボディソープ, ハンドソープ, クレンジングフォーム・オイル, タオル・ボディタオル
 - キッズ: ジャングルジム・トランポリン, すべり台・ブランコ, 32インチ据え置きゲーム機, 50インチTV（YouTube・Netflix）
@@ -620,7 +620,7 @@ A. ご予約確定後、オーナーが個人用デジタルドアロックの�
 
 - リビング: 100インチプロジェクター, 空気清浄機, ソファ, 大型座卓, ジャグジー, ベビーハイチェア
 - ベッドルーム: クイーンベッド5台, クローゼット, 洗面台3, ドライヤー3
-- キッチン: 冷蔵庫, 電子レンジ, 炊飯器, 製氷浄水器, コーヒーマシン, 電気ケトル, IH, 食器・調理器具, ワイングラス
+- キッチン: 冷蔵庫, 電子レンジ, 炊飯器, 製氷浄水器, 電気ケトル, IH, 食器・調理器具, ワイングラス
 - ランドリー: ドラム式洗濯機, 衣類乾燥機
 - バスルーム: シャンプー・ボディソープ, ハンドソープ, クレンジングフォーム・オイル, タオル・ボディタオル
 - キッズ: ジャングルジム・トランポリン, すべり台・ブランコ, 32インチ据え置きゲーム機, 50インチTV（YouTube・Netflix）
@@ -789,7 +789,7 @@ Neungnol Stay 位于沿着广安里海水浴场延伸的民乐水边路。走出
 
 - 客厅: 100吋投影仪, 空气净化器, 沙发, 大型坐席桌, 按摩浴缸, 婴儿高脚椅
 - 卧室: 双人床5张, 衣柜, 化妆台3, 吹风机3
-- 厨房: 冰箱, 微波炉, 电饭锅, 制冰净水器, 咖啡机, 电热水壶, 电磁炉, 餐具·厨具, 红酒杯
+- 厨房: 冰箱, 微波炉, 电饭锅, 制冰净水器, 电热水壶, 电磁炉, 餐具·厨具, 红酒杯
 - 洗衣: 滚筒洗衣机（无烘干机）
 - 浴室: 洗发水·沐浴露, 洗手液, 洁面泡沫·卸妆油, 毛巾·浴巾
 - 儿童: 攀爬架·蹦床, 滑梯·秋千, 32吋游戏机, 50吋电视（YouTube·Netflix）
@@ -863,7 +863,7 @@ A. 预订确认后，房东会通过预订对话窗口发送您的个人数字�
 
 - 客厅: 100吋投影仪, 空气净化器, 沙发, 大型坐席桌, 按摩浴缸, 婴儿高脚椅
 - 卧室: 双人床5张, 衣柜, 化妆台3, 吹风机3
-- 厨房: 冰箱, 微波炉, 电饭锅, 制冰净水器, 咖啡机, 电热水壶, 电磁炉, 餐具·厨具, 红酒杯
+- 厨房: 冰箱, 微波炉, 电饭锅, 制冰净水器, 电热水壶, 电磁炉, 餐具·厨具, 红酒杯
 - 洗衣: 滚筒洗衣机, 烘干机
 - 浴室: 洗发水·沐浴露, 洗手液, 洁面泡沫·卸妆油, 毛巾·浴巾
 - 儿童: 攀爬架·蹦床, 滑梯·秋千, 32吋游戏机, 50吋电视（YouTube·Netflix）
@@ -1033,7 +1033,7 @@ Neungnol Stay 位於沿著廣安里海水浴場延伸的民樂水邊路。走出
 
 - 客廳: 100吋投影機, 空氣清淨機, 沙發, 大型坐席桌, 按摩浴缸, 嬰兒高腳椅
 - 臥室: 雙人床5張, 衣櫃, 化妝台3, 吹風機3
-- 廚房: 冰箱, 微波爐, 電子鍋, 製冰淨水器, 咖啡機, 電熱水壺, 電磁爐, 餐具·廚具, 紅酒杯
+- 廚房: 冰箱, 微波爐, 電子鍋, 製冰淨水器, 電熱水壺, 電磁爐, 餐具·廚具, 紅酒杯
 - 洗衣: 滾筒洗衣機（無烘乾機）
 - 衛浴: 洗髮精·沐浴乳, 洗手乳, 洗面乳·卸妝油, 毛巾·浴巾
 - 兒童: 攀爬架·彈跳床, 溜滑梯·鞦韆, 32吋遊戲機, 50吋電視（YouTube·Netflix）
@@ -1108,7 +1108,7 @@ A. 預訂確認後，房東會透過預訂對話視窗傳送您的個人數位�
 
 - 客廳: 100吋投影機, 空氣清淨機, 沙發, 大型坐席桌, 按摩浴缸, 嬰兒高腳椅
 - 臥室: 雙人床5張, 衣櫃, 化妝台3, 吹風機3
-- 廚房: 冰箱, 微波爐, 電子鍋, 製冰淨水器, 咖啡機, 電熱水壺, 電磁爐, 餐具·廚具, 紅酒杯
+- 廚房: 冰箱, 微波爐, 電子鍋, 製冰淨水器, 電熱水壺, 電磁爐, 餐具·廚具, 紅酒杯
 - 洗衣: 滾筒洗衣機, 烘乾機
 - 衛浴: 洗髮精·沐浴乳, 洗手乳, 洗面乳·卸妝油, 毛巾·浴巾
 - 兒童: 攀爬架·彈跳床, 溜滑梯·鞦韆, 32吋遊戲機, 50吋電視（YouTube·Netflix）

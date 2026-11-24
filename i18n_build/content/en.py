@@ -197,7 +197,7 @@ T = {
             "fac_groups": [
                 {"t": "Living room", "items": ["100-inch projector", "Air purifier", "Sofa", "Large floor table", "Jacuzzi", "Baby high chair"]},
                 {"t": "Bedrooms", "items": ["5 queen beds", "Wardrobes", "3 vanities", "3 hair dryers"]},
-                {"t": "Kitchen", "items": ["Fridge", "Microwave", "Rice cooker", "Ice water purifier", "Coffee machine", "Kettle", "Induction hob", "Tableware & cookware", "Wine glasses"]},
+                {"t": "Kitchen", "items": ["Fridge", "Microwave", "Rice cooker", "Ice water purifier", "Kettle", "Induction hob", "Tableware & cookware", "Wine glasses"]},
                 {"t": "Laundry", "items": ["Drum washing machine (no dryer)"]},
                 {"t": "Bathrooms", "items": ["Shampoo & body wash", "Hand wash", "Cleansing foam & oil", "Towels & shower towels"]},
                 {"t": "Kids", "items": ["Jungle gym & trampoline", "Slide & swing", "32-inch floor console", "50-inch TV (YouTube, Netflix)"]},
@@ -296,7 +296,7 @@ T = {
             "fac_groups": [
                 {"t": "Living room", "items": ["100-inch projector", "Air purifier", "Sofa", "Large floor table", "Jacuzzi", "Baby high chair"]},
                 {"t": "Bedrooms", "items": ["5 queen beds", "Wardrobes", "3 vanities", "3 hair dryers"]},
-                {"t": "Kitchen", "items": ["Fridge", "Microwave", "Rice cooker", "Ice water purifier", "Coffee machine", "Kettle", "Induction hob", "Tableware & cookware", "Wine glasses"]},
+                {"t": "Kitchen", "items": ["Fridge", "Microwave", "Rice cooker", "Ice water purifier", "Kettle", "Induction hob", "Tableware & cookware", "Wine glasses"]},
                 {"t": "Laundry", "items": ["Drum washing machine", "Clothes dryer"]},
                 {"t": "Bathrooms", "items": ["Shampoo & body wash", "Hand wash", "Cleansing foam & oil", "Towels & shower towels"]},
                 {"t": "Kids", "items": ["Jungle gym & trampoline", "Slide & swing", "32-inch floor console", "50-inch TV (YouTube, Netflix)"]},
