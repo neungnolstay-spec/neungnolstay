@@ -346,6 +346,102 @@ def check_browser(base: str) -> None:
 
 
 
+def check_view_toggle(base: str) -> None:
+    """PC 버전 / 모바일 버전 전환: 버튼·저장(localStorage)·다른 페이지 유지·레이아웃 전환."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        notes.append("Playwright 미설치 — PC/모바일 전환 검증 생략")
+        return
+    SHOTS.mkdir(exist_ok=True)
+    # 1) 언어별 문구·버튼·스크립트 포함 여부(정적)
+    for t in build.LANGS:
+        html_text = (DOCS / t["dir"] / "index.html").read_text(encoding="utf-8")
+        for key in ("view_pc", "view_mo", "view_label"):
+            if not t["ui"].get(key):
+                fail(f"[{t['dir']}] ui.{key} 문구 없음")
+        for val in ("pc", "mo"):
+            if f'data-view="{val}"' not in html_text:
+                fail(f"/{t['dir']}/ PC·모바일 전환 버튼(data-view={val}) 없음")
+        if "view.js" not in html_text or "nns_view" not in html_text:
+            fail(f"/{t['dir']}/ 전환 스크립트(view.js) 또는 초기 스크립트 없음")
+    CHECK_ITEMS.append("5개 언어 16페이지: PC/모바일 전환 버튼·문구·스크립트 포함")
+
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        # 2) PC에서 모바일 버전 → 420px 폰 레이아웃 + 이동 후 유지
+        ctx = browser.new_context(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
+        page = ctx.new_page()
+        page.goto(local(base, "/ko/"), wait_until="networkidle")
+        page.wait_for_timeout(400)
+        page.click('.site-head .vtoggle__btn[data-view="mo"]')
+        page.wait_for_timeout(400)
+        st = page.evaluate(
+            "() => ({w: Math.round(document.body.getBoundingClientRect().width),"
+            " nav: getComputedStyle(document.querySelector('.nav')).display,"
+            " mnav: getComputedStyle(document.querySelector('.mnav')).display,"
+            " save: localStorage.getItem('nns_view'),"
+            " pressed: document.querySelector('.mnav .vtoggle__btn[data-view=mo]').getAttribute('aria-pressed')})"
+        )
+        if st["w"] > 430 or st["nav"] != "none" or st["mnav"] == "none":
+            fail(f"PC→모바일 전환 실패: {st}")
+        elif st["save"] != "mo" or st["pressed"] != "true":
+            fail(f"모바일 버전 선택이 저장되지 않음: {st}")
+        else:
+            CHECK_ITEMS.append(f"PC 1440 → 모바일 버전: 폰 폭 {st['w']}px·1열 레이아웃, localStorage={st['save']}")
+        page.screenshot(path=str(SHOTS / "view-mo-on-pc.png"))
+        page.goto(local(base, "/ko/heyum/"), wait_until="networkidle")
+        page.wait_for_timeout(400)
+        kept = page.evaluate("() => ({cls: document.documentElement.className,"
+                             " w: Math.round(document.body.getBoundingClientRect().width)})")
+        if "view-mo" not in kept["cls"] or kept["w"] > 430:
+            fail(f"페이지 이동 후 모바일 버전이 유지되지 않음: {kept}")
+        else:
+            CHECK_ITEMS.append(f"객실 페이지로 이동해도 모바일 버전 유지 ({kept['w']}px)")
+        # 같은 버튼 한 번 더 → 자동(반응형) 복귀
+        page.click('.mnav .vtoggle__btn[data-view="mo"]')
+        page.wait_for_timeout(400)
+        back = page.evaluate("() => ({w: Math.round(document.body.getBoundingClientRect().width),"
+                             " save: localStorage.getItem('nns_view')})")
+        if back["w"] < 1000 or back["save"]:
+            fail(f"모바일 버전을 다시 눌러도 자동으로 돌아오지 않음: {back}")
+        else:
+            CHECK_ITEMS.append("같은 버튼 재클릭 → 자동(반응형) 복귀·저장값 삭제")
+        ctx.close()
+
+        # 3) 모바일에서 PC 버전 → viewport width=1280 데스크톱 레이아웃 + 이동 후 유지
+        ctx = browser.new_context(viewport={"width": 390, "height": 844}, is_mobile=True,
+                                  has_touch=True, reduced_motion="reduce")
+        page = ctx.new_page()
+        page.goto(local(base, "/ko/"), wait_until="networkidle")
+        page.wait_for_timeout(400)
+        page.click('.mnav .vtoggle__btn[data-view="pc"]')
+        page.wait_for_timeout(600)
+        st = page.evaluate(
+            "() => ({w: window.innerWidth, meta: document.querySelector('meta[name=viewport]').content,"
+            " nav: getComputedStyle(document.querySelector('.nav')).display,"
+            " cols: getComputedStyle(document.querySelector('.stays')).gridTemplateColumns,"
+            " save: localStorage.getItem('nns_view')})"
+        )
+        two_cols = len([c for c in st["cols"].split(" ") if c.strip()]) >= 2
+        if st["w"] < 1200 or "1280" not in st["meta"] or st["nav"] == "none" or not two_cols:
+            fail(f"모바일→PC 전환 실패: {st}")
+        elif st["save"] != "pc":
+            fail(f"PC 버전 선택이 저장되지 않음: {st}")
+        else:
+            CHECK_ITEMS.append(f"모바일 390 → PC 버전: viewport {st['meta']}, 카드 2열({st['cols']})")
+        page.screenshot(path=str(SHOTS / "view-pc-on-phone.png"))
+        page.goto(local(base, "/ko/orot/"), wait_until="networkidle")
+        page.wait_for_timeout(400)
+        kept = page.evaluate("() => ({w: window.innerWidth, save: localStorage.getItem('nns_view')})")
+        if kept["w"] < 1200 or kept["save"] != "pc":
+            fail(f"페이지 이동 후 PC 버전이 유지되지 않음: {kept}")
+        else:
+            CHECK_ITEMS.append(f"객실 페이지로 이동해도 PC 버전 유지 (viewport {kept['w']}px)")
+        ctx.close()
+        browser.close()
+
+
 def check_geo(base: str) -> None:
     """AI 검색(GEO) 자산: robots.txt 크롤러 허용, llms.txt / llms-full.txt, FAQPage·구조화 속성."""
     status, robots = fetch(local(base, "/robots.txt"))
@@ -1689,6 +1785,7 @@ def main() -> None:
         if want(2):
             check_browser(base)
             check_ten_items(base)
+            check_view_toggle(base)
             check_room_nav_browser(base)
         if want(3):
             check_gallery_browser(base)
