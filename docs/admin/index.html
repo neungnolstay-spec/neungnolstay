@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>능놀스테이 · 객실·예약 관리</title>
+<meta name="theme-color" content="#1c1c1c">
+<link rel="icon" href="../assets/app-icon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ── 잠금 화면 ─────────────────────────────────────────── -->
+<div class="lock" id="lock">
+  <div class="lock__box">
+    <span class="lock__brand">NEUNGNOL STAY</span>
+    <h1>객실·예약 관리</h1>
+    <p class="lock__sub">사장님 전용 화면입니다. PIN 4자리를 입력해 주세요.</p>
+    <div class="pin" id="pinDots" aria-live="polite"><i></i><i></i><i></i><i></i></div>
+    <p class="lock__msg" id="lockMsg"></p>
+    <div class="keypad" id="keypad">
+      <button type="button" data-key="1">1</button>
+      <button type="button" data-key="2">2</button>
+      <button type="button" data-key="3">3</button>
+      <button type="button" data-key="4">4</button>
+      <button type="button" data-key="5">5</button>
+      <button type="button" data-key="6">6</button>
+      <button type="button" data-key="7">7</button>
+      <button type="button" data-key="8">8</button>
+      <button type="button" data-key="9">9</button>
+      <button type="button" data-key="clear" class="is-soft">전체삭제</button>
+      <button type="button" data-key="0">0</button>
+      <button type="button" data-key="back" class="is-soft">←</button>
+    </div>
+    <p class="lock__hint">초기 PIN은 <b>0000</b> 입니다. 로그인 후 설정에서 바꿀 수 있습니다.</p>
+    <p class="lock__off" id="lockOff" hidden>데이터베이스에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.</p>
+    <a class="lock__back" href="../ko/">← 홈페이지로</a>
+  </div>
+</div>
+
+<!-- ── 관리 화면 ─────────────────────────────────────────── -->
+<div class="app" id="app" hidden>
+  <header class="top">
+    <div class="top__brand">
+      <b>NEUNGNOL STAY</b>
+      <span>HOST ADMIN</span>
+    </div>
+    <nav class="tabs" id="tabs" role="tablist">
+      <button type="button" role="tab" data-tab="cal" class="is-on">예약 달력</button>
+      <button type="button" role="tab" data-tab="bookings">예약 신청 <em class="badge" id="pendingBadge" hidden>0</em></button>
+      <button type="button" role="tab" data-tab="rates">요금 설정</button>
+      <button type="button" role="tab" data-tab="settings">설정</button>
+    </nav>
+    <div class="top__right">
+      <span class="sync" id="syncState">연결 중…</span>
+      <a class="top__site" href="../ko/" target="_blank" rel="noopener">홈페이지 ↗</a>
+      <button type="button" class="top__out" id="logout">로그아웃</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <!-- 달력 -->
+    <section class="panel is-on" data-panel="cal">
+      <div class="bar">
+        <div class="seg" id="roomSeg" role="group" aria-label="객실">
+          <button type="button" data-room="heyum" class="is-on">헤윰 · 3층</button>
+          <button type="button" data-room="orot">오롯 · 6층</button>
+        </div>
+        <div class="monthnav">
+          <button type="button" id="prevMonth" aria-label="이전 달">‹</button>
+          <b id="monthLabel">—</b>
+          <button type="button" id="nextMonth" aria-label="다음 달">›</button>
+        </div>
+        <p class="hint">날짜를 탭하거나 끌어서 선택 → 차단·요금·수동 예약</p>
+      </div>
+      <div class="calstats" id="calStats"></div>
+      <div class="cal" id="cal">
+        <div class="cal__dow"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+        <div class="cal__grid" id="calGrid"></div>
+      </div>
+      <div class="legend">
+        <span><i class="dot dot--open"></i>예약 가능</span>
+        <span><i class="dot dot--pending"></i>직접예약 대기</span>
+        <span><i class="dot dot--booked"></i>확정</span>
+        <span><i class="dot dot--blocked"></i>외부예약 차단</span>
+      </div>
+      <div class="monthlist" id="monthList"></div>
+    </section>
+
+    <!-- 예약 신청 -->
+    <section class="panel" data-panel="bookings">
+      <div class="bar">
+        <div class="seg" id="filterSeg" role="group" aria-label="상태">
+          <button type="button" data-filter="all" class="is-on">전체</button>
+          <button type="button" data-filter="pending">대기</button>
+          <button type="button" data-filter="confirmed">확정</button>
+          <button type="button" data-filter="cancelled">취소</button>
+        </div>
+        <button type="button" class="btn btn--line" id="newManual">+ 수동 예약 등록</button>
+      </div>
+      <div class="bookings" id="bookingList"></div>
+      <p class="empty" id="bookingEmpty" hidden>해당 상태의 예약이 없습니다.</p>
+    </section>
+
+    <!-- 요금 -->
+    <section class="panel" data-panel="rates">
+      <div class="bar"><h2>기본 요금</h2><p class="hint">평일(일~목) · 금요일 · 토요일 순으로 1박 요금을 정합니다. 8인 초과 1인 1박당 30,000원은 자동 가산됩니다.</p></div>
+      <div class="rates" id="rateCards"></div>
+      <button type="button" class="btn btn--dark" id="saveRates">요금 저장</button>
+
+      <h2 class="rates__h2">특정일 요금</h2>
+      <p class="hint">달력에서 날짜를 선택해 특정일 요금을 지정할 수 있습니다. 지정한 날짜만 기본 요금보다 우선합니다.</p>
+      <div class="ovr" id="overrideList"></div>
+    </section>
+
+    <!-- 설정 -->
+    <section class="panel" data-panel="settings">
+      <h2>관리 PIN 변경</h2>
+      <form class="pinform" id="pinForm">
+        <label>현재 PIN<input type="password" inputmode="numeric" maxlength="4" name="cur" autocomplete="off" required></label>
+        <label>새 PIN (4자리)<input type="password" inputmode="numeric" maxlength="4" name="next" autocomplete="off" required></label>
+        <label>새 PIN 확인<input type="password" inputmode="numeric" maxlength="4" name="next2" autocomplete="off" required></label>
+        <button type="submit" class="btn btn--dark">PIN 변경</button>
+        <p class="msg" id="pinMsg"></p>
+      </form>
+
+      <h2>연결 정보</h2>
+      <dl class="meta">
+        <dt>데이터베이스</dt><dd>neungnol-checklist (경로 <code>/neungnol_booking_v1</code>)</dd>
+        <dt>예약 데이터</dt><dd id="metaBookings">—</dd>
+        <dt>차단 날짜</dt><dd id="metaBlocks">—</dd>
+        <dt>마지막 동기화</dt><dd id="metaSync">—</dd>
+      </dl>
+      <p class="hint">직원 인수인계 체크리스트와는 별도 경로를 씁니다. 체크리스트 데이터(<code>/neungnol_v1</code>)는 이 화면에서 건드리지 않습니다.</p>
+    </section>
+  </main>
+</div>
+
+<!-- 날짜 선택 시트 -->
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet__panel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sheet__head">
+      <b id="sheetTitle">—</b>
+      <button type="button" class="sheet__x" id="sheetClose" aria-label="닫기">✕</button>
+    </div>
+    <p class="sheet__sub" id="sheetSub"></p>
+    <div class="sheet__body" id="sheetBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast" hidden></div>
+<script src="admin.js"></script>
+</body>
+</html>

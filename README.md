@@ -11,8 +11,21 @@
 
 ```bash
 python3 i18n_build/build.py       # docs/ 재생성
-python3 i18n_build/check.py       # 16페이지 전수 검증(사진·버튼·SEO·렌더링)
+python3 i18n_build/check.py       # 16페이지 + /admin/ 전수 검증(사진·버튼·SEO·렌더링·예약)
 ```
+
+### 객실 사진 갤러리·직접 예약·관리 화면
+
+| 기능 | 위치 | 설명 |
+|---|---|---|
+| 사진 갤러리 | `/{lang}/{room}/#gallery` | 에어비앤비 두 리스팅의 사진을 큐레이션(헤윰 38장·오롯 33장). 분류 필터 + 풀스크린 라이트박스(좌우 넘김·키보드·스와이프) |
+| 직접 예약 | `/{lang}/{room}/#reserve`, `/{lang}/#reserve` | 2개월 실시간 달력(예약·차단 날짜 자동 비활성), 인원(기준 8·최대 12), 일별 요금 합계, 예약 신청 폼 |
+| 관리 화면 | `/admin/` | PIN 잠금(초기 `0000`) · 예약 달력 · 예약 신청 관리 · 요금 설정 |
+| 데이터 | Firebase RTDB `/neungnol_booking_v1` | 직원 체크리스트(`/neungnol_v1`)와 완전히 분리 |
+
+- 예약 데이터 구조: `settings`(요금·PIN 해시·인원 기준) · `blocks/{room}/{date}`(외부예약 차단) · `settings/overrides/{room}/{date}`(특정일 요금) · `bookings/{id}`(신청·확정·취소, 메모)
+- 게스트 신청은 `pending`으로 저장되고, 사장님이 관리 화면에서 `확정`하면 해당 날짜가 자동 마감됩니다. `취소`하면 날짜가 다시 열립니다.
+- 사진 재생성: `python3 i18n_build/make_gallery.py` (큐레이션 목록은 `i18n_build/gallery_map.py`)
 
 URL 구조
 

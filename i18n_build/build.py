@@ -15,6 +15,8 @@ import shutil
 import sys
 from pathlib import Path
 
+import gallery_map
+
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
 
@@ -60,8 +62,16 @@ sys.path.insert(0, str(HERE))
 import photos  # noqa: E402
 from content import ko, en, ja, zhcn, zhtw  # noqa: E402
 from content import geo  # noqa: E402
+from content import booking as booking_i18n  # noqa: E402
 
 LANGS = [ko.T, en.T, ja.T, zhcn.T, zhtw.T]
+
+# 직접 예약·갤러리 문구를 언어 사전에 병합 (content/booking.py)
+for _t in LANGS:
+    _b = booking_i18n.I18N[_t["dir"]]
+    _t["booking"] = _b["booking"]
+    for _k, _v in _b["gallery"].items():
+        _t["ui"]["gallery_" + _k] = _v
 BY_DIR = {t["dir"]: t for t in LANGS}
 ROOMS = ("heyum", "orot")
 FLOOR = {"heyum": "3", "orot": "6"}
@@ -74,6 +84,9 @@ LAUNDRY_KO = {
 # AI 검색(GEO/AEO)용 언어별 요약·질문·키워드 (content/geo.py). t["dir"] 키.
 GEO = {t["dir"]: geo.GEO[t["dir"]] for t in LANGS}
 LAST_MOD = "2026-11-24"
+
+# 갤러리 사진 목록 (make_gallery.py 가 생성): assets/gallery/manifest.json
+GALLERY_MANIFEST = json.loads((ROOT / "assets" / "gallery" / "manifest.json").read_text(encoding="utf-8"))
 
 
 # ----------------------------------------------------------------------------
@@ -233,11 +246,8 @@ def header(t: dict, depth: int, page: str, room: str | None = None) -> str:
         about, stays, location, contact = "../#about", "../#stays", "#location", "#contact"
     else:
         about, stays, location, contact = "#about", "#stays", "#location", "#contact"
-    book_href = AIRBNB[room] if room else "#stays"
-    book_attr = (
-        f' target="_blank" rel="noopener noreferrer" data-airbnb="{room}" data-placement="header"'
-        if room else ""
-    )
+    book_href = "#reserve"
+    book_attr = ""
     langs = lang_links(t, depth, page, room)
     nav_items = [
         (nav["home"], a["home"], page == "home"),
@@ -310,6 +320,7 @@ def footer(t: dict, depth: int, page: str = "home") -> str:
     <div class="foot-bottom">
       <span>{e(t['footer']['rights'])}</span>
       <span>{e(t['footer']['disclaimer'])}</span>
+      <a class="foot-admin" href="{a['root']}admin/">{e(t['booking']['admin'])}</a>
     </div>
   </div>
 </footer>"""
@@ -568,6 +579,9 @@ def website_jsonld(t: dict) -> dict:
 # ----------------------------------------------------------------------------
 # components
 # ----------------------------------------------------------------------------
+FIRST_AIRBNB = AIRBNB
+
+
 def stay_card(t: dict, assets: str, rid: str) -> str:
     card = t["home"]["cards"][rid]
     facts = "".join(f"<li><b>{e(v)}</b>{e(l)}</li>" for v, l in card["facts"])
@@ -577,6 +591,7 @@ def stay_card(t: dict, assets: str, rid: str) -> str:
     <span class="stay__tag">{e(card['tag'])}</span>
     {img_tag(t, assets, photos.HERO[rid])}
   </a>
+  {card_strip(t, assets, rid)}
   <div class="stay__body">
     <h3><small>{e(card['tag'].split('·')[-1].strip())}</small>{e(card['name'])}</h3>
     <p class="stay__sub">{e(card['sub'])}</p>
@@ -592,8 +607,219 @@ def stay_card(t: dict, assets: str, rid: str) -> str:
 
 
 # ----------------------------------------------------------------------------
+# gallery
+# ----------------------------------------------------------------------------
+def gal_alt(t: dict, room: str, item: dict) -> str:
+    cat = gallery_map.CAT_LABELS[t["dir"]][item["cat"]]
+    tone = gallery_map.TONE_LABELS[t["dir"]][item["tone"]]
+    name = t["home"]["cards"][room]["name"]
+    return f"{name} {cat} · {tone}"
+
+
+def gal_caption(t: dict, item: dict) -> str:
+    if t["dir"] == "ko":
+        return item["ko"]
+    if t["dir"] == "en":
+        return item["en"]
+    return f"{gallery_map.CAT_LABELS[t['dir']][item['cat']]} · {gallery_map.TONE_LABELS[t['dir']][item['tone']]}"
+
+
+def gallery_html(t: dict, assets: str, room: str) -> str:
+    """객실 상세: 큐레이션 모자이크 + 분류 필터 그리드 + 라이트박스 데이터."""
+    items = GALLERY_MANIFEST[room]
+    base = f"{assets}gallery/{room}/"
+    n = len(items)
+    label_open = t["ui"]["gallery_open"]
+
+    def hero_btn(i: int, cls: str = "") -> str:
+        it = items[i]
+        alt = gal_alt(t, room, it)
+        return (
+            f'<button type="button" class="gal-hero__btn {cls}" data-gal-open="{i}"'
+            f' aria-label="{e(label_open)}: {e(gal_caption(t, it))}">'
+            f'<img src="{base}{it["slug"]}-t.webp" alt="{e(alt)}" width="{it["tw"]}" height="{it["th"]}"'
+            f' loading="lazy" decoding="async"></button>'
+        )
+
+    hero_side = "".join(hero_btn(i) for i in range(1, min(5, n)))
+    hero = (
+        '<div class="gal-hero reveal">'
+        f'{hero_btn(0, "gal-hero__btn--main")}'
+        f'<div class="gal-hero__side">{hero_side}</div>'
+        '</div>'
+    )
+
+    cats = [c for c in gallery_map.CATS if any(it["cat"] == c for it in items)]
+    chips = (
+        f'<button type="button" class="gal-chip is-on" data-gal-filter="all" aria-pressed="true">'
+        f'{e(t["ui"]["gallery_all"])} <span class="gal-chip__n">{n}</span></button>'
+    ) + "".join(
+        f'<button type="button" class="gal-chip" data-gal-filter="{c}" aria-pressed="false">'
+        f'{e(gallery_map.CAT_LABELS[t["dir"]][c])}</button>'
+        for c in cats
+    )
+
+    cells = []
+    for i, it in enumerate(items):
+        cells.append(
+            f'<li class="gal-cell" data-cat="{it["cat"]}">'
+            f'<button type="button" class="gal-cell__btn" data-gal-open="{i}">'
+            f'<img src="{base}{it["slug"]}-t.webp" alt="{e(gal_alt(t, room, it))}" width="{it["tw"]}"'
+            f' height="{it["th"]}" loading="lazy" decoding="async">'
+            f'<span class="gal-cell__cap">{e(gal_caption(t, it))}</span></button></li>'
+        )
+
+    data = [
+        {"full": f"{base}{it["slug"]}.webp", "w": it["w"], "h": it["h"], "cap": gal_caption(t, it)}
+        for it in items
+    ]
+    return (
+        hero
+        + '<div class="gal-bar reveal">'
+        + f'<div class="gal-filters" role="group" aria-label="{e(t["ui"]["gallery_all"])}">{chips}</div>'
+        + f'<button type="button" class="link-more" data-gal-open="0">{e(t["ui"]["gallery_view_all"].format(n=n))} <span aria-hidden="true">→</span></button>'
+        + "</div>"
+        + f'<ul class="gal-grid" data-gal-grid>{"".join(cells)}</ul>'
+        + f'<script type="application/json" data-gal-data>{json.dumps(data, ensure_ascii=False)}</script>'
+    )
+
+
+def gallery_lightbox(t: dict) -> str:
+    return f"""<div class="gal-lb" id="gallery-lightbox" hidden>
+  <div class="gal-lb__bar">
+    <span class="gal-lb__count" data-gal-count></span>
+    <span class="gal-lb__cap" data-gal-cap></span>
+    <button type="button" class="gal-lb__close" data-gal-close aria-label="{e(t['ui']['gallery_close'])}">✕</button>
+  </div>
+  <button type="button" class="gal-lb__nav gal-lb__nav--prev" data-gal-prev aria-label="{e(t['ui']['gallery_prev'])}" aria-hidden="false">‹</button>
+  <figure class="gal-lb__stage"><img data-gal-img src="" alt=""></figure>
+  <button type="button" class="gal-lb__nav gal-lb__nav--next" data-gal-next aria-label="{e(t['ui']['gallery_next'])}">›</button>
+</div>"""
+
+
+def card_strip(t: dict, assets: str, rid: str) -> str:
+    """홈 객실 카드 아래 대표 사진 3장 미리보기 스트립."""
+    items = GALLERY_MANIFEST[rid][:3]
+    base = f"{assets}gallery/{rid}/"
+    cells = "".join(
+        f'<a href="{attr_links(t, 1, "home")[rid]}#gallery" aria-label="{e(gal_caption(t, it))}">'
+        f'<img src="{base}{it["slug"]}-t.webp" alt="{e(gal_alt(t, rid, it))}" width="{it["tw"]}"'
+        f' height="{it["th"]}" loading="lazy" decoding="async"></a>'
+        for it in items
+    )
+    return f'<div class="stay__strip">{cells}</div>'
+
+
+# ----------------------------------------------------------------------------
+# direct booking
+# ----------------------------------------------------------------------------
+def booking_block(t: dict, assets: str, room: str | None) -> str:
+    b = t["booking"]
+    a = attr_links(t, 1 if room is None else 2, "home" if room is None else "room")
+    rooms_switch = ""
+    if room is None:
+        rooms_switch = (
+            f'<div class="bk-rooms" role="group" aria-label="{e(b["room_label"])}">'
+            f'<button type="button" class="bk-room is-on" data-bk-room="heyum" aria-pressed="true">{e(b["heyum"])}</button>'
+            f'<button type="button" class="bk-room" data-bk-room="orot" aria-pressed="false">{e(b["orot"])}</button>'
+            f'</div>'
+        )
+    current = room or "heyum"
+
+    def stepper(key: str, label: str, hint: str = "") -> str:
+        return f"""<div class="bk-step">
+          <div class="bk-step__label">{e(label)}{hint}</div>
+          <div class="bk-step__ctl">
+            <button type="button" class="bk-step__btn" data-bk-step="{key}" data-dir="-1" aria-label="-">−</button>
+            <b data-bk-num="{key}">1</b>
+            <button type="button" class="bk-step__btn" data-bk-step="{key}" data-dir="1" aria-label="+">+</button>
+          </div>
+        </div>"""
+
+    return f"""<div class="booking reveal" data-booking data-room="{current}" data-lang="{t['dir']}" data-base="8" data-max="12" data-extra="30000" data-airbnb="{FIRST_AIRBNB.get(current, '')}">
+      <div class="booking__main">
+        {rooms_switch}
+        <div class="bk-dates">
+          <button type="button" class="bk-date" data-bk-ci>
+            <span class="bk-date__label">{e(b['checkin'])}</span>
+            <b data-bk-ci-val>—</b>
+          </button>
+          <span class="bk-dates__arrow" aria-hidden="true">→</span>
+          <button type="button" class="bk-date" data-bk-co>
+            <span class="bk-date__label">{e(b['checkout'])}</span>
+            <b data-bk-co-val>—</b>
+          </button>
+        </div>
+        <div class="bk-monthbar">
+          <button type="button" class="bk-monthbar__btn" data-bk-prev aria-label="‹">‹</button>
+          <span class="bk-monthbar__now" data-bk-month></span>
+          <button type="button" class="bk-monthbar__btn" data-bk-next aria-label="›">›</button>
+        </div>
+        <div class="bk-cals">
+          <div class="bk-cal" data-bk-cal></div>
+          <div class="bk-cal bk-cal--second" data-bk-cal2></div>
+        </div>
+        <p class="bk-legend"><span class="bk-dot bk-dot--open"></span>{e(b['legend_open'])}
+          <span class="bk-dot bk-dot--closed"></span>{e(b['legend_closed'])}</p>
+      </div>
+      <aside class="booking__side">
+        <div class="bk-steps">
+          {stepper('adults', b['adults'], '')}
+          {stepper('children', b['children'], '')}
+          {stepper('infants', b['infants'], '')}
+        </div>
+        <p class="bk-note">{e(b['guests_note'])}</p>
+        <div class="bk-total">
+          <div class="bk-total__row"><span>{e(b['total'])}</span><b data-bk-total>—</b></div>
+          <p class="bk-total__detail" data-bk-detail></p>
+          <p class="bk-total__note">{e(b['total_note'])}</p>
+        </div>
+        <form class="bk-form" data-bk-form novalidate>
+          <h3 class="bk-form__title">{e(b['form_title'])}</h3>
+          <label class="bk-field"><span>{e(b['name'])}</span>
+            <input type="text" name="name" autocomplete="name" placeholder="{e(b['name_ph'])}" required></label>
+          <label class="bk-field"><span>{e(b['phone'])}</span>
+            <input type="tel" name="phone" inputmode="tel" autocomplete="tel" placeholder="{e(b['phone_ph'])}" required></label>
+          <label class="bk-field"><span>{e(b['email'])} <i>{e(b['optional'])}</i></span>
+            <input type="email" name="email" autocomplete="email" placeholder="{e(b['email_ph'])}"></label>
+          <label class="bk-field"><span>{e(b['message'])} <i>{e(b['optional'])}</i></span>
+            <textarea name="message" rows="3" placeholder="{e(b['message_ph'])}"></textarea></label>
+          <p class="bk-msg" data-bk-msg role="alert"></p>
+          <button type="submit" class="btn btn--dark btn--block" data-bk-submit>{e(b['submit'])}</button>
+        </form>
+        <div class="bk-done" data-bk-done hidden>
+          <span class="bk-done__k">{e(b['success_title'])}</span>
+          <b class="bk-done__ref" data-bk-ref></b>
+          <p data-bk-done-body>{e(b['success_body'])}</p>
+          <button type="button" class="btn btn--line btn--block" data-bk-again>{e(b['success_again'])}</button>
+        </div>
+        <p class="bk-alt">
+          <a href="{AIRBNB[current]}" target="_blank" rel="noopener noreferrer" data-airbnb="{current}" data-placement="booking">{e(b['airbnb_alt'])} <span class="ext" aria-hidden="true">↗</span></a>
+          <span class="bk-alt__sep" aria-hidden="true">·</span>
+          <a href="tel:{PHONE_INTL}">{e(b['call'])} {PHONE_DISPLAY}</a>
+        </p>
+      </aside>
+      <script type="application/json" data-bk-lang>{json.dumps(b, ensure_ascii=False)}</script>
+    </div>"""
+
+
+# ----------------------------------------------------------------------------
 # pages
 # ----------------------------------------------------------------------------
+def booking_section(t: dict, assets: str, room: str | None) -> str:
+    b = t["booking"]
+    return f"""<section class="section section--ivory2" id="reserve">
+    <div class="wrap center reveal">
+      <span class="kicker">{e(b['kicker'])}</span>
+      <h2>{e(b['h2'])}</h2>
+      <p class="lede">{e(b['lede'])}</p>
+    </div>
+    <div class="wrap">
+      {booking_block(t, assets, room)}
+    </div>
+  </section>"""
+
+
 def build_home(t: dict) -> str:
     a = attr_links(t, 1, "home")
     h = t["home"]
@@ -640,7 +866,7 @@ def build_home(t: dict) -> str:
       <p class="hero__sub">{e(h['hero_sub'])}</p>
       <div class="btn-row">
         <a class="btn btn--light" href="#stays">{e(h['hero_cta_stays'])}</a>
-        <a class="btn btn--light" href="#booking">{e(h['hero_cta_book'])}</a>
+        <a class="btn btn--light" href="#reserve">{e(h['hero_cta_book'])}</a>
       </div>
     </div>
     <span class="hero__scroll" aria-hidden="true">Scroll</span>
@@ -671,6 +897,17 @@ def build_home(t: dict) -> str:
         {stay_card(t, assets, 'orot')}
       </div>
       <p class="ext-note center" style="margin-top:18px">{e(t['ui']['airbnb_note'])}</p>
+    </div>
+  </section>
+
+  <section class="section section--ivory2" id="reserve">
+    <div class="wrap center reveal">
+      <span class="kicker">{e(t['booking']['kicker'])}</span>
+      <h2>{e(t['booking']['h2'])}</h2>
+      <p class="lede">{e(t['booking']['lede'])}</p>
+    </div>
+    <div class="wrap">
+      {booking_block(t, assets, None)}
     </div>
   </section>
 
@@ -778,8 +1015,9 @@ def build_home(t: dict) -> str:
 
 {footer(t, 1, 'home')}
 
-<script>window.SITE_CONFIG={{page:"home",lang:"{t['dir']}",room:""}};</script>
+<script>window.SITE_CONFIG={{page:"home",lang:"{t['dir']}",room:"",airbnb:{json.dumps(AIRBNB, ensure_ascii=False)}}};</script>
 <script src="{assets}app.js" defer></script>
+<script src="{assets}booking.js" defer></script>
 </body>
 </html>
 """
@@ -868,20 +1106,22 @@ def build_room(t: dict, room: str) -> str:
     <div class="wrap"><div class="features reveal">{highlights}</div></div>
   </section>
 
-  <section class="section">
+  <section class="section" id="gallery">
     <div class="wrap center reveal">
       <span class="kicker">{e(r['gallery_kicker'])}</span>
       <h2>{e(r['gallery_h2'])}</h2>
       <p class="lede">{e(r['gallery_lede'])}</p>
     </div>
-    <div class="wrap"><div class="gallery reveal">
-      {gallery}
-    </div></div>
+    <div class="wrap gal-wrap">
+      {gallery_html(t, assets, room)}
+    </div>
   </section>
+
+  {booking_section(t, assets, room)}
 
   {reviews_section(t, room)}
 
-  <section class="section section--ivory2" id="plan">
+  <section class="section" id="plan">
     <div class="wrap center reveal">
       <span class="kicker">{e(r['plan_kicker'])}</span>
       <h2>{e(r['plan_h2'])}</h2>
@@ -989,6 +1229,8 @@ def build_room(t: dict, room: str) -> str:
 
 {footer(t, 2, 'room')}
 
+{gallery_lightbox(t)}
+
 <div class="plan-lb" id="plan-lightbox" hidden>
   <div class="plan-lb__bar">
     <span class="plan-lb__title">{e(r['plan_cap'])}</span>
@@ -1003,8 +1245,10 @@ def build_room(t: dict, room: str) -> str:
   </div>
 </div>
 
-<script>window.SITE_CONFIG={{page:"room",lang:"{t['dir']}",room:"{room}"}};</script>
+<script>window.SITE_CONFIG={{page:"room",lang:"{t['dir']}",room:"{room}",airbnb:{json.dumps({room: AIRBNB[room]}, ensure_ascii=False)}}};</script>
 <script src="{assets}app.js" defer></script>
+<script src="{assets}gallery.js" defer></script>
+<script src="{assets}booking.js" defer></script>
 </body>
 </html>
 """
@@ -1143,11 +1387,12 @@ def build_robots() -> str:
         "",
         "User-agent: *",
         "Allow: /",
+        "Disallow: /admin/",
     ]
     for title, names in agents:
         rows += ["", f"# {title}"]
         for name in names:
-            rows += [f"User-agent: {name}", "Allow: /"]
+            rows += [f"User-agent: {name}", "Allow: /", "Disallow: /admin/"]
     rows += [
         "",
         f"Sitemap: {BASE_URL}/sitemap.xml",
@@ -1242,6 +1487,8 @@ def build_llms() -> str:
         "",
         "## 예약·문의 (Booking & contact)",
         "",
+        "- 홈페이지 직접 예약 (Direct booking): " + f"{BASE_URL}/ko/heyum/#reserve" + " · " + f"{BASE_URL}/ko/orot/#reserve"
+        + " — 실시간 예약 달력에서 날짜·인원을 고르고 신청하면 사장님 확인 후 확정됩니다. 확정 전에는 결제하지 않습니다.",
         f"- 에어비앤비 헤윰 (Airbnb Heyum): {AIRBNB['heyum']}",
         f"- 에어비앤비 오롯 (Airbnb Orot): {AIRBNB['orot']}",
         f"- 네이버 예약 (Naver Booking): {NAVER_BOOKING['heyum']} · {NAVER_BOOKING['orot']}",
@@ -1267,7 +1514,7 @@ def build_llms() -> str:
         "",
         "## 안내 (Notes)",
         "",
-        "- 위 정보는 공식 홈페이지의 현재 내용을 그대로 요약한 것이다. 요금·예약 가능 여부는 날짜와 인원에 따라 달라지며 에어비앤비 예약 페이지가 기준이다.",
+        "- 위 정보는 공식 홈페이지의 현재 내용을 그대로 요약한 것이다. 요금·예약 가능 여부는 날짜와 인원에 따라 달라지며, 홈페이지 예약 달력과 에어비앤비 예약 페이지가 기준이다. 홈페이지 예약은 신청 후 사장님 확인으로 확정된다.",
         "- 두 객실은 같은 건물의 서로 다른 층이며, 한 번에 두 층을 쓰려면 에어비앤비에서 두 건을 따로 예약해야 한다.",
         "- 사이트에서 다루지 않는 항목은 확인된 정보가 아니므로 답변에 신뢰해 사용하지 말 것.",
         f"- 전체 상세 문서: {BASE_URL}/llms-full.txt",
@@ -1371,7 +1618,7 @@ def build_llms_full() -> str:
         "## 출처·정확성 (Source of truth)",
         "",
         "- 위 내용은 공식 사이트(5개 언어)와 에어비앤비 리스팅에서 확인한 사실이다. 사진은 모두 실제 객실에서 촬영한 것이다.",
-        "- 요금(₩500,000–₩1,200,000 / 1박)과 예약 가능 여부는 날짜·인원에 따라 달라지며 에어비앤비 예약 페이지가 최종 기준이다.",
+        "- 요금(₩500,000–₩1,200,000 / 1박)과 예약 가능 여부는 날짜·인원에 따라 달라지며, 홈페이지 실시간 예약 달력과 에어비앤비 예약 페이지가 최종 기준이다.",
         "- 두 객실은 각각 별도 예약이다. 한 팀이 두 층을 모두 쓰려면 두 건을 따로 예약한다.",
         "- 위 문서에 없는 내용은 확인된 정보가 아니므로 추측해 답하지 말고, 필요하면 전화·에어비앤비로 확인할 것.",
         "",
@@ -1430,8 +1677,19 @@ def main() -> None:
             raise SystemExit(f"missing asset: {src}")
         shutil.copy2(src, assets_out / f)
     shutil.copy2(ROOT / "assets" / "app-icon.png", assets_out / "app-icon.png")
+    shutil.copytree(ROOT / "assets" / "gallery", assets_out / "gallery", dirs_exist_ok=True)
+    (assets_out / "gallery" / "manifest.json").unlink(missing_ok=True)
     shutil.copy2(HERE / "static" / "style.css", assets_out / "site.css")
     shutil.copy2(HERE / "static" / "app.js", assets_out / "app.js")
+    shutil.copy2(HERE / "static" / "gallery.js", assets_out / "gallery.js")
+    shutil.copy2(HERE / "static" / "booking.js", assets_out / "booking.js")
+
+    # 사장님 전용 관리 화면 /admin/
+    admin_out = out / "admin"
+    admin_out.mkdir()
+    for f in (HERE / "admin").iterdir():
+        if f.is_file():
+            shutil.copy2(f, admin_out / f.name)
 
     (out / "index.html").write_text(build_root(), encoding="utf-8")
     for t in LANGS:
@@ -1448,7 +1706,7 @@ def main() -> None:
     (out / "llms-full.txt").write_text(build_llms_full(), encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
 
-    print(f"built {1 + len(LANGS) * 3} pages + llms.txt/llms-full.txt/robots.txt/sitemap.xml -> {out}")
+    print(f"built {1 + len(LANGS) * 3} pages + admin + llms.txt/llms-full.txt/robots.txt/sitemap.xml -> {out}")
 
 
 if __name__ == "__main__":

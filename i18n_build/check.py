@@ -693,6 +693,213 @@ def check_room_nav_browser(base: str) -> None:
         browser.close()
 
 
+def check_gallery(base: str) -> None:
+    """갤러리: 사진 파일·alt·라이트박스 데이터·필터 (정적)."""
+    for t in build.LANGS:
+        d = t["dir"]
+        for room in build.ROOMS:
+            path = f"/{d}/{room}/"
+            status, body = fetch(local(base, path))
+            if status != 200:
+                continue
+            manifest = build.GALLERY_MANIFEST[room]
+            m = re.search(r'<script type="application/json" data-gal-data>(.*?)</script>', body, re.S)
+            if not m:
+                fail(f"{path} 갤러리 데이터 스크립트 없음")
+                continue
+            try:
+                data = json.loads(m.group(1))
+            except json.JSONDecodeError as ex:
+                fail(f"{path} 갤러리 데이터 파싱 실패: {ex}")
+                continue
+            if len(data) != len(manifest):
+                fail(f"{path} 갤러리 사진 {len(data)}장 (기대 {len(manifest)})")
+            if "gallery-lightbox" not in body:
+                fail(f"{path} 라이트박스 마크업 없음")
+            opens = len(re.findall(r'data-gal-open="', body))
+            if opens < len(manifest):
+                fail(f"{path} 갤러리 열기 버튼 {opens}개 (사진 {len(manifest)}장)")
+            for it in manifest:
+                for suffix in ("", "-t"):
+                    st, _ = fetch(local(base, f"/assets/gallery/{room}/{it['slug']}{suffix}.webp"))
+                    if st != 200:
+                        fail(f"갤러리 이미지 HTTP {st}: {room}/{it['slug']}{suffix}.webp")
+            if path.startswith("/ko/"):
+                CHECK_ITEMS.append(f"{path}: 갤러리 {len(manifest)}장 + 라이트박스")
+
+
+def check_gallery_browser(base: str) -> None:
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        notes.append("Playwright 미설치 — 갤러리 브라우저 검증 생략")
+        return
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        for vp_name, w, h in (("pc", 1440, 900), ("mobile", 390, 844)):
+            ctx = browser.new_context(viewport={"width": w, "height": h}, reduced_motion="reduce")
+            page = ctx.new_page()
+            errors: list[str] = []
+            page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+            page.on("pageerror", lambda ex: errors.append(str(ex)))
+            page.goto(base + "/ko/heyum/", wait_until="networkidle")
+            page.locator("#gallery").scroll_into_view_if_needed()
+            page.wait_for_timeout(400)
+            cells = page.evaluate("() => document.querySelectorAll('.gal-cell').length")
+            if cells < 30:
+                fail(f"[gallery {vp_name}] 그리드 사진 {cells}장")
+
+            page.click('[data-gal-filter="jacuzzi"]')
+            page.wait_for_timeout(250)
+            shown = page.evaluate("() => [...document.querySelectorAll('.gal-cell')].filter(li => !li.hidden).length")
+            cats = page.evaluate("() => new Set([...document.querySelectorAll('.gal-cell')].filter(li => !li.hidden).map(li => li.dataset.cat)).size")
+            if shown == 0 or cats != 1:
+                fail(f"[gallery {vp_name}] 자쿠지 필터 결과 {shown}장 / 분류 {cats}종")
+            page.click('[data-gal-filter="all"]')
+            page.wait_for_timeout(200)
+
+            page.locator(".gal-cell__btn").first.click()
+            page.wait_for_timeout(700)
+            visible = page.evaluate("() => !document.getElementById('gallery-lightbox').hidden")
+            loaded = page.evaluate("() => document.querySelector('[data-gal-img]').naturalWidth")
+            if not visible or not loaded:
+                fail(f"[gallery {vp_name}] 라이트박스 열림 {visible} / 이미지 폭 {loaded}")
+            page.screenshot(path=str(SHOTS / f"gallery-lightbox-{vp_name}.png"))
+            before = page.evaluate("() => document.querySelector('[data-gal-count]').textContent")
+            page.keyboard.press("ArrowRight")
+            page.wait_for_timeout(500)
+            after = page.evaluate("() => document.querySelector('[data-gal-count]').textContent")
+            if before == after:
+                fail(f"[gallery {vp_name}] 라이트박스 다음 사진 이동 실패 ({before})")
+            page.keyboard.press("Escape")
+            page.wait_for_timeout(200)
+            if page.evaluate("() => !document.getElementById('gallery-lightbox').hidden"):
+                fail(f"[gallery {vp_name}] ESC 로 라이트박스가 닫히지 않음")
+            if errors:
+                fail(f"[gallery {vp_name}] 콘솔 오류: {errors[:2]}")
+            ctx.close()
+        browser.close()
+
+
+def check_booking_browser(base: str) -> None:
+    """직접 예약 위젯: 달력 렌더·가격 표시·날짜 선택·객실 전환."""
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        notes.append("Playwright 미설치 — 예약 위젯 검증 생략")
+        return
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        for vp_name, w, h in (("pc", 1440, 900), ("mobile", 390, 844)):
+            ctx = browser.new_context(viewport={"width": w, "height": h}, reduced_motion="reduce")
+            page = ctx.new_page()
+            errors: list[str] = []
+            page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+            page.on("pageerror", lambda ex: errors.append(str(ex)))
+            page.goto(base + "/ko/heyum/", wait_until="networkidle")
+            page.locator("#reserve").scroll_into_view_if_needed()
+            page.wait_for_timeout(3500)
+            days = page.evaluate("() => document.querySelectorAll('#reserve .bk-day').length")
+            if days < 40:
+                fail(f"[booking {vp_name}] 달력 날짜 {days}개 (2개월 미만)")
+            prices = page.evaluate("""() => [...document.querySelectorAll('#reserve .bk-day em')]
+                .map(e => e.textContent).filter(Boolean)""")
+            if len(prices) < 20 or not re.search(r"[0-9]", " ".join(prices)):
+                fail(f"[booking {vp_name}] 1박 요금 표시 없음 ({prices[:3]})")
+
+            available = page.evaluate("""() => [...document.querySelectorAll('#reserve .bk-day:not(:disabled)[data-date]')]
+                .map(b => b.dataset.date)""")
+            if len(available) < 5:
+                fail(f"[booking {vp_name}] 예약 가능 날짜 {len(available)}개")
+            else:
+                page.click(f'#reserve .bk-day[data-date="{available[0]}"]')
+                page.wait_for_timeout(200)
+                page.click(f'#reserve .bk-day[data-date="{available[3]}"]')
+                page.wait_for_timeout(400)
+                total = page.evaluate("() => document.querySelector('[data-bk-total]').textContent")
+                if "₩" not in total:
+                    fail(f"[booking {vp_name}] 날짜 선택 후 총액 {total!r}")
+                detail = page.evaluate("() => document.querySelector('[data-bk-detail]').textContent")
+                if "1박" not in detail and "night" not in detail:
+                    fail(f"[booking {vp_name}] 요금 상세 {detail!r}")
+                page.screenshot(path=str(SHOTS / f"booking-selected-{vp_name}.png"))
+
+            page.goto(base + "/ko/", wait_until="networkidle")
+            page.locator("#reserve").scroll_into_view_if_needed()
+            page.wait_for_timeout(1200)
+            page.click('[data-bk-room="orot"]')
+            page.wait_for_timeout(600)
+            href = page.evaluate("() => document.querySelector('[data-booking] .bk-alt a[data-airbnb]').getAttribute('href')")
+            if build.AIRBNB["orot"] != href:
+                fail(f"[booking {vp_name}] 객실 전환 후 에어비앤비 링크 {href}")
+            room_flag = page.evaluate("() => document.querySelector('[data-booking]').dataset.room")
+            if room_flag != "orot":
+                fail(f"[booking {vp_name}] 객실 전환 반영 안 됨 ({room_flag})")
+            if errors:
+                fail(f"[booking {vp_name}] 콘솔 오류: {errors[:2]}")
+            ctx.close()
+        browser.close()
+
+
+def check_admin(base: str) -> None:
+    """사장님 관리 화면: noindex·PIN 잠금·탭·달력·오버플로."""
+    status, body = fetch(local(base, "/admin/"))
+    if status != 200:
+        fail(f"/admin/ → HTTP {status}")
+        return
+    if "noindex" not in body:
+        fail("/admin/ noindex 메타 없음")
+    for need in ("data-tab=\"cal\"", "data-tab=\"bookings\"", "data-tab=\"rates\"", "data-tab=\"settings\"", "id=\"keypad\""):
+        if need not in body:
+            fail(f"/admin/ 구성 요소 누락: {need}")
+
+    try:
+        from playwright.sync_api import sync_playwright
+    except ImportError:
+        notes.append("Playwright 미설치 — 관리 화면 브라우저 검증 생략")
+        return
+    with sync_playwright() as pw:
+        browser = pw.chromium.launch()
+        for vp_name, w, h, mobile in (("pc", 1440, 900, False), ("mobile", 390, 844, True)):
+            ctx = browser.new_context(viewport={"width": w, "height": h}, is_mobile=mobile, has_touch=mobile,
+                                      reduced_motion="reduce")
+            page = ctx.new_page()
+            errors: list[str] = []
+            page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+            page.on("pageerror", lambda ex: errors.append(str(ex)))
+            page.goto(base + "/admin/", wait_until="networkidle")
+            page.wait_for_timeout(2500)
+            if page.evaluate("() => document.getElementById('lock').hidden"):
+                fail(f"[admin {vp_name}] 잠금 화면이 처음부터 열려 있음")
+            page.screenshot(path=str(SHOTS / f"admin-lock-{vp_name}.png"))
+            for ch in "0000":
+                page.click(f'#keypad [data-key="{ch}"]')
+                page.wait_for_timeout(90)
+            page.wait_for_timeout(2500)
+            if page.evaluate("() => document.getElementById('app').hidden"):
+                fail(f"[admin {vp_name}] PIN 0000 으로 열리지 않음")
+                ctx.close()
+                continue
+            days = page.evaluate("() => document.querySelectorAll('#calGrid .day[data-date]').length")
+            if days < 27:
+                fail(f"[admin {vp_name}] 달력 날짜 {days}개")
+            overflow = page.evaluate("() => document.documentElement.scrollWidth - window.innerWidth")
+            if overflow > 2:
+                fail(f"[admin {vp_name}] 가로 넘침 {overflow}px")
+            page.screenshot(path=str(SHOTS / f"admin-calendar-{vp_name}.png"))
+            for tab in ("bookings", "rates", "settings", "cal"):
+                page.click(f'[data-tab="{tab}"]')
+                page.wait_for_timeout(350)
+                if not page.evaluate(f"() => document.querySelector('[data-panel=\"{tab}\"]').classList.contains('is-on')"):
+                    fail(f"[admin {vp_name}] 탭 {tab} 표시 안 됨")
+            page.screenshot(path=str(SHOTS / f"admin-tabs-{vp_name}.png"))
+            if errors:
+                fail(f"[admin {vp_name}] 콘솔 오류: {errors[:2]}")
+            ctx.close()
+        browser.close()
+    CHECK_ITEMS.append("/admin/: PIN 잠금 · 달력 · 예약/요금/설정 탭")
+
+
 def main() -> None:
     class Handler(SimpleHTTPRequestHandler):
         def __init__(self, *a, **kw):
@@ -716,6 +923,10 @@ def main() -> None:
         check_browser(base)
         check_ten_items(base)
         check_room_nav_browser(base)
+        check_gallery(base)
+        check_gallery_browser(base)
+        check_booking_browser(base)
+        check_admin(base)
     finally:
         srv.shutdown()
 

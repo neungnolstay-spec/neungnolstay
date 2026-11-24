@@ -1,0 +1,226 @@
+/* 능놀스테이 사장님 관리 화면 — 사이트와 같은 아이보리/샌드/차콜 톤, 모바일 우선 */
+:root{
+  --ivory:#faf8f5;--ivory2:#f4efe8;--sand:#ede5d8;--sand2:#e3d9c9;
+  --charcoal:#1c1c1c;--navy:#14202b;--gold:#a98a5b;--gold2:#c9b08a;
+  --muted:#6f6a62;--muted2:#8a847a;--line:rgba(28,28,28,.14);--line2:rgba(28,28,28,.07);
+  --ok:#3d6b4a;--pend:#a2741f;--booked:#2c4a63;--blocked:#8c8378;--danger:#9a3b2e;
+  --display:"Cormorant Garamond","Noto Serif KR",Georgia,serif;
+  --sans:"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none !important}
+html,body{margin:0}
+body{background:var(--ivory);color:var(--charcoal);font-family:var(--sans);font-size:14px;line-height:1.6;font-weight:400;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;font-family:var(--display);font-weight:400;line-height:1.2}
+h1{font-size:1.9rem;letter-spacing:.02em}
+h2{font-size:1.25rem;letter-spacing:.02em;margin:0 0 12px}
+button{font-family:var(--sans);cursor:pointer}
+code{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:var(--sand);padding:1px 5px}
+
+/* ── 잠금 ───────────────────────────────────────────── */
+.lock{min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:26px 18px;background:
+  radial-gradient(120% 90% at 50% 0%,#f6f0e7 0%,var(--ivory) 60%)}
+.lock__box{width:100%;max-width:360px;text-align:center}
+.lock__brand{font-family:var(--display);font-size:11px;letter-spacing:.42em;color:var(--gold)}
+.lock h1{margin:10px 0 6px;font-size:1.75rem}
+.lock__sub{font-size:12.5px;color:var(--muted);margin:0 0 22px}
+.pin{display:flex;justify-content:center;gap:14px;margin-bottom:10px}
+.pin i{width:13px;height:13px;border:1px solid var(--charcoal);border-radius:50%;display:block;transition:.15s}
+.pin i.on{background:var(--charcoal)}
+.lock__msg{min-height:18px;font-size:12px;color:var(--danger);margin:0 0 14px}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0 auto 18px}
+.keypad button{
+  height:56px;border:1px solid var(--line);background:#fff;color:var(--charcoal);
+  font-family:var(--display);font-size:1.3rem;border-radius:2px;transition:.15s;
+}
+.keypad button:active{background:var(--sand)}
+.keypad button.is-soft{font-family:var(--sans);font-size:11px;letter-spacing:.06em;color:var(--muted)}
+.lock__hint{font-size:11px;color:var(--muted2);margin:0 0 6px}
+.lock__hint b{color:var(--charcoal)}
+.lock__off{font-size:11.5px;color:var(--danger);margin:8px 0 0}
+.lock__back{display:inline-block;margin-top:16px;font-size:11px;letter-spacing:.08em;color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
+
+/* ── 상단 ───────────────────────────────────────────── */
+.app{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column}
+.top{
+  position:sticky;top:0;z-index:30;background:var(--charcoal);color:#f3ece1;
+  display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:18px;
+  padding:10px clamp(14px,3vw,26px);
+}
+.top__brand{display:flex;flex-direction:column;line-height:1}
+.top__brand b{font-family:var(--display);font-size:.94rem;letter-spacing:.26em;color:#fff;font-weight:500}
+.top__brand span{font-size:8px;letter-spacing:.32em;color:#a89c8b;margin-top:5px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{
+  background:transparent;border:0;border-bottom:1px solid transparent;color:#bcb3a5;
+  font-size:11.5px;letter-spacing:.08em;padding:9px 12px;white-space:nowrap;transition:.2s;
+  display:inline-flex;align-items:center;gap:6px;
+}
+.tabs button:hover{color:#fff}
+.tabs button.is-on{color:#fff;border-bottom-color:var(--gold2)}
+.badge{font-style:normal;background:var(--gold);color:#fff;font-size:9.5px;padding:1px 6px;border-radius:9px;line-height:1.5}
+.top__right{display:flex;align-items:center;gap:12px;font-size:10.5px}
+.sync{color:#a89c8b;letter-spacing:.04em;white-space:nowrap}
+.sync.is-live{color:#9cc4a4}
+.sync.is-off{color:#d99b8f}
+.top__site{color:#e9e0d2;text-decoration:none;letter-spacing:.06em}
+.top__out{background:transparent;border:1px solid rgba(255,255,255,.28);color:#e9e0d2;border-radius:2px;padding:6px 10px;font-size:10.5px;letter-spacing:.06em}
+
+.main{flex:1;padding:clamp(14px,2.4vw,26px);max-width:1180px;width:100%;margin:0 auto}
+.panel{display:none}
+.panel.is-on{display:block}
+.bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:16px}
+.bar h2{margin:0}
+.hint{font-size:11px;color:var(--muted2);margin:0;flex:1 1 220px;min-width:0}
+.seg{display:inline-flex;border:1px solid var(--line);background:#fff}
+.seg button{background:transparent;border:0;padding:9px 14px;font-size:11.5px;letter-spacing:.05em;color:var(--muted);transition:.15s}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button.is-on{background:var(--charcoal);color:#fff}
+.monthnav{display:inline-flex;align-items:center;border:1px solid var(--line);background:#fff}
+.monthnav button{width:36px;height:36px;border:0;background:transparent;font-size:17px;color:var(--charcoal)}
+.monthnav b{min-width:132px;text-align:center;font-family:var(--display);font-size:1rem;letter-spacing:.03em}
+
+/* ── 달력 ───────────────────────────────────────────── */
+.cal{background:#fff;border:1px solid var(--line2);padding:10px 8px 12px}
+.cal__dow{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:6px}
+.cal__dow span{text-align:center;font-size:10px;color:var(--muted2);letter-spacing:.06em}
+.cal__grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;touch-action:pan-y}
+.day{
+  position:relative;min-height:64px;border:1px solid var(--line2);background:#fff;
+  padding:5px 4px 4px;text-align:left;display:flex;flex-direction:column;gap:2px;
+  border-radius:2px;user-select:none;-webkit-user-select:none;overflow:hidden;transition:background .12s,box-shadow .12s;
+}
+.day.is-blank{background:transparent;border-color:transparent;pointer-events:none}
+.day__n{font-family:var(--display);font-size:1rem;line-height:1;color:var(--charcoal)}
+.day__p{font-size:9.5px;color:var(--muted2);letter-spacing:-.01em;line-height:1.25}
+.day__s{font-size:8.5px;letter-spacing:.02em;padding:1px 4px;border-radius:8px;align-self:flex-start;line-height:1.5;white-space:nowrap}
+.day__s--pending{background:#f6e7c8;color:var(--pend)}
+.day__s--confirmed{background:#d9e7f0;color:var(--booked)}
+.day__s--blocked{background:#ece8e2;color:var(--blocked)}
+.day.is-past{opacity:.6}
+.day.is-blocked{background:repeating-linear-gradient(135deg,#f3efe8 0 5px,#fff 5px 10px)}
+.day.is-booked{background:#eef4f8}
+.day.is-pending{background:#fdf6e7}
+.day.is-sel{box-shadow:inset 0 0 0 2px var(--gold)}
+.day.is-today .day__n{color:var(--gold);font-weight:600}
+.day:hover{box-shadow:inset 0 0 0 1px rgba(28,28,28,.2)}
+.calstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin:0 0 12px}
+.calstat{background:#fff;border:1px solid var(--line2);padding:10px 12px}
+.calstat span{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted2)}
+.calstat b{display:block;font-family:var(--display);font-size:1.22rem;letter-spacing:.01em;margin-top:3px}
+.calstat b em{font-style:normal;font-size:.8rem;color:var(--muted);margin-left:3px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:12px 0 0;font-size:10.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;border:1px solid var(--line)}
+.dot--open{background:#fff}
+.dot--pending{background:#f6e7c8;border-color:#e5c88a}
+.dot--booked{background:#d9e7f0;border-color:#a9c6d8}
+.dot--blocked{background:repeating-linear-gradient(135deg,#d9d3c8 0 3px,#f7f4ee 3px 6px)}
+.monthlist{margin-top:18px;display:grid;gap:6px}
+.mrow{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#fff;border:1px solid var(--line2);padding:9px 12px;font-size:12px}
+.mrow b{font-family:var(--display);font-size:1rem;letter-spacing:.03em}
+.mrow span{color:var(--muted);font-size:11px}
+.mrow button{border:1px solid var(--line);background:transparent;font-size:10.5px;padding:5px 9px;border-radius:2px}
+
+/* ── 예약 목록 ──────────────────────────────────────── */
+.bookings{display:grid;gap:12px}
+.bk{background:#fff;border:1px solid var(--line2);padding:14px}
+.bk--pending{border-left:3px solid var(--pend)}
+.bk--confirmed{border-left:3px solid var(--booked)}
+.bk--cancelled{border-left:3px solid #cfc8bd;opacity:.72}
+.bk__top{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;margin-bottom:8px}
+.bk__name{font-family:var(--display);font-size:1.18rem;letter-spacing:.02em}
+.bk__room{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);border:1px solid var(--sand2);padding:2px 7px}
+.bk__state{font-size:10.5px;padding:2px 8px;border-radius:9px;background:var(--ivory2);color:var(--muted)}
+.bk__state--pending{background:#f6e7c8;color:var(--pend)}
+.bk__state--confirmed{background:#d9e7f0;color:var(--booked)}
+.bk__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px 16px;margin:6px 0 10px}
+.bk__grid div{font-size:11px;color:var(--muted2)}
+.bk__grid b{display:block;font-family:var(--sans);font-size:12.5px;font-weight:500;color:var(--charcoal);letter-spacing:.01em}
+.bk__msg{font-size:12px;color:var(--muted);background:var(--ivory);border-left:2px solid var(--sand2);padding:7px 10px;margin:0 0 10px;white-space:pre-wrap;word-break:break-word}
+.bk__memo{display:flex;gap:8px;margin-bottom:10px}
+.bk__memo textarea{flex:1;min-height:38px;border:1px solid var(--line);background:var(--ivory);padding:7px 9px;font-family:var(--sans);font-size:12px;resize:vertical;border-radius:2px}
+.bk__acts{display:flex;flex-wrap:wrap;gap:8px}
+.btn{border:1px solid var(--charcoal);background:var(--charcoal);color:#fff;padding:9px 14px;font-size:11.5px;letter-spacing:.04em;border-radius:2px;transition:.15s}
+.btn:hover{background:#000}
+.btn--line{background:#fff;color:var(--charcoal);border-color:var(--line)}
+.btn--line:hover{background:var(--ivory2)}
+.btn--ok{background:var(--ok);border-color:var(--ok)}
+.btn--danger{background:#fff;color:var(--danger);border-color:#dcc3bd}
+.btn--sm{padding:7px 10px;font-size:10.5px}
+.empty{color:var(--muted2);font-size:12.5px;text-align:center;padding:36px 0}
+
+/* ── 요금 ───────────────────────────────────────────── */
+.rates{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-bottom:16px}
+.ratecard{background:#fff;border:1px solid var(--line2);padding:16px}
+.ratecard h3{font-size:1.1rem;margin:0 0 12px;letter-spacing:.03em}
+.ratecard label{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line2);font-size:12px;color:var(--muted)}
+.ratecard label span{letter-spacing:.02em}
+.ratecard input{width:130px;text-align:right;border:1px solid var(--line);padding:7px 9px;font-family:var(--sans);font-size:13px;border-radius:2px;background:var(--ivory)}
+.rates__h2{margin:26px 0 8px}
+.ovr{display:grid;gap:6px;margin-top:10px}
+.ovr__row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line2);padding:8px 12px;font-size:12px}
+.ovr__row b{font-family:var(--display);font-size:1rem}
+.ovr__row span{color:var(--muted)}
+.ovr__row button{margin-left:auto;border:1px solid var(--line);background:#fff;font-size:10.5px;padding:5px 9px;border-radius:2px}
+
+/* ── 설정 ───────────────────────────────────────────── */
+.pinform{display:grid;gap:10px;max-width:360px;margin-bottom:17px}
+.pinform label{display:grid;gap:4px;font-size:11px;color:var(--muted)}
+.pinform input{border:1px solid var(--line);padding:9px 10px;font-family:var(--sans);font-size:14px;border-radius:2px;background:#fff}
+.pinform .btn{justify-self:start;margin-top:4px}
+.msg{font-size:11.5px;margin:0;min-height:1em;color:var(--muted)}
+.msg.is-error{color:var(--danger)}
+.msg.is-ok{color:var(--ok)}
+.meta{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:12px;margin:0 0 14px}
+.meta dt{color:var(--muted2)}
+.meta dd{margin:0}
+
+/* ── 시트 ───────────────────────────────────────────── */
+.sheet{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;background:rgba(18,18,17,.42)}
+.sheet[hidden]{display:none}
+.sheet__panel{
+  width:100%;max-width:520px;background:var(--ivory);border-radius:14px 14px 0 0;
+  padding:16px 16px calc(16px + env(safe-area-inset-bottom));max-height:88vh;overflow:auto;
+  box-shadow:0 -10px 40px rgba(0,0,0,.2);
+}
+.sheet__head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.sheet__head b{font-family:var(--display);font-size:1.2rem;letter-spacing:.02em}
+.sheet__x{border:0;background:transparent;font-size:16px;color:var(--muted);padding:4px 6px}
+.sheet__sub{font-size:11.5px;color:var(--muted2);margin:2px 0 14px}
+.sheet__body{display:grid;gap:8px}
+.sheet__body .btn{width:100%;text-align:center}
+.sheet__field{display:grid;gap:4px;font-size:11px;color:var(--muted)}
+.sheet__field input,.sheet__field select,.sheet__field textarea{border:1px solid var(--line);background:#fff;padding:9px 10px;font-family:var(--sans);font-size:14px;border-radius:2px}
+.sheet__row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sheet__divider{height:1px;background:var(--line2);margin:6px 0}
+.sheet__note{font-size:11px;color:var(--muted2);margin:0}
+
+.toast{
+  position:fixed;left:50%;bottom:26px;transform:translateX(-50%);z-index:80;
+  background:var(--charcoal);color:#f4ede2;padding:11px 18px;border-radius:2px;font-size:12px;
+  box-shadow:0 8px 30px rgba(0,0,0,.22);max-width:90vw;text-align:center;
+}
+.toast[hidden]{display:none}
+
+@media(min-width:760px){
+  .sheet{align-items:center}
+  .sheet__panel{border-radius:6px;max-height:84vh}
+}
+@media(max-width:700px){
+  .top{grid-template-columns:1fr auto;grid-template-areas:"brand right" "tabs tabs";gap:8px 12px}
+  .top__brand{grid-area:brand}
+  .top__right{grid-area:right}
+  .tabs{grid-area:tabs}
+  .top__site{display:none}
+  .day{min-height:52px;padding:4px 3px}
+  .day__n{font-size:.92rem}
+  .day__p{font-size:8.5px}
+  .day__s{display:none}
+  .legend{font-size:9.5px;gap:10px}
+  .monthnav b{min-width:104px;font-size:.94rem}
+  .hint{font-size:10.5px}
+}

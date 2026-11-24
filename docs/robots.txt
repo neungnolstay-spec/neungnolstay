@@ -3,40 +3,56 @@
 
 User-agent: *
 Allow: /
+Disallow: /admin/
 
 # 검색엔진 (search engines)
 User-agent: Googlebot
 Allow: /
+Disallow: /admin/
 User-agent: Bingbot
 Allow: /
+Disallow: /admin/
 User-agent: Yeti
 Allow: /
+Disallow: /admin/
 User-agent: Daumoa
 Allow: /
+Disallow: /admin/
 User-agent: Applebot
 Allow: /
+Disallow: /admin/
 
 # AI 검색·학습 크롤러 (AI search crawlers)
 User-agent: GPTBot
 Allow: /
+Disallow: /admin/
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin/
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin/
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin/
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin/
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin/
 User-agent: anthropic-ai
 Allow: /
+Disallow: /admin/
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /admin/
 User-agent: Amazonbot
 Allow: /
+Disallow: /admin/
 User-agent: Meta-ExternalAgent
 Allow: /
+Disallow: /admin/
 
 Sitemap: https://neungnolstay-spec.github.io/neungnolstay/sitemap.xml
 # AI 요약: https://neungnolstay-spec.github.io/neungnolstay/llms.txt · https://neungnolstay-spec.github.io/neungnolstay/llms-full.txt
