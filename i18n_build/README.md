@@ -25,8 +25,9 @@ python3 i18n_build/build.py --out docs
 | `i18n_build/build.py` | 페이지 생성기. **BASE_URL·GA4·GTM·GSC·네이버 인증값은 이 파일 상단 한 곳** |
 | `i18n_build/content/ko.py` … `zhtw.py` | 언어별 문구(5개). 키 집합이 다르면 빌드가 중단됩니다 |
 | `i18n_build/photos.py` | 사진 크기·언어별 alt·갤러리 순서·객실 대표 사진 |
+| `i18n_build/prep_plans.py` | 도면 원본(네이버 플레이스 `business_005/006.jpg`)에서 빈 여백을 잘라 `assets/plan-hewyum.webp`·`plan-orot.webp` 재생성 (2200px, 비율 유지) |
 | `i18n_build/static/style.css` | 부티크 호텔 스타일 디자인 시스템 |
-| `i18n_build/static/app.js` | GA4 이벤트(`heyum_airbnb_click`, `orot_airbnb_click`, `language_switch`, `room_detail_view`) |
+| `i18n_build/static/app.js` | GA4 이벤트(`heyum_airbnb_click`, `orot_airbnb_click`, `language_switch`, `room_detail_view`, `floor_plan_zoom`) + 도면 확대 보기(라이트박스) |
 | `i18n_build/check.py` | 16페이지 전수 검증(HTTP·SEO·JSON-LD·링크·에어비앤비 사진/버튼·PC/모바일 렌더링) |
 | `i18n_build/shots.py` | 검수용 스크린샷 → `i18n_build/screenshots/review/` |
 | `i18n_build/setup_browser_deps.py` | (샌드박스 전용) Playwright chromium 실행에 필요한 라이브러리를 사용자 공간에 설치 |
