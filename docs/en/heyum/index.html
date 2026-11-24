@@ -183,7 +183,7 @@
    "name": "Are some cars unable to park?",
    "acceptedAnswer": {
     "@type": "Answer",
-    "text": "Yes. One space is free at the building and the Millak centre / fish-market car parks are a minute away. Tell us the vehicle type when booking and we will confirm."
+    "text": "Yes. The Millak centre and Millak fish-market car parks are a minute's walk away, with one space free per booking. Tell us the vehicle type when booking and we will confirm."
    }
   }
  ]
@@ -294,17 +294,18 @@ with a longer first day</h2>
     </div></div>
   </section>
 
-  <section class="section section--ivory2">
-    <div class="wrap reveal">
+  <section class="section section--ivory2" id="plan">
+    <div class="wrap center reveal">
       <span class="kicker">Floor Plan</span>
       <h2>The 3rd-floor layout</h2>
+      <p class="lede">Three bedrooms, two bathrooms and the kids&#x27; room open off the central living space. For a group, deciding rooms in advance makes arrival simple.</p>
     </div>
     <div class="wrap plan-wrap reveal">
-      <div><img src="../../assets/plan-hewyum.webp" alt="Floor plan of Heyum on the 3rd floor" width="1600" height="1600" decoding="async"></div>
-      <div>
-        <p class="lede">Three bedrooms, two bathrooms and the kids&#x27; room open off the central living space. For a group, deciding rooms in advance makes arrival simple.</p>
-        <p class="muted">Heyum, 3rd-floor plan (for room layout reference)</p>
-      </div>
+      <figure class="plan">
+        <a class="plan__open" href="../../assets/plan-hewyum.webp" target="_blank" rel="noopener"
+           data-plan-open aria-label="View full floor plan"><img src="../../assets/plan-hewyum.webp" alt="Floor plan of Heyum on the 3rd floor" width="2200" height="1661" decoding="async"><span class="plan__hint" aria-hidden="true">⤢ View full floor plan</span></a>
+        <figcaption class="muted">Heyum, 3rd-floor plan (for room layout reference)</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -322,7 +323,7 @@ with a longer first day</h2>
         <span class="kicker">Location</span>
         <h2>Gwangalli on foot from Heyum</h2>
         <p class="lede">Out of the door and you are on the beach. A morning walk, sashimi at the raw-fish centre in the evening and the bridge at night are all within walking distance.</p>
-        <div class="spec"><div><div class="k">Address</div><div class="v">13 Millaksubyeon-ro, Suyeong-gu, Busan · 3F</div></div><div><div class="k">Gwangalli Beach</div><div class="v">1 minute on foot</div></div><div><div class="k">Millak raw-fish centre</div><div class="v">1 minute on foot</div></div><div><div class="k">Parking</div><div class="v">1 free space · vehicle type in advance</div></div></div>
+        <div class="spec"><div><div class="k">Address</div><div class="v">13 Millaksubyeon-ro, Suyeong-gu, Busan · 3F</div></div><div><div class="k">Gwangalli Beach</div><div class="v">1 minute on foot</div></div><div><div class="k">Millak raw-fish centre</div><div class="v">1 minute on foot</div></div><div><div class="k">Parking</div><div class="v">Millak centre / fish-market car park, 1 free space · vehicle type in advance</div></div></div>
       </div>
       <div><div class="map-frame">
         <iframe src="https://maps.google.com/maps?q=35.1547316,129.1241192&z=17&hl=en&output=embed" title="Nungnol Stay Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -346,7 +347,7 @@ with a longer first day</h2>
     <div class="wrap reveal">
       <span class="kicker">FAQ</span>
       <h2>Heyum — before you book</h2>
-      <div class="faq"><details><summary>Which windows look at the sea?</summary><div class="a"><p>The living-room windows and the window by the jacuzzi. The living room frames Gwangalli Beach and the water; the jacuzzi adds Gwangandaegyo bridge.</p></div></details><details><summary>Does the 3rd floor block the view?</summary><div class="a"><p>No — nothing stands between the glass and the beach. If you want a higher, wider view, choose Orot on the 6th floor.</p></div></details><details><summary>Why is check-in at 15:00?</summary><div class="a"><p>The hour is used for cleaning and the next guests. From 15:00 the floor is yours, which gives the arrival afternoon room to breathe.</p></div></details><details><summary>Anything to know with young children?</summary><div class="a"><p>There is a kids&#x27; room and a baby high chair. Adults are responsible for supervising children around the facilities, including toddlers.</p></div></details><details><summary>Are some cars unable to park?</summary><div class="a"><p>Yes. One space is free at the building and the Millak centre / fish-market car parks are a minute away. Tell us the vehicle type when booking and we will confirm.</p></div></details></div>
+      <div class="faq"><details><summary>Which windows look at the sea?</summary><div class="a"><p>The living-room windows and the window by the jacuzzi. The living room frames Gwangalli Beach and the water; the jacuzzi adds Gwangandaegyo bridge.</p></div></details><details><summary>Does the 3rd floor block the view?</summary><div class="a"><p>No — nothing stands between the glass and the beach. If you want a higher, wider view, choose Orot on the 6th floor.</p></div></details><details><summary>Why is check-in at 15:00?</summary><div class="a"><p>The hour is used for cleaning and the next guests. From 15:00 the floor is yours, which gives the arrival afternoon room to breathe.</p></div></details><details><summary>Anything to know with young children?</summary><div class="a"><p>There is a kids&#x27; room and a baby high chair. Adults are responsible for supervising children around the facilities, including toddlers.</p></div></details><details><summary>Are some cars unable to park?</summary><div class="a"><p>Yes. The Millak centre and Millak fish-market car parks are a minute&#x27;s walk away, with one space free per booking. Tell us the vehicle type when booking and we will confirm.</p></div></details></div>
     </div>
   </section>
 
@@ -437,6 +438,20 @@ with a longer first day</h2>
     </div>
   </div>
 </footer>
+
+<div class="plan-lb" id="plan-lightbox" hidden>
+  <div class="plan-lb__bar">
+    <span class="plan-lb__title">Heyum, 3rd-floor plan (for room layout reference)</span>
+    <div class="plan-lb__tools">
+      <button type="button" class="plan-lb__btn" data-plan-zoom data-label-actual="Actual size" data-label-fit="Fit to screen" aria-pressed="false">Actual size</button>
+      <a class="plan-lb__btn" href="../../assets/plan-hewyum.webp" target="_blank" rel="noopener">Open in new tab ↗</a>
+      <button type="button" class="plan-lb__close" data-plan-close aria-label="Close">✕</button>
+    </div>
+  </div>
+  <div class="plan-lb__stage" data-plan-stage>
+    <img src="../../assets/plan-hewyum.webp" alt="Floor plan of Heyum on the 3rd floor" width="2200" height="1661" decoding="async">
+  </div>
+</div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"en",room:"heyum"};</script>
 <script src="../../assets/app.js" defer></script>

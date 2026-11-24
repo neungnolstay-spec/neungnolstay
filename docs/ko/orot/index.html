@@ -294,17 +294,18 @@
     </div></div>
   </section>
 
-  <section class="section section--ivory2">
-    <div class="wrap reveal">
+  <section class="section section--ivory2" id="plan">
+    <div class="wrap center reveal">
       <span class="kicker">Floor Plan</span>
       <h2>6층 도면으로 보는 구조</h2>
+      <p class="lede">자쿠지와 거실이 이어지고, 침실 3개와 욕실 2개, 키즈룸이 배치되어 있습니다. 두 팀이 함께 써도 동선이 겹치지 않습니다.</p>
     </div>
     <div class="wrap plan-wrap reveal">
-      <div><img src="../../assets/plan-orot.webp" alt="능놀스테이 오롯 6층 도면" width="1600" height="1600" decoding="async"></div>
-      <div>
-        <p class="lede">자쿠지와 거실이 이어지고, 침실 3개와 욕실 2개, 키즈룸이 배치되어 있습니다. 두 팀이 함께 써도 동선이 겹치지 않습니다.</p>
-        <p class="muted">오롯 6층 도면 (객실 구성 참고용)</p>
-      </div>
+      <figure class="plan">
+        <a class="plan__open" href="../../assets/plan-orot.webp" target="_blank" rel="noopener"
+           data-plan-open aria-label="도면 크게 보기"><img src="../../assets/plan-orot.webp" alt="능놀스테이 오롯 6층 도면" width="2200" height="1661" decoding="async"><span class="plan__hint" aria-hidden="true">⤢ 도면 크게 보기</span></a>
+        <figcaption class="muted">오롯 6층 도면 (객실 구성 참고용)</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -322,7 +323,7 @@
         <span class="kicker">Location</span>
         <h2>오롯에서 걷는 광안리</h2>
         <p class="lede">엘리베이터를 내리면 바로 해변이 이어집니다. 6층 창에서 미리 본 해변을 걸어서 확인해 보세요.</p>
-        <div class="spec"><div><div class="k">주소</div><div class="v">부산광역시 수영구 민락수변로 13, 6층</div></div><div><div class="k">광안리 해수욕장</div><div class="v">도보 1분</div></div><div><div class="k">민락회센터</div><div class="v">도보 1분</div></div><div><div class="k">주차</div><div class="v">무료 1대 · 차종 사전 협의</div></div></div>
+        <div class="spec"><div><div class="k">주소</div><div class="v">부산광역시 수영구 민락수변로 13, 6층</div></div><div><div class="k">광안리 해수욕장</div><div class="v">도보 1분</div></div><div><div class="k">민락회센터</div><div class="v">도보 1분</div></div><div><div class="k">주차</div><div class="v">민락회센터·민락어패류주차장 1대 무료 · 차종 사전 협의</div></div></div>
       </div>
       <div><div class="map-frame">
         <iframe src="https://maps.google.com/maps?q=35.1547316,129.1241192&z=17&hl=ko&output=embed" title="능놀스테이 Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -437,6 +438,20 @@
     </div>
   </div>
 </footer>
+
+<div class="plan-lb" id="plan-lightbox" hidden>
+  <div class="plan-lb__bar">
+    <span class="plan-lb__title">오롯 6층 도면 (객실 구성 참고용)</span>
+    <div class="plan-lb__tools">
+      <button type="button" class="plan-lb__btn" data-plan-zoom data-label-actual="원본 크기" data-label-fit="화면에 맞춤" aria-pressed="false">원본 크기</button>
+      <a class="plan-lb__btn" href="../../assets/plan-orot.webp" target="_blank" rel="noopener">새 창에서 열기 ↗</a>
+      <button type="button" class="plan-lb__close" data-plan-close aria-label="닫기">✕</button>
+    </div>
+  </div>
+  <div class="plan-lb__stage" data-plan-stage>
+    <img src="../../assets/plan-orot.webp" alt="능놀스테이 오롯 6층 도면" width="2200" height="1661" decoding="async">
+  </div>
+</div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"ko",room:"orot"};</script>
 <script src="../../assets/app.js" defer></script>

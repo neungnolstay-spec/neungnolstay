@@ -294,17 +294,18 @@
     </div></div>
   </section>
 
-  <section class="section section--ivory2">
-    <div class="wrap reveal">
+  <section class="section section--ivory2" id="plan">
+    <div class="wrap center reveal">
       <span class="kicker">Floor Plan</span>
       <h2>6樓格局</h2>
+      <p class="lede">浴缸與客廳連成一片，周圍是3間臥室、2間衛浴與兒童房。兩組人同住動線也不會打結。</p>
     </div>
     <div class="wrap plan-wrap reveal">
-      <div><img src="../../assets/plan-orot.webp" alt="Orot 六樓格局圖" width="1600" height="1600" decoding="async"></div>
-      <div>
-        <p class="lede">浴缸與客廳連成一片，周圍是3間臥室、2間衛浴與兒童房。兩組人同住動線也不會打結。</p>
-        <p class="muted">Orot 6樓格局圖（客房結構參考）</p>
-      </div>
+      <figure class="plan">
+        <a class="plan__open" href="../../assets/plan-orot.webp" target="_blank" rel="noopener"
+           data-plan-open aria-label="查看完整平面圖"><img src="../../assets/plan-orot.webp" alt="Orot 六樓格局圖" width="2200" height="1661" decoding="async"><span class="plan__hint" aria-hidden="true">⤢ 查看完整平面圖</span></a>
+        <figcaption class="muted">Orot 6樓格局圖（客房結構參考）</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -322,7 +323,7 @@
         <span class="kicker">Location</span>
         <h2>從 Orot 步行逛廣安里</h2>
         <p class="lede">下電梯就是海灘路。去走走剛才在6樓窗邊看到的那片海灘吧。</p>
-        <div class="spec"><div><div class="k">地址</div><div class="v">釜山廣域市水營區民樂水邊路13 · 6樓</div></div><div><div class="k">廣安里海水浴場</div><div class="v">步行1分鐘</div></div><div><div class="k">民樂生魚片中心</div><div class="v">步行1分鐘</div></div><div><div class="k">停車</div><div class="v">免費1輛 · 車型需事先確認</div></div></div>
+        <div class="spec"><div><div class="k">地址</div><div class="v">釜山廣域市水營區民樂水邊路13 · 6樓</div></div><div><div class="k">廣安里海水浴場</div><div class="v">步行1分鐘</div></div><div><div class="k">民樂生魚片中心</div><div class="v">步行1分鐘</div></div><div><div class="k">停車</div><div class="v">民樂中心·民樂水產市場停車場 1輛免費 · 車型需事先確認</div></div></div>
       </div>
       <div><div class="map-frame">
         <iframe src="https://maps.google.com/maps?q=35.1547316,129.1241192&z=17&hl=zh-TW&output=embed" title="Nungnol Stay Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -437,6 +438,20 @@
     </div>
   </div>
 </footer>
+
+<div class="plan-lb" id="plan-lightbox" hidden>
+  <div class="plan-lb__bar">
+    <span class="plan-lb__title">Orot 6樓格局圖（客房結構參考）</span>
+    <div class="plan-lb__tools">
+      <button type="button" class="plan-lb__btn" data-plan-zoom data-label-actual="原始尺寸" data-label-fit="適合螢幕" aria-pressed="false">原始尺寸</button>
+      <a class="plan-lb__btn" href="../../assets/plan-orot.webp" target="_blank" rel="noopener">在新分頁開啟 ↗</a>
+      <button type="button" class="plan-lb__close" data-plan-close aria-label="關閉">✕</button>
+    </div>
+  </div>
+  <div class="plan-lb__stage" data-plan-stage>
+    <img src="../../assets/plan-orot.webp" alt="Orot 六樓格局圖" width="2200" height="1661" decoding="async">
+  </div>
+</div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"zh-tw",room:"orot"};</script>
 <script src="../../assets/app.js" defer></script>

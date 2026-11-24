@@ -294,17 +294,18 @@
     </div></div>
   </section>
 
-  <section class="section section--ivory2">
-    <div class="wrap reveal">
+  <section class="section section--ivory2" id="plan">
+    <div class="wrap center reveal">
       <span class="kicker">Floor Plan</span>
       <h2>6階の間取り</h2>
+      <p class="lede">ジャグジーとリビングがつながり、ベッドルーム3室とバスルーム2室、キッズルームが配置されています。2組で使っても動線が重なりません。</p>
     </div>
     <div class="wrap plan-wrap reveal">
-      <div><img src="../../assets/plan-orot.webp" alt="オロッ（6階）の間取り図" width="1600" height="1600" decoding="async"></div>
-      <div>
-        <p class="lede">ジャグジーとリビングがつながり、ベッドルーム3室とバスルーム2室、キッズルームが配置されています。2組で使っても動線が重なりません。</p>
-        <p class="muted">オロッ 6階の間取り図（客室構成の参考）</p>
-      </div>
+      <figure class="plan">
+        <a class="plan__open" href="../../assets/plan-orot.webp" target="_blank" rel="noopener"
+           data-plan-open aria-label="間取り図を拡大"><img src="../../assets/plan-orot.webp" alt="オロッ（6階）の間取り図" width="2200" height="1661" decoding="async"><span class="plan__hint" aria-hidden="true">⤢ 間取り図を拡大</span></a>
+        <figcaption class="muted">オロッ 6階の間取り図（客室構成の参考）</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -322,7 +323,7 @@
         <span class="kicker">Location</span>
         <h2>オロッから歩く広安里</h2>
         <p class="lede">エレベーターを降りればビーチ沿いの道です。6階の窓から見たビーチを、歩いて確かめてみてください。</p>
-        <div class="spec"><div><div class="k">住所</div><div class="v">釜山広域市 水営区 ミルラクスビョンロ13 · 6階</div></div><div><div class="k">広安里海水浴場</div><div class="v">徒歩1分</div></div><div><div class="k">ミルラク会センター</div><div class="v">徒歩1分</div></div><div><div class="k">駐車場</div><div class="v">無料1台 · 車種は事前相談</div></div></div>
+        <div class="spec"><div><div class="k">住所</div><div class="v">釜山広域市 水営区 ミルラクスビョンロ13 · 6階</div></div><div><div class="k">広安里海水浴場</div><div class="v">徒歩1分</div></div><div><div class="k">ミルラク会センター</div><div class="v">徒歩1分</div></div><div><div class="k">駐車場</div><div class="v">ミルラク会センター・魚介市場駐車場 1台無料 · 車種は事前相談</div></div></div>
       </div>
       <div><div class="map-frame">
         <iframe src="https://maps.google.com/maps?q=35.1547316,129.1241192&z=17&hl=ja&output=embed" title="ヌンノルステイ Google Maps" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
@@ -437,6 +438,20 @@
     </div>
   </div>
 </footer>
+
+<div class="plan-lb" id="plan-lightbox" hidden>
+  <div class="plan-lb__bar">
+    <span class="plan-lb__title">オロッ 6階の間取り図（客室構成の参考）</span>
+    <div class="plan-lb__tools">
+      <button type="button" class="plan-lb__btn" data-plan-zoom data-label-actual="原寸大" data-label-fit="画面に合わせる" aria-pressed="false">原寸大</button>
+      <a class="plan-lb__btn" href="../../assets/plan-orot.webp" target="_blank" rel="noopener">新しいタブで開く ↗</a>
+      <button type="button" class="plan-lb__close" data-plan-close aria-label="閉じる">✕</button>
+    </div>
+  </div>
+  <div class="plan-lb__stage" data-plan-stage>
+    <img src="../../assets/plan-orot.webp" alt="オロッ（6階）の間取り図" width="2200" height="1661" decoding="async">
+  </div>
+</div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"ja",room:"orot"};</script>
 <script src="../../assets/app.js" defer></script>

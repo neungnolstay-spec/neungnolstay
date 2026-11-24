@@ -72,6 +72,81 @@
     }
   }
 
+  /* Floor plan lightbox: full plan on screen, or 1:1 with scroll */
+  var planOpen = document.querySelector("[data-plan-open]");
+  var lb = document.getElementById("plan-lightbox");
+  if (planOpen && lb) {
+    var stage = lb.querySelector("[data-plan-stage]");
+    var zoomBtn = lb.querySelector("[data-plan-zoom]");
+    var closeBtn = lb.querySelector("[data-plan-close]");
+    var labelActual = (zoomBtn && zoomBtn.getAttribute("data-label-actual")) || "";
+    var labelFit = (zoomBtn && zoomBtn.getAttribute("data-label-fit")) || labelActual;
+    var lastFocus = null;
+
+    var setActual = function (on) {
+      if (on) {
+        var img = stage.querySelector("img");
+        if (img) {
+          /* one image pixel per device pixel, so labels stay crisp without pointless upscaling */
+          var dpr = window.devicePixelRatio || 1;
+          var w = img.naturalWidth || parseInt(img.getAttribute("width"), 10) || 0;
+          if (w) stage.style.setProperty("--plan-w", Math.round(w / dpr) + "px");
+        }
+      }
+      stage.classList.toggle("is-actual", on);
+      if (zoomBtn) {
+        zoomBtn.setAttribute("aria-pressed", on ? "true" : "false");
+        zoomBtn.textContent = on ? labelFit : labelActual;
+      }
+    };
+    var centreOnPlan = function () {
+      var img = stage.querySelector("img");
+      if (!img) return;
+      var ir = img.getBoundingClientRect();
+      if (!ir.width) return;
+      stage.scrollLeft = Math.max(0, (ir.width - stage.clientWidth) / 2);
+      stage.scrollTop = Math.max(0, ir.height * 0.62 - stage.clientHeight / 2);
+    };
+    var open = function (ev) {
+      ev.preventDefault();
+      lastFocus = document.activeElement;
+      lb.hidden = false;
+      document.documentElement.classList.add("plan-open");
+      /* narrow screens: open already zoomed in, since a plan fitted to a phone is unreadable */
+      var narrow = window.innerWidth < 720;
+      setActual(narrow);
+      if (narrow) {
+        window.requestAnimationFrame(centreOnPlan);
+        var lbImg = stage.querySelector("img");
+        if (lbImg && !lbImg.complete) {
+          lbImg.addEventListener("load", function () {
+            if (narrow && stage.classList.contains("is-actual")) window.requestAnimationFrame(centreOnPlan);
+          });
+        }
+      }
+      if (closeBtn) closeBtn.focus();
+      track("floor_plan_zoom", { room: room });
+    };
+    var close = function () {
+      lb.hidden = true;
+      document.documentElement.classList.remove("plan-open");
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    };
+
+    planOpen.addEventListener("click", open);
+    if (closeBtn) closeBtn.addEventListener("click", close);
+    if (zoomBtn) zoomBtn.addEventListener("click", function () {
+      setActual(!stage.classList.contains("is-actual"));
+    });
+    lb.addEventListener("click", function (ev) {
+      if (ev.target === lb || ev.target === stage) close();
+    });
+    document.addEventListener("keydown", function (ev) {
+      if (lb.hidden) return;
+      if (ev.key === "Escape") close();
+    });
+  }
+
   /* Soft reveal of sections */
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (reduced) document.documentElement.classList.remove("js");

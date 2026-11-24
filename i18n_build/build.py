@@ -770,17 +770,18 @@ def build_room(t: dict, room: str) -> str:
     </div></div>
   </section>
 
-  <section class="section section--ivory2">
-    <div class="wrap reveal">
+  <section class="section section--ivory2" id="plan">
+    <div class="wrap center reveal">
       <span class="kicker">{e(r['plan_kicker'])}</span>
       <h2>{e(r['plan_h2'])}</h2>
+      <p class="lede">{e(r['plan_p'])}</p>
     </div>
     <div class="wrap plan-wrap reveal">
-      <div>{img_tag(t, assets, photos.PLAN[room])}</div>
-      <div>
-        <p class="lede">{e(r['plan_p'])}</p>
-        <p class="muted">{e(r['plan_cap'])}</p>
-      </div>
+      <figure class="plan">
+        <a class="plan__open" href="{assets}{photos.PLAN[room]}" target="_blank" rel="noopener"
+           data-plan-open aria-label="{e(t['ui']['plan_zoom'])}">{img_tag(t, assets, photos.PLAN[room])}<span class="plan__hint" aria-hidden="true">⤢ {e(t['ui']['plan_zoom'])}</span></a>
+        <figcaption class="muted">{e(r['plan_cap'])}</figcaption>
+      </figure>
     </div>
   </section>
 
@@ -873,6 +874,20 @@ def build_room(t: dict, room: str) -> str:
 </nav>
 
 {footer(t, 2, 'room')}
+
+<div class="plan-lb" id="plan-lightbox" hidden>
+  <div class="plan-lb__bar">
+    <span class="plan-lb__title">{e(r['plan_cap'])}</span>
+    <div class="plan-lb__tools">
+      <button type="button" class="plan-lb__btn" data-plan-zoom data-label-actual="{e(t['ui']['plan_actual'])}" data-label-fit="{e(t['ui']['plan_fit'])}" aria-pressed="false">{e(t['ui']['plan_actual'])}</button>
+      <a class="plan-lb__btn" href="{assets}{photos.PLAN[room]}" target="_blank" rel="noopener">{e(t['ui']['plan_newwin'])} ↗</a>
+      <button type="button" class="plan-lb__close" data-plan-close aria-label="{e(t['ui']['plan_close'])}">✕</button>
+    </div>
+  </div>
+  <div class="plan-lb__stage" data-plan-stage>
+    {img_tag(t, assets, photos.PLAN[room])}
+  </div>
+</div>
 
 <script>window.SITE_CONFIG={{page:"room",lang:"{t['dir']}",room:"{room}"}};</script>
 <script src="{assets}app.js" defer></script>

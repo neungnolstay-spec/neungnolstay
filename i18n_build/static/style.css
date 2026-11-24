@@ -202,8 +202,49 @@ ul{margin:0;padding:0;list-style:none}
   color:#fff;background:linear-gradient(180deg,transparent,rgba(20,32,43,.72));opacity:0;transition:.35s;
 }
 .gallery figure:hover figcaption{opacity:1}
-.plan-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.9fr);gap:clamp(28px,5vw,70px);align-items:center;margin-top:clamp(26px,4vw,44px)}
-.plan-wrap img{width:100%;background:#fff;padding:8px;border:1px solid var(--line-soft)}
+.plan-wrap{display:flex;justify-content:center;margin-top:clamp(24px,3.4vw,42px)}
+.plan{width:100%;max-width:1140px;margin:0}
+.plan__open{position:relative;display:block;background:#fff;padding:clamp(6px,.9vw,10px);border:1px solid var(--line-soft);cursor:zoom-in}
+.plan__open img{width:100%;height:auto;display:block}
+.plan__hint{
+  position:absolute;right:clamp(12px,1.6vw,18px);top:clamp(12px,1.6vw,18px);
+  display:inline-flex;align-items:center;gap:6px;padding:8px 13px;background:rgba(28,28,28,.82);color:#fff;
+  font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;transition:background .28s;
+}
+.plan__open:hover .plan__hint{background:var(--gold)}
+.plan figcaption{margin-top:14px;text-align:center;font-size:.8rem}
+
+/* floor plan lightbox: whole plan on screen, or 1:1 with scroll */
+.plan-lb{position:fixed;inset:0;z-index:130;display:flex;flex-direction:column;background:#111}
+.plan-lb[hidden]{display:none}
+.plan-lb__bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex:0 0 auto;
+  padding:12px clamp(14px,3vw,26px);border-bottom:1px solid rgba(255,255,255,.16);color:#f4efe6;
+}
+.plan-lb__title{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#c9b08a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plan-lb__tools{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.plan-lb__btn{
+  font-family:var(--sans);font-size:10.5px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;
+  color:#f4efe6;background:transparent;border:1px solid rgba(255,255,255,.34);padding:9px 12px;cursor:pointer;
+  transition:background .25s,color .25s,border-color .25s;white-space:nowrap;
+}
+.plan-lb__btn:hover,.plan-lb__btn[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#fff}
+.plan-lb__close{border:0;background:transparent;color:#f4efe6;font-size:18px;line-height:1;padding:8px 4px 8px 10px;cursor:pointer}
+.plan-lb__stage{
+  flex:1 1 auto;display:flex;align-items:center;justify-content:center;overflow:auto;
+  padding:clamp(10px,2vw,22px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+}
+.plan-lb__stage img{width:auto;height:auto;max-width:100%;max-height:100%;background:#fff;object-fit:contain}
+.plan-lb__stage.is-actual{align-items:flex-start;justify-content:flex-start}
+.plan-lb__stage.is-actual img{max-width:none;max-height:none;width:var(--plan-w,auto)}
+html.plan-open,html.plan-open body{overflow:hidden}
+@media(max-width:640px){
+  .plan-lb__title{display:none}
+  .plan-lb__bar{justify-content:flex-end;padding:10px 12px}
+  .plan-lb__btn{padding:8px 10px;font-size:10px;letter-spacing:.1em}
+  .plan__hint{font-size:9.5px;padding:6px 10px;letter-spacing:.08em}
+  .plan figcaption{font-size:.76rem}
+}
 
 /* ---------- spec table ---------- */
 .spec{margin-top:clamp(24px,3vw,36px);border-top:1px solid var(--line)}
@@ -311,7 +352,7 @@ ul{margin:0;padding:0;list-style:none}
   .langs .lang-label{display:none}
 }
 @media(max-width:940px){
-  .split,.loc,.cta-box,.plan-wrap{grid-template-columns:1fr}
+  .split,.loc,.cta-box{grid-template-columns:1fr}
   .split--rev .split__media{order:0}
   .spec--2{grid-template-columns:1fr}
   .cols{grid-template-columns:1fr 1fr}

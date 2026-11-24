@@ -31,8 +31,8 @@ SIZES = {
     "o10.webp": (525, 705),
     "o11.webp": (525, 392),
     "o12.webp": (475, 320),
-    "plan-hewyum.webp": (1600, 1600),
-    "plan-orot.webp": (1600, 1600),
+    "plan-hewyum.webp": (2200, 1661),
+    "plan-orot.webp": (2200, 1661),
     # 에어비앤비 실제 대표 사진(01_living.jpg)을 webp로 변환한 것 — 카드/상세 상단에 사용
     "airbnb-heyum.webp": (1200, 1512),
     "airbnb-orot.webp": (1200, 1593),
