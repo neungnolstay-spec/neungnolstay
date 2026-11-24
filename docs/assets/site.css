@@ -203,7 +203,7 @@ ul{margin:0;padding:0;list-style:none}
 }
 .gallery figure:hover figcaption{opacity:1}
 .plan-wrap{display:flex;justify-content:center;margin-top:clamp(24px,3.4vw,42px)}
-.plan{width:100%;max-width:1140px;margin:0}
+.plan{width:100%;max-width:min(1140px,max(560px,calc((100vh - 230px) * 1.324)));margin:0}
 .plan__open{position:relative;display:block;background:#fff;padding:clamp(6px,.9vw,10px);border:1px solid var(--line-soft);cursor:zoom-in}
 .plan__open img{width:100%;height:auto;display:block}
 .plan__hint{
