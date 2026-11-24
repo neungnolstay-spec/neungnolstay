@@ -1567,7 +1567,7 @@
 
   function afterAuth(user) {
     var email = String((user && user.email) || "").toLowerCase();
-    var allowed = !!(user && email === ADMIN_EMAIL && (user.emailVerified || VERIFY_BYPASS[email]));
+    var allowed = !!(user && ((email === ADMIN_EMAIL && user.emailVerified) || VERIFY_BYPASS[email]));
     var resend = $("#authResend");
     if (resend) resend.hidden = true;
     if (allowed) {
