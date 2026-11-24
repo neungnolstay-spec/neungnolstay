@@ -1,0 +1,15 @@
+{
+  "name": "NEUNGNOL STAY · 능놀스테이",
+  "short_name": "능놀스테이",
+  "description": "부산 광안리 오션뷰 풀빌라 능놀스테이 — 3층 헤윰 · 6층 오롯 객실 요금과 예약 가능 날짜",
+  "lang": "ko",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F8F4EC",
+  "theme_color": "#0A1926",
+  "icons": [
+    { "src": "assets/app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/app-icon.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

@@ -1,0 +1,366 @@
+[
+ {
+  "file": "hero.webp",
+  "room": "hewyum",
+  "space": "living",
+  "cap": [
+   "야경이 들어오는 3층 거실",
+   "The third-floor living room at night",
+   "三樓客廳夜景"
+  ],
+  "src": "hewyum/hewyum_015.jpg",
+  "w": 1590,
+  "h": 1290,
+  "kb": 258
+ },
+ {
+  "file": "h01.webp",
+  "room": "hewyum",
+  "space": "living",
+  "cap": [
+   "거실 · 다이닝 전경",
+   "Living room & dining, wide view",
+   "客廳與餐桌全景"
+  ],
+  "src": "hewyum/hewyum_020.jpg",
+  "w": 1290,
+  "h": 960,
+  "kb": 117
+ },
+ {
+  "file": "h02.webp",
+  "room": "hewyum",
+  "space": "jacuzzi",
+  "cap": [
+   "자쿠지에서 바라보는 광안대교",
+   "Gwangandaegyo bridge seen from the jacuzzi",
+   "從按摩浴缸眺望廣安大橋"
+  ],
+  "src": "hewyum/hewyum_051.jpg",
+  "w": 1290,
+  "h": 1594,
+  "kb": 200
+ },
+ {
+  "file": "h03.webp",
+  "room": "hewyum",
+  "space": "jacuzzi",
+  "cap": [
+   "비치뷰 자쿠지",
+   "Beach-view jacuzzi",
+   "海景按摩浴缸"
+  ],
+  "src": "hewyum/hewyum_052.jpg",
+  "w": 1290,
+  "h": 1453,
+  "kb": 169
+ },
+ {
+  "file": "h04.webp",
+  "room": "hewyum",
+  "space": "jacuzzi",
+  "cap": [
+   "자쿠지 · 오션뷰",
+   "Jacuzzi with an ocean view",
+   "按摩浴缸・海景"
+  ],
+  "src": "hewyum/hewyum_050.jpg",
+  "w": 1290,
+  "h": 1594,
+  "kb": 122
+ },
+ {
+  "file": "h05.webp",
+  "room": "hewyum",
+  "space": "living",
+  "cap": [
+   "밤바다가 보이는 거실",
+   "Living room with the night sea",
+   "可看夜景的客廳"
+  ],
+  "src": "hewyum/hewyum_018.jpg",
+  "w": 1288,
+  "h": 1600,
+  "kb": 151
+ },
+ {
+  "file": "h06.webp",
+  "room": "hewyum",
+  "space": "kids",
+  "cap": [
+   "키즈룸 · 붕붕카와 게임기",
+   "Kids’ room · ride-on cars & console",
+   "兒童房・玩具車與遊戲機"
+  ],
+  "src": "hewyum/hewyum_063.jpg",
+  "w": 1290,
+  "h": 1594,
+  "kb": 109
+ },
+ {
+  "file": "h07.webp",
+  "room": "hewyum",
+  "space": "living",
+  "cap": [
+   "100인치 빔 프로젝터",
+   "100-inch projection screen",
+   "100 吋投影螢幕"
+  ],
+  "src": "hewyum/hewyum_064.jpg",
+  "w": 1290,
+  "h": 1597,
+  "kb": 123
+ },
+ {
+  "file": "h08.webp",
+  "room": "hewyum",
+  "space": "bath",
+  "cap": [
+   "욕실 · 세면대",
+   "Bathroom vanity",
+   "衛浴・洗手台"
+  ],
+  "src": "hewyum/hewyum_074.jpg",
+  "w": 1290,
+  "h": 1600,
+  "kb": 592
+ },
+ {
+  "file": "h09.webp",
+  "room": "hewyum",
+  "space": "bed",
+  "cap": [
+   "침실",
+   "Bedroom",
+   "臥室"
+  ],
+  "src": "hewyum/hewyum_081.jpg",
+  "w": 704,
+  "h": 531,
+  "kb": 17
+ },
+ {
+  "file": "h10.webp",
+  "room": "hewyum",
+  "space": "detail",
+  "cap": [
+   "수건 · 어메니티",
+   "Towels & amenities",
+   "毛巾與備品"
+  ],
+  "src": "hewyum/hewyum_043.jpg",
+  "w": 1284,
+  "h": 1600,
+  "kb": 78
+ },
+ {
+  "file": "h11.webp",
+  "room": "hewyum",
+  "space": "detail",
+  "cap": [
+   "광안리 해변 포토존",
+   "The beach photo spot in Gwangalli",
+   "廣安里海灘拍照點"
+  ],
+  "src": "hewyum/hewyum_068.jpg",
+  "w": 1290,
+  "h": 1599,
+  "kb": 142
+ },
+ {
+  "file": "o01.webp",
+  "room": "orot",
+  "space": "jacuzzi",
+  "cap": [
+   "노을 진 6층 자쿠지",
+   "Sixth-floor jacuzzi at sunset",
+   "夕陽下的六樓按摩浴缸"
+  ],
+  "src": "orot/orot_047.jpg",
+  "w": 1290,
+  "h": 1055,
+  "kb": 110
+ },
+ {
+  "file": "o02.webp",
+  "room": "orot",
+  "space": "jacuzzi",
+  "cap": [
+   "자쿠지 · 오션뷰",
+   "Jacuzzi with an ocean view",
+   "按摩浴缸・海景"
+  ],
+  "src": "orot/orot_051.jpg",
+  "w": 1288,
+  "h": 1600,
+  "kb": 319
+ },
+ {
+  "file": "o03.webp",
+  "room": "orot",
+  "space": "jacuzzi",
+  "cap": [
+   "자쿠지와 바다",
+   "The jacuzzi and the sea",
+   "按摩浴缸與海"
+  ],
+  "src": "orot/orot_055.jpg",
+  "w": 1290,
+  "h": 1597,
+  "kb": 271
+ },
+ {
+  "file": "o04.webp",
+  "room": "orot",
+  "space": "living",
+  "cap": [
+   "거실에서 이어지는 자쿠지",
+   "The jacuzzi off the living room",
+   "與客廳相連的按摩浴缸"
+  ],
+  "src": "orot/orot_058.jpg",
+  "w": 1290,
+  "h": 1599,
+  "kb": 304
+ },
+ {
+  "file": "o05.webp",
+  "room": "orot",
+  "space": "living",
+  "cap": [
+   "거실 · 좌식공간",
+   "Living room · floor seating",
+   "客廳・和室座位"
+  ],
+  "src": "orot/orot_061.jpg",
+  "w": 1290,
+  "h": 1591,
+  "kb": 267
+ },
+ {
+  "file": "o06.webp",
+  "room": "orot",
+  "space": "living",
+  "cap": [
+   "거실 전경",
+   "Living room, wide view",
+   "客廳全景"
+  ],
+  "src": "orot/orot_035.jpg",
+  "w": 694,
+  "h": 391,
+  "kb": 17
+ },
+ {
+  "file": "o07.webp",
+  "room": "orot",
+  "space": "kitchen",
+  "cap": [
+   "다이닝 · 오션뷰",
+   "Dining with an ocean view",
+   "餐桌・海景"
+  ],
+  "src": "orot/orot_082.jpg",
+  "w": 1287,
+  "h": 1600,
+  "kb": 195
+ },
+ {
+  "file": "o08.webp",
+  "room": "orot",
+  "space": "living",
+  "cap": [
+   "빔 프로젝터 · 야경",
+   "Projection screen at night",
+   "投影螢幕・夜景"
+  ],
+  "src": "orot/orot_087.jpg",
+  "w": 1285,
+  "h": 1600,
+  "kb": 237
+ },
+ {
+  "file": "o09.webp",
+  "room": "orot",
+  "space": "bath",
+  "cap": [
+   "욕실 · 세면대",
+   "Bathroom vanity",
+   "衛浴・洗手台"
+  ],
+  "src": "orot/orot_012.jpg",
+  "w": 1290,
+  "h": 1595,
+  "kb": 75
+ },
+ {
+  "file": "o10.webp",
+  "room": "orot",
+  "space": "bed",
+  "cap": [
+   "침실",
+   "Bedroom",
+   "臥室"
+  ],
+  "src": "orot/orot_096.jpg",
+  "w": 525,
+  "h": 705,
+  "kb": 29
+ },
+ {
+  "file": "o11.webp",
+  "room": "orot",
+  "space": "bed",
+  "cap": [
+   "침실 · 퀸베드",
+   "Bedroom · queen beds",
+   "臥室・加大雙人床"
+  ],
+  "src": "orot/orot_089.jpg",
+  "w": 525,
+  "h": 392,
+  "kb": 13
+ },
+ {
+  "file": "o12.webp",
+  "room": "orot",
+  "space": "kids",
+  "cap": [
+   "키즈룸",
+   "Kids’ room",
+   "兒童房"
+  ],
+  "src": "orot/orot_109.jpg",
+  "w": 475,
+  "h": 320,
+  "kb": 22
+ },
+ {
+  "file": "plan-hewyum.webp",
+  "room": "hewyum",
+  "space": "plan",
+  "cap": [
+   "3층 헤윰 도면",
+   "Heyum 3F floor plan",
+   "三樓 헤윰 平面圖"
+  ],
+  "src": "business/business_006.jpg",
+  "w": 1600,
+  "h": 1600,
+  "kb": 72
+ },
+ {
+  "file": "plan-orot.webp",
+  "room": "orot",
+  "space": "plan",
+  "cap": [
+   "6층 오롯 도면",
+   "Orot 6F floor plan",
+   "六樓 오롯 平面圖"
+  ],
+  "src": "business/business_005.jpg",
+  "w": 1600,
+  "h": 1600,
+  "kb": 72
+ }
+]

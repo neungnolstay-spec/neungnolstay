@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NEUNGNOL STAY · 능놀스테이 | 부산 광안리 오션뷰 풀빌라 3층 헤윰 · 6층 오롯</title>
+<meta name="description" content="부산 광안리 해수욕장 도보 1분, 60평대 독채 오션뷰 풀빌라 능놀스테이. 3층 헤윰·6층 오롯 두 객실의 네이버 예약 실제 요금으로 날짜별 견적과 예약 가능 여부를 바로 확인하세요. 비치뷰 자쿠지·키즈룸·100인치 빔 프로젝터." />
+<meta name="keywords" content="부산펜션, 부산오션뷰펜션, 광안리펜션, 광안리키즈풀빌라, 광안리키즈펜션, 능놀스테이" />
+<meta name="theme-color" content="#0A1926" />
+<meta property="og:title" content="NEUNGNOL STAY · 능놀스테이 | 광안리 오션뷰 풀빌라" />
+<meta property="og:description" content="광안리 해변 1분, 60평대 독채 오션뷰 풀빌라. 3층 헤윰 · 6층 오롯. 네이버 예약 실제 요금으로 바로 견적." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/hero.webp" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="능놀스테이" />
+<link rel="icon" type="image/png" href="assets/app-icon.png" />
+<link rel="apple-touch-icon" href="assets/app-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="stylesheet" href="styles.css" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "능놀스테이 (NEUNGNOL STAY)",
+  "description": "부산 광안리 해수욕장 도보 1분, 60평대 독채 오션뷰 풀빌라. 3층 헤윰과 6층 오롯 두 객실.",
+  "url": "https://neungnolstay-spec.github.io/neungnolstay/",
+  "telephone": "+82-507-1429-2309",
+  "priceRange": "₩500,000 - ₩1,200,000",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "민락수변로 13",
+    "addressLocality": "수영구, 부산광역시",
+    "addressCountry": "KR"
+  },
+  "geo": { "@type": "GeoCoordinates", "latitude": 35.1547316, "longitude": 129.1241192 },
+  "checkinTime": "15:00",
+  "checkoutTime": "11:00",
+  "aggregateRating": { "@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "125", "bestRating": "5" },
+  "amenityFeature": [
+    { "@type": "LocationFeatureSpecification", "name": "비치뷰 자쿠지" },
+    { "@type": "LocationFeatureSpecification", "name": "키즈룸" },
+    { "@type": "LocationFeatureSpecification", "name": "100인치 빔 프로젝터" },
+    { "@type": "LocationFeatureSpecification", "name": "무료 주차 1대" },
+    { "@type": "LocationFeatureSpecification", "name": "와이파이" }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/neungnol_stay",
+    "https://m.place.naver.com/accommodation/1967720454"
+  ]
+}
+</script>
+</head>
+<body>
+
+<header class="site-head">
+  <div class="wrap">
+    <a class="brand" href="#top"><b>NEUNGNOL STAY</b><span>Busan · Gwangalli</span></a>
+    <nav class="nav">
+      <a href="#booking">예약</a>
+      <a href="#rooms">객실</a>
+      <a href="#gallery">사진</a>
+      <a href="#reviews">후기</a>
+      <a href="#location">위치·이용안내</a>
+    </nav>
+    <button class="btn gold head-cta" onclick="barBooking()">예약하기</button>
+    <div class="lang-sw" role="group" aria-label="Language">
+      <button data-lang="ko" onclick="setLang('ko')">한국어</button>
+      <button data-lang="en" onclick="setLang('en')">English</button>
+      <button data-lang="zh" onclick="setLang('zh')">繁體中文</button>
+    </div>
+  </div>
+</header>
+
+<nav class="mnav" aria-label="Sections">
+  <div class="wrap">
+    <a href="#booking" class="mnav-book">예약</a>
+    <a href="#rooms">객실</a>
+    <a href="#gallery">사진</a>
+    <a href="#reviews">후기</a>
+    <a href="#location">위치</a>
+  </div>
+</nav>
+
+<div class="searchbar">
+  <div class="wrap">
+    <div class="sb-cell">
+      <label>체크인</label>
+      <input type="date" id="sbIn" onchange="sbChanged()">
+      <div class="hint" id="sbInHint" data-dyn>날짜 선택</div>
+    </div>
+    <div class="sb-cell">
+      <label>체크아웃</label>
+      <input type="date" id="sbOut" onchange="sbChanged()">
+      <div class="hint" id="sbOutHint" data-dyn>날짜 선택</div>
+    </div>
+    <div class="sb-cell">
+      <label>인원</label>
+      <select id="sbGuests" onchange="sbChanged()">
+        <option value="2">성인 2명</option>
+        <option value="4">성인 4명</option>
+        <option value="6">성인 6명</option>
+        <option value="8" selected>성인 8명 (기준)</option>
+        <option value="10">성인 10명</option>
+        <option value="12">성인 12명 (최대)</option>
+      </select>
+      <div class="hint" id="sbSum" data-dyn>기준 8인 · 최대 12인</div>
+    </div>
+    <div class="sb-cell sb-room">
+      <label>객실</label>
+      <select id="sbRoom" onchange="setRoom(this.value)">
+        <option value="hewyum">3층 헤윰 · 15:00/11:00</option>
+        <option value="orot">6층 오롯 · 16:00/12:00</option>
+      </select>
+      <div class="hint" data-dyn>같은 건물, 다른 층</div>
+    </div>
+    <div class="sb-go"><button class="btn" onclick="goBook()">요금 확인</button></div>
+  </div>
+</div>
+
+<main id="top">
+
+<section class="hero">
+  <div class="hero-media"><img src="assets/hero.webp" alt="능놀스테이 3층 헤윰 거실의 밤바다 전망"></div>
+  <div class="wrap hero-inner">
+    <div class="hero-badges">
+      <span class="pill solid">★ 5.0 · 네이버 리뷰 125</span>
+      <span class="pill">세스코 멤버스</span>
+      <span class="pill">광안리 해변 도보 1분</span>
+    </div>
+    <h1 class="serif">광안리 바다 앞 60평, <em>능놀스테이</em></h1>
+    <p class="hero-sub">3층 헤윰 · 6층 오롯 — 같은 건물, 각 60평대 독채 오션뷰 풀빌라. 비치뷰 자쿠지·키즈룸·100인치 빔 프로젝터.</p>
+    <div class="hero-facts">
+      <div><span>Guests</span><b>8인 기준 · 최대 12인</b></div>
+      <div><span>Bedrooms</span><b>침실 3 · 퀸베드 5</b></div>
+      <div><span>Check-in / out</span><b id="heroCheck" data-dyn>3층 헤윰 15:00 / 11:00</b></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="booking" style="background:var(--ivory)">
+  <div class="wrap">
+    <div class="eyebrow">Reservation</div>
+    <h2 style="font-size:32px;margin:10px 0 8px">객실을 고르면 날짜별 요금이 바로 계산됩니다</h2>
+    <p id="naverStamp" data-dyn style="color:var(--muted);font-size:13.5px;margin:0 0 18px">네이버 예약 달력과 동기화 중…</p>
+
+    <div class="room-tabs" role="tablist" aria-label="객실 선택">
+      <button class="rt on" data-room="hewyum" onclick="setRoom('hewyum')">
+        <b>3층 헤윰</b><small>입실 15:00 · 퇴실 11:00 · 60평대</small>
+      </button>
+      <button class="rt" data-room="orot" onclick="setRoom('orot')">
+        <b>6층 오롯</b><small>입실 16:00 · 퇴실 12:00 · 60평대</small>
+      </button>
+    </div>
+
+    <div class="book-grid">
+      <div>
+        <div class="cal-toolbar">
+          <div class="mon" id="calTitle" data-dyn>2026년 11월</div>
+          <div class="cal-nav">
+            <button onclick="shiftMonth(-1)" aria-label="이전 달">‹</button>
+            <button onclick="shiftMonth(1)" aria-label="다음 달">›</button>
+          </div>
+        </div>
+        <div class="cal-months">
+          <div class="cal" id="cal1" data-dyn></div>
+          <div class="cal" id="cal2" data-dyn></div>
+        </div>
+        <div class="legend">
+          <span><i class="l-open"></i>예약 가능</span>
+          <span><i class="l-sel"></i>선택</span>
+          <span><i class="l-off"></i>예약 마감</span>
+          <span>숫자 아래는 1박 요금</span>
+        </div>
+        <div class="sel-line">
+          <div><span>체크인</span><b id="selIn" data-dyn>—</b></div>
+          <div><span>체크아웃</span><b id="selOut" data-dyn>—</b></div>
+          <div><span>숙박</span><b id="selNights" data-dyn>—</b></div>
+        </div>
+        <div class="guests-box">
+          <div class="guests-row">
+            <div class="lab">성인 <small>만 13세 이상</small></div>
+            <div class="stepper"><button onclick="stepGuest('adults',-1)">−</button><b id="gAdults">8</b><button onclick="stepGuest('adults',1)">+</button></div>
+          </div>
+          <div class="guests-row">
+            <div class="lab">아동 <small>만 2~12세 · 기준 인원에 포함</small></div>
+            <div class="stepper"><button onclick="stepGuest('children',-1)">−</button><b id="gChildren">0</b><button onclick="stepGuest('children',1)">+</button></div>
+          </div>
+          <div class="guests-row" style="border-bottom:0">
+            <div class="lab">유아 <small>24개월 미만 · 무료</small></div>
+            <div class="stepper"><button onclick="stepGuest('infants',-1)">−</button><b id="gInfants">0</b><button onclick="stepGuest('infants',1)">+</button></div>
+          </div>
+        </div>
+        <p class="cal-note">* 요금·마감 상태는 네이버 예약 달력에서 실시간으로 읽어옵니다. 마감된 날짜도 체크아웃일로는 선택할 수 있습니다.</p>
+      </div>
+
+      <aside class="quote" id="quoteCard">
+        <div class="qhead"><b>예약 견적</b><span id="qBadge" data-dyn>날짜 선택</span></div>
+        <div class="qbody" id="qBody" data-dyn>
+          <p style="font-size:13px;color:var(--muted);margin:4px 0 8px">달력에서 체크인·체크아웃 날짜를 선택해 주세요.</p>
+          <div class="qline"><span>1박 요금</span><b>—</b></div>
+        </div>
+        <div class="qtotal"><span>예상 합계</span><b id="qTotal" data-dyn>—</b></div>
+        <div class="qfx" id="qFx" data-dyn></div>
+        <div class="qfoot">
+          <button class="btn gold wide" id="qBtn" onclick="startBooking()" disabled>예약하기</button>
+          <div class="qch">
+            <a class="qch-btn" href="https://talk.naver.com/w4hhwm" target="_blank" rel="noopener">네이버 톡톡</a>
+            <a class="qch-btn" href="tel:050714292309" aria-label="전화 0507-1429-2309">전화 걸기</a>
+            <a class="qch-btn" href="https://www.instagram.com/neungnol_stay" target="_blank" rel="noopener">인스타그램</a>
+          </div>
+          <p class="qnote">예약과 결제는 선택한 객실의 네이버 예약 화면에서 진행됩니다. 이 견적은 참고 금액이며, 최종 금액·할인·쿠폰은 네이버 예약 화면에서 확정됩니다.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="rooms" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="eyebrow">Two rooms</div>
+    <h2 style="font-size:32px;margin:10px 0 8px">같은 건물, 두 개의 60평 독채</h2>
+    <p style="color:var(--muted);font-size:14px;margin:0 0 22px">3층 헤윰과 6층 오롯은 같은 건물의 서로 다른 층에 있는 별개의 독채입니다. 두 객실 모두 광안리 바다가 통창으로 들어옵니다.</p>
+
+    <div class="room-tabs" role="tablist" aria-label="객실 선택">
+      <button class="rt on" data-room="hewyum" onclick="setRoom('hewyum')">
+        <b>3층 헤윰</b><small>입실 15:00 · 퇴실 11:00</small>
+      </button>
+      <button class="rt" data-room="orot" onclick="setRoom('orot')">
+        <b>6층 오롯</b><small>입실 16:00 · 퇴실 12:00</small>
+      </button>
+    </div>
+
+    <div class="room-panel" id="roomPanel" data-dyn></div>
+  </div>
+</section>
+
+<section class="section" id="gallery">
+  <div class="wrap">
+    <div class="gal-head">
+      <div>
+        <div class="eyebrow">Gallery</div>
+        <h2 style="font-size:32px;margin-top:10px">실제 숙소 사진</h2>
+        <p style="color:var(--muted);font-size:12.5px;margin:8px 0 0">거실 · 자쿠지 · 침실 3 · 욕실 2 · 키즈룸 · 주방 · 도면까지 공간과 객실별로 골라 보세요.</p>
+      </div>
+      <button class="btn ghost" onclick="openLightbox('all')">사진 <b id="galCount">25</b>장 모두 보기</button>
+    </div>
+    <div class="gal" id="galMosaic" data-dyn></div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px">사진 출처: 능놀스테이 네이버 플레이스 업체 사진 · 네이버 예약 객실 갤러리(2024~2026년 등록분) — 숙소가 직접 촬영·등록한 실제 사진입니다. 도면의 실 배치는 실제와 다를 수 있습니다.</p>
+  </div>
+</section>
+
+<section class="section tight">
+  <div class="wrap">
+    <div class="eyebrow">The Stay</div>
+    <h2 style="font-size:32px;margin-top:10px">광안리에서 가장 넓은 60평</h2>
+    <div class="hl-grid">
+      <div class="hl">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 17c2 0 2-1.5 4-1.5S8 17 10 17s2-1.5 4-1.5S16 17 18 17s2-1.5 4-1.5"/><path d="M2 21c2 0 2-1.5 4-1.5S8 21 10 21s2-1.5 4-1.5S16 21 18 21s2-1.5 4-1.5"/><circle cx="17" cy="7" r="3"/><path d="M3 14V6a2 2 0 0 1 2-2h6"/></svg>
+        <h4>광안리 해변 도보 1분</h4>
+        <p>통창으로 광안대교와 바다가 바로 보입니다. 해바라기광장·민락회센터·민락어패류주차장이 도보 1분 거리입니다.</p>
+      </div>
+      <div class="hl">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M3 15h18"/><path d="M3 15V9a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4v6"/><path d="M6 19v-4M18 19v-4"/><path d="M8 9h.01M12 9h.01M16 9h.01"/></svg>
+        <h4>비치뷰 자쿠지</h4>
+        <p>거실 창가에 놓인 자쿠지에서 광안대교 노을과 밤바다를 그대로. 온수 이용에 별도 요금은 없습니다.</p>
+      </div>
+      <div class="hl">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="6" y="3" width="12" height="8" rx="2"/><path d="M3 21v-6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v6"/><path d="M8 16h8"/></svg>
+        <h4>키즈룸 무료 대여</h4>
+        <p>정글짐·트램폴린·흔들그네·미끄럼틀과 32인치 좌식 게임기. 유아동이 있는 예약에서 무료로 열어 드립니다.</p>
+      </div>
+      <div class="hl">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="2" y="4" width="20" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        <h4>100인치 빔 프로젝터</h4>
+        <p>거실 100인치 빔 프로젝터와 50인치 TV. 유튜브·넷플릭스를 그대로 즐길 수 있습니다.</p>
+      </div>
+      <div class="hl">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>
+        <h4>60평대 독채 · 최대 12인</h4>
+        <p>기준 8인·최대 12인. 침실 3(퀸베드 5)·욕실 2·화장대 3개로 단체·가족 여행에 맞습니다.</p>
+      </div>
+      <div class="hl">
+        <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M12 3l2.4 5.2 5.6.7-4.1 3.9 1 5.6L12 15.8 7.1 18.4l1-5.6L4 8.9l5.6-.7z"/></svg>
+        <h4>★ 5.0 · 리뷰 125</h4>
+        <p>네이버 방문자 리뷰 64건 + 블로그·카페 리뷰 61건. 대표 한 줄 “세심한 배려로 완성된 룸 컨디션”.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap split">
+    <div>
+      <div class="eyebrow">About the house</div>
+      <h2 style="font-size:34px;margin:12px 0 22px">작위적인 화려함보다,<br>기본에 충실한 따뜻한 공간</h2>
+      <p class="lead">부산 수영구 민락수변로 13, 3층과 6층에 자리한 <strong>각 60평대 독채 오션뷰 풀빌라</strong>입니다. 현관을 지나면 광안리 바다가 통창으로 들어오는 거실과 비치뷰 자쿠지, 침실 세 개가 이어집니다. 아이가 있다면 정글짐·트램폴린·미끄럼틀이 있는 키즈룸을 무료로 열어 드리고, 유아식기·하이체어·젖병소독기·아기침대 안전가드도 요청하시면 준비해 드립니다.</p>
+      <ul class="spec-list">
+        <li><span>유형</span><b>독채 · 60평대 · 오션뷰 풀빌라</b></li>
+        <li><span>주소</span><b>부산광역시 수영구 민락수변로 13, 3층(헤윰)·6층(오롯)</b></li>
+        <li><span>인원</span><b>기준 8인 / 최대 12인 (초과 1인당 30,000원 · 24개월 미만 무료)</b></li>
+        <li><span>침실</span><b>침실 3 — 퀸사이즈 베드 총 5개</b></li>
+        <li><span>욕실</span><b>욕실 2 · 화장대 3 · 헤어드라이기 3</b></li>
+        <li><span>입·퇴실</span><b>3층 헤윰 15:00 / 11:00 · 6층 오롯 16:00 / 12:00 (얼리 체크인·레이트 체크아웃 불가)</b></li>
+        <li><span>주차</span><b>무료 1대 (도보 1분 민락회센터·민락어패류주차장) — 차종·차번 사전 등록, 주차 불가 차종 있음</b></li>
+        <li><span>위생</span><b>세스코 멤버스 · 최근 통합방제 2026.11</b></li>
+      </ul>
+      <div class="amen">
+        <span>비치뷰 자쿠지</span><span>100인치 빔 프로젝터</span><span>50인치 TV · 넷플릭스</span><span>키즈룸</span>
+        <span>32인치 좌식 게임기</span><span>얼음정수기</span><span>커피머신</span><span>전기밥솥</span>
+        <span>인덕션 · 조리도구</span><span>식기 · 와인잔</span><span>드럼세탁기</span><span>공기청정기</span>
+        <span>유아하이체어</span><span>젖병소독기</span><span>아기침대 안전가드</span><span>유아식기</span>
+        <span>와이파이</span><span>무료 주차 1대</span><span>금연</span><span>반려동물 불가</span>
+      </div>
+    </div>
+    <div class="about-img">
+      <img src="assets/h01.webp" alt="능놀스테이 거실과 다이닝">
+      <div class="cap">바다가 통창으로 들어오는 거실과 다이닝</div>
+    </div>
+  </div>
+</section>
+
+<section class="section rates" id="rates">
+  <div class="wrap">
+    <div class="eyebrow">Rates</div>
+    <h2 style="font-size:32px;margin:10px 0 8px">요금 · 할인 안내</h2>
+    <p style="color:rgba(255,255,255,.66);font-size:13px;margin:0 0 8px">아래 요금은 네이버 예약 달력에서 확인한 2026년 11~12월 실제 1박 요금 범위입니다. 날짜별 정확한 금액은 위 달력에서 확인하세요.</p>
+    <div class="rate-grid">
+      <div>
+        <table class="rate">
+          <thead><tr><th>객실</th><th>입실 / 퇴실</th><th>1박 요금</th><th>예약 리뷰</th></tr></thead>
+          <tbody>
+            <tr><td><b>3층 헤윰</b></td><td>15:00 / 11:00</td><td><b>500,000~1,200,000원</b></td><td>28</td></tr>
+            <tr><td><b>6층 오롯</b></td><td>16:00 / 12:00</td><td><b>500,000~1,100,000원</b></td><td>21</td></tr>
+            <tr class="hi"><td>기준 인원</td><td colspan="3">8인 (최대 12인)</td></tr>
+            <tr><td>인원 추가</td><td colspan="3">1인당 30,000원 · 24개월 미만 영유아 무료</td></tr>
+            <tr><td>연박 할인</td><td colspan="3">2박 이상 예약 시 추가 1박당 50,000원 할인</td></tr>
+            <tr><td>네이버 쿠폰</td><td colspan="3">네이버 예약 10,000원 할인 쿠폰 (예약 화면에서 다운로드)</td></tr>
+          </tbody>
+        </table>
+        <p class="note">* 숙박하지 않는 방문객도 1인당 30,000원이 발생합니다. 얼리 체크인·레이트 체크아웃은 운영하지 않습니다. Npay 최대 5% 적립과 Npay 카드 이벤트가 진행 중입니다(네이버 예약 기준).</p>
+      </div>
+      <div class="rulebox">
+        <h4>무료 대여 · 요청 물품</h4>
+        <ul>
+          <li><span>키즈룸</span><b>무료</b></li>
+          <li><span>아기 하이체어</span><b>무료</b></li>
+          <li><span>유팡 젖병소독기</span><b>무료</b></li>
+          <li><span>유아 샴푸</span><b>무료</b></li>
+          <li><span>아기침대 안전가드 (2SET)</span><b>무료</b></li>
+          <li><span>유아동 배게</span><b>무료</b></li>
+          <li><span>유아식기</span><b>무료</b></li>
+        </ul>
+        <p class="note" style="margin-top:12px">키즈룸은 상시 개방이 아니라 유아동이 있는 예약에서 옵션을 선택하실 때 열어 드립니다. 필요 물품은 예약 시 요청해 주세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="reviews" style="background:#fff;border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="rev-head">
+      <div class="rev-score">5.0</div>
+      <div>
+        <div class="eyebrow">Guest reviews</div>
+        <div style="font-size:15px;margin-top:6px">네이버 방문자 리뷰 <b>64</b> · 블로그·카페 리뷰 <b>61</b> — 합계 <b>125</b>건 · 평점 5.0</div>
+        <div style="font-size:12.5px;color:var(--muted);margin-top:4px">객실별 예약 리뷰 — 헤윰 28건 · 오롯 21건 · 방문자 사진·영상 155건</div>
+      </div>
+    </div>
+    <div class="rev-grid" id="revGrid" data-dyn></div>
+    <div class="rev-foot">
+      <span class="rev-loc" id="revNote" data-dyn></span>
+      <a class="btn ghost" href="https://m.place.naver.com/accommodation/1967720454/review/visitor" target="_blank" rel="noopener">네이버 플레이스 리뷰 전체 보기 ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="location">
+  <div class="wrap loc">
+    <div>
+      <div class="eyebrow">Location</div>
+      <h2 style="font-size:30px;margin:10px 0 20px">광안리 해변 바로 앞</h2>
+      <dl>
+        <dt>주소</dt><dd>부산광역시 수영구 민락수변로 13, 3층(헤윰) · 6층(오롯) <span style="color:var(--muted);font-size:12.5px">(지번: 민락동 181-141)</span></dd>
+        <dt>도보 거리</dt><dd>광안리해수욕장 도보 1분 · 해바라기광장 · 민락회센터 1분 · 민락어패류주차장 1분</dd>
+        <dt>주차</dt><dd>무료 1대 · 도보 1분 민락회센터·민락어패류주차장 1대 무료 — 차종·차번 사전 등록 필요, 주차 불가 차종 있음</dd>
+        <dt>문의</dt><dd>0507-1429-2309 · 네이버 톡톡 · 인스타그램 @neungnol_stay</dd>
+        <dt>예약</dt><dd>네이버 예약 (3층 헤윰 · 6층 오롯)</dd>
+      </dl>
+      <div class="map-wrap">
+        <iframe title="능놀스테이 위치 지도" src="https://maps.google.com/maps?q=%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C%20%EC%88%98%EC%98%81%EA%B5%AC%20%EB%AF%BC%EB%9D%BD%EC%88%98%EB%B3%80%EB%A1%9C%2013&z=17&hl=ko&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div class="map-links">
+          <a href="https://www.google.com/maps/search/?api=1&query=%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C+%EC%88%98%EC%98%81%EA%B5%AC+%EB%AF%BC%EB%9D%BD%EC%88%98%EB%B3%80%EB%A1%9C+13" target="_blank" rel="noopener">구글 지도에서 크게 보기 ↗</a>
+          <a href="https://map.naver.com/p/search/%EB%8A%A5%EB%86%80%EC%8A%A4%ED%85%8C%EC%9D%B4" target="_blank" rel="noopener">네이버 지도 ↗</a>
+          <a href="https://www.google.com/maps/dir/?api=1&destination=%EB%B6%80%EC%82%B0%EA%B4%91%EC%97%AD%EC%8B%9C+%EC%88%98%EC%98%81%EA%B5%AC+%EB%AF%BC%EB%9D%BD%EC%88%98%EB%B3%80%EB%A1%9C+13" target="_blank" rel="noopener">길찾기 ↗</a>
+        </div>
+      </div>
+    </div>
+    <div class="faq">
+      <div class="eyebrow">Good to know</div>
+      <h2 style="font-size:30px;margin:10px 0 20px">이용 안내</h2>
+      <details open><summary>체크인·체크아웃 시간이 객실마다 다른가요?</summary><p>네. <b>3층 헤윰은 입실 15:00 / 퇴실 11:00</b>, <b>6층 오롯은 입실 16:00 / 퇴실 12:00</b>입니다. 청소와 다음 게스트를 위해 퇴실 시간은 꼭 지켜 주세요. 얼리 체크인·레이트 체크아웃은 운영하지 않습니다.</p></details>
+      <details><summary>인원 추가 요금은 얼마인가요?</summary><p>기준 8인, 최대 12인입니다. 기준 인원을 넘으면 1인당 30,000원이 추가되고 24개월 미만 영유아는 무료입니다. 숙박하지 않는 방문객도 1인당 30,000원이 발생하며, 예약 인원 외 무단 입실은 퇴실 조치됩니다.</p></details>
+      <details><summary>키즈룸과 유아용품은 유료인가요?</summary><p>키즈룸(정글짐·트램폴린·흔들그네·미끄럼틀·32인치 좌식게임기)은 유아동이 있는 예약에서 무료로 열어 드립니다. 아기 하이체어·유팡 젖병소독기·유아 샴푸·아기침대 안전가드(2SET)·유아동 배게·유아식기도 무료 대여이며, 예약 시 요청해 주시면 준비합니다.</p></details>
+      <details><summary>자쿠지 온수는 추가 요금이 있나요?</summary><p>없습니다. 거실 창가 자쿠지의 온수 이용은 무료이며, 별도 옵션을 선택하실 필요가 없습니다.</p></details>
+      <details><summary>주차는 어떻게 하나요?</summary><p>차량 1대가 무료입니다. 도보 1분 거리의 민락회센터·민락어패류주차장을 1대 무료로 이용하실 수 있고, 예약 시 차종과 차번을 미리 등록해 주셔야 합니다. 주차가 불가한 차종이 있으니 사전에 협의해 주세요.</p></details>
+      <details><summary>반려동물과 함께 갈 수 있나요?</summary><p>반려동물 동반은 불가합니다. 전 구역 금연이며, 흡연 적발 시 10만원 과태료와 퇴실 조치가 있습니다.</p></details>
+      <details><summary>음식 조리나 파티는 가능한가요?</summary><p>숙소에 비치된 인덕션 외의 화기는 사용할 수 없습니다. 바베큐·생선·청국장·조개류·대게처럼 냄새가 강한 음식은 객실 내에서 조리·섭취할 수 없고, 침구·소파에서의 음식 섭취도 삼가 주세요(오염 시 배상).</p></details>
+      <details><summary>소음은 괜찮은가요?</summary><p>건물 1층에 게임센터가, 건물 내에 노래방 업체가 입점해 있고 광안리 해변 상업지구에 자리합니다. 소음에 민감하신 분은 참고해 주세요.</p></details>
+      <details><summary>취소·환불 규정은 어떻게 되나요?</summary><p>취소·환불은 예약하신 채널(네이버 예약)의 규정이 적용됩니다. 구체적인 규정표는 네이버 예약 결제 단계에서 확인하실 수 있으며, 궁금한 점은 네이버 톡톡이나 0507-1429-2309로 문의해 주세요.</p></details>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <b>NEUNGNOL STAY</b>
+        <div style="margin-top:10px">부산광역시 수영구 민락수변로 13, 3층(헤윰) · 6층(오롯)</div>
+        <div>사업자등록번호 896-44-00744</div>
+        <div>문의 0507-1429-2309 · @neungnol_stay</div>
+      </div>
+      <div>
+        <div style="color:#fff;margin-bottom:8px">예약·안내</div>
+        <div class="foot-links">
+          <a href="https://m.booking.naver.com/booking/3/bizes/839642/items/4848181" target="_blank" rel="noopener">3층 헤윰 네이버 예약</a>
+          <a href="https://m.booking.naver.com/booking/3/bizes/839642/items/4881823" target="_blank" rel="noopener">6층 오롯 네이버 예약</a>
+          <a href="https://talk.naver.com/w4hhwm" target="_blank" rel="noopener">네이버 톡톡</a>
+          <a href="https://www.instagram.com/neungnol_stay" target="_blank" rel="noopener">인스타그램</a>
+          <a href="#location">이용 안내</a>
+        </div>
+      </div>
+      <div style="max-width:320px">이 페이지는 능놀스테이 소개와 요금 견적 안내를 위한 페이지입니다. 실제 예약·결제는 네이버 예약에서 진행되며, 표시 요금은 네이버 예약 달력 기준으로 자동 동기화됩니다.</div>
+    </div>
+    <div style="margin-top:34px;border-top:1px solid rgba(255,255,255,.12);padding-top:16px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap">
+      <span>© 2026 NEUNGNOL STAY. All rights reserved.</span>
+      <span id="naverState" data-dyn>네이버 예약 동기화 중…</span>
+      <span>사진 © 능놀스테이 · 네이버 플레이스 / 네이버 예약</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal" id="lbModal">
+  <div class="veil" onclick="closeModal('lbModal')"></div>
+  <div class="sheet lb">
+    <div class="sheet-head"><h3>숙소 사진 <span style="font-size:12px;color:rgba(255,255,255,.55);font-family:var(--sans)" id="lbCount" data-dyn></span></h3><button class="x" aria-label="닫기" onclick="closeModal('lbModal')">✕</button></div>
+    <div class="sheet-scroll lb-body">
+      <div class="chips" id="lbChips" data-dyn></div>
+      <div class="lb-grid" id="lbGrid" data-dyn></div>
+    </div>
+  </div>
+</div>
+<div class="viewer" id="viewer">
+  <button class="close" onclick="closeViewer()">✕</button>
+  <button class="nav prev" onclick="viewerStep(-1)">‹</button>
+  <img id="viewerImg" alt="">
+  <div class="cap" id="viewerCap" data-dyn></div>
+  <button class="nav next" onclick="viewerStep(1)">›</button>
+</div>
+
+<div class="modal" id="bookModal">
+  <div class="veil" onclick="closeModal('bookModal')"></div>
+  <div class="sheet narrow">
+    <div class="sheet-head"><h3 id="bkTitle">네이버 예약으로 이동</h3><button class="x" aria-label="닫기" onclick="closeModal('bookModal')">✕</button></div>
+    <div class="sheet-scroll">
+      <div class="pane" id="bkPane" data-dyn></div>
+    </div>
+  </div>
+</div>
+
+<div class="bookbar" id="bookBar">
+  <div class="bb-inner">
+    <div class="bb-info">
+      <div class="bb-price"><b id="bbPrice">500,000원~</b><span id="bbPer">/ 1박</span></div>
+      <div class="bb-sub" id="bbSub">3층 헤윰 · 가장 빠른 체크인 확인 중</div>
+    </div>
+    <button class="btn gold bb-btn" id="bbBtn" onclick="barBooking()">바로 예약하기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="site-data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

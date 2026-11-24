@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://neungnolstay-spec.github.io/neungnolstay/sitemap.xml
