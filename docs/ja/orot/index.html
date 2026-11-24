@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>ヌンノルステイ オロッ｜広安里ビーチ 海沿いの宿（6階オーシャンビュー）</title>
 <meta name="description" content="広安里ビーチの6階最上階、貸切オーシャンビュー客室オロッ。夕日が入るジャグジーとリビングがひとつながり、海を向いたダイニング、キッズルーム、100インチシネマ。約200㎡・8〜12名。チェックイン16:00 / アウト12:00、当サイトからご予約いただけます。">
 <meta name="keywords" content="ヌンノルステイ オロッ, 広安里ビーチ 海沿いの宿, 広安里 海が見える宿, 釜山 広安里 オーシャンビュー 宿泊, 広安里ビーチ 目の前 ホテル, 釜山 海が見えるホテル, 広安里 夕日 宿, 広安里 貸切 宿, 釜山 プールヴィラ, 広安里 ビーチビュー 客室 おすすめ, キッズルーム付き 釜山 宿, 広安里 ジャグジー 客室, 釜山 団体 宿 12名">
@@ -263,11 +269,14 @@
       <a href="../../zh-cn/orot/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../../zh-tw/orot/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="表示"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">モバイル版</button></div>
     <a class="head-book" href="#reserve">予約</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="表示"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">モバイル版</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../../ko/orot/" hreflang="ko" lang="ko" data-lang-switch="ko">KO</a>
       <a href="../../en/orot/" hreflang="en" lang="en" data-lang-switch="en">EN</a>
       <a href="../../ja/orot/" hreflang="ja" lang="ja" data-lang-switch="ja" aria-current="true">JA</a>
@@ -752,6 +761,7 @@
 </div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"ja",room:"orot"};</script>
+<script src="../../assets/view.js" defer></script>
 <script src="../../assets/app.js" defer></script>
 <script src="../../assets/nns.js" defer></script>
 <script src="../../assets/gallery.js" defer></script>

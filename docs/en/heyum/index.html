@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>Neungnol Stay Heyum | Gwangalli Beach Ocean View Stay</title>
 <meta name="description" content="Heyum is a 60-pyeong private ocean-view floor one minute from Gwangalli Beach. Full-width living-room windows over the sand, a beach-view jacuzzi facing Gwangan Bridge, 8 guests standard and up to 12, kids&#x27; room and 100-inch cinema. Check-in 15:00 / check-out 11:00, booked here on our own calendar.">
 <meta name="keywords" content="Neungnol Stay Heyum, Gwangalli Beach ocean view stay, accommodation in front of Gwangalli Beach, Gwangalli beach view stay, ocean view accommodation in Busan, Busan beachfront accommodation, Gwangalli pool villa, family stay Busan, stay right by Gwangalli Beach, Gwangalli beach view room recommendation, family stay Busan with kids&#x27; room, Gwangalli jacuzzi room, Busan group accommodation for 12">
@@ -258,11 +264,14 @@
       <a href="../../zh-cn/heyum/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../../zh-tw/heyum/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="View"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">Desktop</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">Mobile</button></div>
     <a class="head-book" href="#reserve">Book</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="View"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">Desktop</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">Mobile</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../../ko/heyum/" hreflang="ko" lang="ko" data-lang-switch="ko">KO</a>
       <a href="../../en/heyum/" hreflang="en" lang="en" data-lang-switch="en" aria-current="true">EN</a>
       <a href="../../ja/heyum/" hreflang="ja" lang="ja" data-lang-switch="ja">JA</a>
@@ -747,6 +756,7 @@ with a longer first day</h2>
 </div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"en",room:"heyum"};</script>
+<script src="../../assets/view.js" defer></script>
 <script src="../../assets/app.js" defer></script>
 <script src="../../assets/nns.js" defer></script>
 <script src="../../assets/gallery.js" defer></script>

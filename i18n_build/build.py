@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import html
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -42,6 +43,23 @@ GOOGLE_MAP_LINK = f"https://www.google.com/maps/search/?api=1&query={LAT},{LNG}"
 FONT_LINKS = """<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;400&display=swap" rel="stylesheet">"""
+
+# PC/모바일 버전 선택을 첫 페인트 전에 적용한다(새로고침 시 깜박임 방지). view.js 가 이어받는다.
+VIEW_INIT_JS = """<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>"""
+
+# 모바일 보기 강제용 CSS 머리·꼬리 (build.py 가 max-width 미디어 규칙을 html.view-mo 로 복제한다)
+VIEW_FORCE_HEAD = """
+/* ===== PC에서 보는 모바일 버전(html.view-mo): 폰 화면처럼 420px 폰 프레임 ===== */
+html.view-mo{background:#0b0b0b}
+html.view-mo body{max-width:420px;margin:0 auto;box-shadow:0 0 0 1px rgba(255,255,255,.07)}
+html.view-mo .bookbar{left:50%;right:auto;width:420px;max-width:100%;transform:translateX(-50%)}
+html.view-mo .plan-lb,html.view-mo .gal-lb{left:50%;right:auto;width:420px;max-width:100%;transform:translateX(-50%)}
+"""
 
 sys.path.insert(0, str(HERE))
 import photos  # noqa: E402
@@ -197,6 +215,7 @@ def head(t: dict, depth: int, page: str, title: str, desc: str, keywords: str,
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+{VIEW_INIT_JS}
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
 <meta name="keywords" content="{e(keywords)}">
@@ -247,6 +266,23 @@ def lang_links(t: dict, depth: int, page: str, room: str | None) -> str:
     return "\n      ".join(rows)
 
 
+def view_toggle(t: dict, *, compact: bool = False) -> str:
+    """PC 버전 / 모바일 버전 선택 버튼 (선택은 localStorage 에 저장, 없으면 자동=반응형)."""
+    ui = t["ui"]
+    cls = "vtoggle vtoggle--compact" if compact else "vtoggle"
+    items = []
+    for val in ("pc", "mo"):
+        label = ui["view_pc"] if val == "pc" else ui["view_mo"]
+        items.append(
+            f'<button type="button" class="vtoggle__btn" data-view="{val}" aria-pressed="false">{e(label)}</button>'
+        )
+    return (
+        f'<div class="{cls}" role="group" aria-label="{e(ui["view_label"])}">'
+        + "".join(items)
+        + "</div>"
+    )
+
+
 def header(t: dict, depth: int, page: str, room: str | None = None) -> str:
     a = attr_links(t, depth, page)
     nav = t["nav"]
@@ -283,11 +319,14 @@ def header(t: dict, depth: int, page: str, room: str | None = None) -> str:
       <span class="lang-label">{e(nav['language'])}</span>
       {langs}
     </div>
+    {view_toggle(t)}
     <a class="head-book" href="{book_href}"{book_attr}>{e(nav['book'])}</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    {view_toggle(t, compact=True)}
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="{e(nav['language'])}">{langs}</span>
     <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-links" aria-label="{e(nav['home'])}">{mobile}</span>
@@ -1163,6 +1202,7 @@ def build_home(t: dict) -> str:
 {footer(t, 1, 'home')}
 
 <script>window.SITE_CONFIG={{page:"home",lang:"{t['dir']}",room:""}};</script>
+<script src="{assets}view.js" defer></script>
 <script src="{assets}app.js" defer></script>
 <script src="{assets}nns.js" defer></script>
 <script src="{assets}booking.js" defer></script>
@@ -1400,6 +1440,7 @@ def build_room(t: dict, room: str) -> str:
 </div>
 
 <script>window.SITE_CONFIG={{page:"room",lang:"{t['dir']}",room:"{room}"}};</script>
+<script src="{assets}view.js" defer></script>
 <script src="{assets}app.js" defer></script>
 <script src="{assets}nns.js" defer></script>
 <script src="{assets}gallery.js" defer></script>
@@ -1803,6 +1844,58 @@ def check_content_keys():
         assert len(g["queries"]) == len(base_geo["queries"]), (d, "queries")
 
 
+MAXW_RE = re.compile(r"@media\s*\(\s*max-width\s*:\s*(\d+)px\s*\)\s*\{")
+
+
+def _split_rules(body: str) -> list[str]:
+    """중괄호 깊이 0 기준으로 최상위 CSS 규칙 문자열을 나눈다."""
+    rules, depth, buf = [], 0, []
+    for ch in body:
+        buf.append(ch)
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                rules.append("".join(buf).strip())
+                buf = []
+    return [r for r in rules if r]
+
+
+def force_mobile_css(css: str, min_width: int = 421) -> str:
+    """max-width 미디어 규칙을 html.view-mo 스코프로 한 번 더 출력한다.
+
+    PC 브라우저에서 '모바일 버전'을 눌렀을 때, 창 폭을 바꾸지 않고도 실제 폰(420px)에서
+    적용되는 모든 반응형 규칙이 그대로 적용된다.
+    """
+    out: list[str] = []
+    pos = 0
+    while True:
+        m = MAXW_RE.search(css, pos)
+        if not m:
+            break
+        start = m.end() - 1  # 여는 중괄호 위치
+        depth, j = 0, start
+        while j < len(css):
+            if css[j] == "{":
+                depth += 1
+            elif css[j] == "}":
+                depth -= 1
+                if depth == 0:
+                    break
+            j += 1
+        body = css[start + 1:j]
+        if int(m.group(1)) >= min_width:
+            for rule in _split_rules(body):
+                sel, _, decls = rule.partition("{")
+                if not decls or sel.strip().startswith("@"):
+                    continue
+                parts = ["html.view-mo " + s.strip() for s in sel.split(",") if s.strip()]
+                out.append(",".join(parts) + "{" + decls)
+        pos = j + 1
+    return "\n".join(out)
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--out", default="docs", help="출력 폴더 (repo 기준)")
@@ -1825,7 +1918,12 @@ def main() -> None:
     shutil.copy2(ROOT / "assets" / "app-icon.png", assets_out / "app-icon.png")
     shutil.copytree(ROOT / "assets" / "gallery", assets_out / "gallery", dirs_exist_ok=True)
     (assets_out / "gallery" / "manifest.json").unlink(missing_ok=True)
-    shutil.copy2(HERE / "static" / "style.css", assets_out / "site.css")
+    site_css = (HERE / "static" / "style.css").read_text(encoding="utf-8")
+    (assets_out / "site.css").write_text(
+        site_css + "\n" + force_mobile_css(site_css) + "\n" + VIEW_FORCE_HEAD,
+        encoding="utf-8",
+    )
+    shutil.copy2(HERE / "static" / "view.js", assets_out / "view.js")
     shutil.copy2(HERE / "static" / "app.js", assets_out / "app.js")
     shutil.copy2(HERE / "static" / "gallery.js", assets_out / "gallery.js")
     shutil.copy2(HERE / "static" / "booking.js", assets_out / "booking.js")

@@ -552,9 +552,9 @@
   }
 
   function onSetting(key) {
-    return function (value) {
+    return function (snap) {
       state.settings = state.settings || {};
-      state.settings[key] = value;
+      state.settings[key] = snap && snap.val ? snap.val() : null;
       markLive();
       renderAll();
     };

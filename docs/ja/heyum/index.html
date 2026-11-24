@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>ヌンノルステイ ヘユム｜広安里ビーチ 海が見える宿（3階オーシャンビュー）</title>
 <meta name="description" content="広安里海水浴場まで徒歩1分、3階の貸切オーシャンビュー客室ヘユム。全面窓のリビングとビーチビューのジャグジーから広安大橋まで望む約200㎡・定員8名最大12名。キッズルーム・100インチシネマ。チェックイン15:00 / アウト11:00、当サイトからご予約いただけます。">
 <meta name="keywords" content="ヌンノルステイ ヘユム, 広安里 海が見える宿, 広安里ビーチ 目の前 ホテル, 釜山 広安里 オーシャンビュー 宿泊, 広安里ビーチ 徒歩すぐ 宿泊, 釜山 海が見えるホテル, 広安里 プールヴィラ, 釜山 子連れ 宿, 広安里 貸切 宿, 広安里 ビーチビュー 客室 おすすめ, キッズルーム付き 釜山 宿, 広安里 ジャグジー 客室, 釜山 団体 宿 12名">
@@ -258,11 +264,14 @@
       <a href="../../zh-cn/heyum/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../../zh-tw/heyum/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="表示"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">モバイル版</button></div>
     <a class="head-book" href="#reserve">予約</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="表示"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">モバイル版</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../../ko/heyum/" hreflang="ko" lang="ko" data-lang-switch="ko">KO</a>
       <a href="../../en/heyum/" hreflang="en" lang="en" data-lang-switch="en">EN</a>
       <a href="../../ja/heyum/" hreflang="ja" lang="ja" data-lang-switch="ja" aria-current="true">JA</a>
@@ -747,6 +756,7 @@
 </div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"ja",room:"heyum"};</script>
+<script src="../../assets/view.js" defer></script>
 <script src="../../assets/app.js" defer></script>
 <script src="../../assets/nns.js" defer></script>
 <script src="../../assets/gallery.js" defer></script>

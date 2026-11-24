@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>능놀스테이 오롯 | 광안리 해변 오션뷰 스테이</title>
 <meta name="description" content="광안리 해변 6층 최상층 오션뷰 독채, 능놀스테이 오롯. 노을 지는 자쿠지와 통창 거실에서 바다를 내려다보는 60평대·8~12인. 키즈룸·100인치 시네마. 입실 16:00 / 퇴실 12:00, 홈페이지에서 바로 예약.">
 <meta name="keywords" content="능놀스테이 오롯, 능놀스테이 6층, 광안리 해변 오션뷰 숙소, 광안리 바다뷰 숙소, 광안리 오션뷰 감성숙소, 부산 광안리 바다 전망 숙소, 광안리 해변 숙소 추천, 광안리 해변 가까운 숙소, 부산 독채숙소, 광안리 노을 숙소, 광안리 해변 오션뷰 객실 추천, 키즈룸 있는 광안리 숙소, 광안리 자쿠지 객실, 부산 단체 숙소 12인">
@@ -263,11 +269,14 @@
       <a href="../../zh-cn/orot/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../../zh-tw/orot/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="화면 버전"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC 버전</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">모바일 버전</button></div>
     <a class="head-book" href="#reserve">예약하기</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="화면 버전"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC 버전</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">모바일 버전</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../../ko/orot/" hreflang="ko" lang="ko" data-lang-switch="ko" aria-current="true">KO</a>
       <a href="../../en/orot/" hreflang="en" lang="en" data-lang-switch="en">EN</a>
       <a href="../../ja/orot/" hreflang="ja" lang="ja" data-lang-switch="ja">JA</a>
@@ -752,6 +761,7 @@
 </div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"ko",room:"orot"};</script>
+<script src="../../assets/view.js" defer></script>
 <script src="../../assets/app.js" defer></script>
 <script src="../../assets/nns.js" defer></script>
 <script src="../../assets/gallery.js" defer></script>

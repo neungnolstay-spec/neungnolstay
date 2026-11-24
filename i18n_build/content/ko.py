@@ -23,6 +23,9 @@ T = {
     },
     "ui": {
         "lang_label": "언어",
+        "view_label": "화면 버전",
+        "view_pc": "PC 버전",
+        "view_mo": "모바일 버전",
         "detail": "자세히 보기",
         "airbnb": "에어비앤비에서 예약하기",
         "airbnb_short": "에어비앤비 예약",

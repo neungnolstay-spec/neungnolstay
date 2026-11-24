@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>Neungnol Stay｜釜山廣安里海景住宿 · 海灘正前方整層別墅（Heyum·Orot）</title>
 <meta name="description" content="釜山廣安里海水浴場正前方，落地窗外就是海的約200平方公尺整層海景泳池別墅 Neungnol Stay。3樓 Heyum 與6樓 Orot，海景按摩浴缸、兒童房、100吋劇院。可於本站預訂日曆直接預訂。">
 <meta name="keywords" content="Neungnol Stay, 능놀스테이, 釜山廣安里海景住宿, 廣安里海水浴場海景房, 釜山廣安里海邊住宿, 廣安里海灘正前方住宿, 釜山海景民宿, 釜山廣安里海景飯店, 廣安里海景別墅, 釜山親子住宿, 廣安里整層住宿, 釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到廣安大橋的按摩浴缸住宿, 帶孩子 釜山海景民宿, 釜山12人團體海邊住宿, 廣安里海水浴場步行1分鐘">
@@ -296,11 +302,14 @@
       <a href="../zh-cn/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../zh-tw/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw" aria-current="true">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="版本"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">電腦版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">手機版</button></div>
     <a class="head-book" href="#reserve">訂房</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="版本"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">電腦版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">手機版</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../ko/" hreflang="ko" lang="ko" data-lang-switch="ko">KO</a>
       <a href="../en/" hreflang="en" lang="en" data-lang-switch="en">EN</a>
       <a href="../ja/" hreflang="ja" lang="ja" data-lang-switch="ja">JA</a>
@@ -735,6 +744,7 @@
 </footer>
 
 <script>window.SITE_CONFIG={page:"home",lang:"zh-tw",room:""};</script>
+<script src="../assets/view.js" defer></script>
 <script src="../assets/app.js" defer></script>
 <script src="../assets/nns.js" defer></script>
 <script src="../assets/booking.js" defer></script>

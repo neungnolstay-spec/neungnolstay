@@ -24,6 +24,9 @@ T = {
     },
     "ui": {
         "lang_label": "Language",
+        "view_label": "View",
+        "view_pc": "Desktop",
+        "view_mo": "Mobile",
         "detail": "View details",
         "airbnb": "Book on Airbnb",
         "airbnb_short": "Airbnb",

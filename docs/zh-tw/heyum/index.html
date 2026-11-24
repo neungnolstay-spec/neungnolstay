@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>Neungnol Stay Heyum｜廣安里海水浴場海景房（3樓整層）</title>
 <meta name="description" content="距廣安里海水浴場步行1分鐘，3樓整層海景客房 Heyum。客廳落地窗與海景按摩浴缸可望見廣安大橋，約200平方公尺、8人標準最多12人，兒童房與100吋劇院。入住15:00 / 退房11:00，可於本站直接預訂。">
 <meta name="keywords" content="Neungnol Stay Heyum, 능놀스테이 헤윰, 廣安里海水浴場海景房, 廣安里海灘正前方住宿, 釜山廣安里海景住宿, 廣安里海景民宿, 釜山海景民宿, 廣安里海景別墅, 廣安里親子住宿, 釜山家族住宿, 廣安里海景房推薦, 有兒童房的釜山住宿, 廣安里按摩浴缸客房, 釜山團體住宿12人">
@@ -258,11 +264,14 @@
       <a href="../../zh-cn/heyum/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../../zh-tw/heyum/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw" aria-current="true">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="版本"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">電腦版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">手機版</button></div>
     <a class="head-book" href="#reserve">訂房</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="版本"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">電腦版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">手機版</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../../ko/heyum/" hreflang="ko" lang="ko" data-lang-switch="ko">KO</a>
       <a href="../../en/heyum/" hreflang="en" lang="en" data-lang-switch="en">EN</a>
       <a href="../../ja/heyum/" hreflang="ja" lang="ja" data-lang-switch="ja">JA</a>
@@ -747,6 +756,7 @@
 </div>
 
 <script>window.SITE_CONFIG={page:"room",lang:"zh-tw",room:"heyum"};</script>
+<script src="../../assets/view.js" defer></script>
 <script src="../../assets/app.js" defer></script>
 <script src="../../assets/nns.js" defer></script>
 <script src="../../assets/gallery.js" defer></script>

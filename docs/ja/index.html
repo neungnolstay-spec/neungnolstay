@@ -3,6 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+(function(){try{var v=localStorage.getItem("nns_view"),r=document.documentElement;
+if(v==="pc"){r.classList.add("view-pc");var m=document.querySelector('meta[name="viewport"]');
+if(m)m.setAttribute("content","width=1280");}
+else if(v==="mo"){r.classList.add("view-mo");}}catch(e){}})();
+</script>
 <title>ヌンノルステイ｜釜山 広安里ビーチ目の前のオーシャンビュー宿泊（ヘユム・オロッ）</title>
 <meta name="description" content="釜山・広安里海水浴場の目の前、全面窓から海が見える約200㎡の貸切オーシャンビュー・プールヴィラ、ヌンノルステイ。3階ヘユムと6階オロッ、ビーチビューのジャグジー・キッズルーム・100インチシネマ。予約カレンダーから直接ご予約いただけます。">
 <meta name="keywords" content="ヌンノルステイ, ヌンノルステイ ヘユム, ヌンノルステイ オロッ, 広安里ビーチ 目の前 ホテル, 広安里 海が見える宿, 釜山 広安里 オーシャンビュー 宿泊, 広安里ビーチ 海沿いの宿, 釜山 海が見えるホテル, 広安里ビーチ 徒歩すぐ 宿泊, 釜山 宿泊施設, 釜山 おしゃれな宿, 広安里 プールヴィラ, 釜山 広安里 オーシャンビュー 家族向け 宿泊, 広安里ビーチ 目の前 貸切 宿, 広安大橋が見える ジャグジー 宿, 子ども連れ 釜山 海が見える 宿, 釜山 12名 グループ 宿, 広安里海水浴場 徒歩1分 宿">
@@ -296,11 +302,14 @@
       <a href="../zh-cn/" hreflang="zh-Hans" lang="zh-Hans" data-lang-switch="zh-cn">简</a>
       <a href="../zh-tw/" hreflang="zh-Hant" lang="zh-Hant" data-lang-switch="zh-tw">繁</a>
     </div>
+    <div class="vtoggle" role="group" aria-label="表示"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">モバイル版</button></div>
     <a class="head-book" href="#reserve">予約</a>
   </div>
 </header>
 <div class="mnav">
   <div class="wrap">
+    <div class="vtoggle vtoggle--compact" role="group" aria-label="表示"><button type="button" class="vtoggle__btn" data-view="pc" aria-pressed="false">PC版</button><button type="button" class="vtoggle__btn" data-view="mo" aria-pressed="false">モバイル版</button></div>
+    <span aria-hidden="true" style="opacity:.3">|</span>
     <span class="mnav-langs" role="group" aria-label="LANGUAGE"><a href="../ko/" hreflang="ko" lang="ko" data-lang-switch="ko">KO</a>
       <a href="../en/" hreflang="en" lang="en" data-lang-switch="en">EN</a>
       <a href="../ja/" hreflang="ja" lang="ja" data-lang-switch="ja" aria-current="true">JA</a>
@@ -735,6 +744,7 @@
 </footer>
 
 <script>window.SITE_CONFIG={page:"home",lang:"ja",room:""};</script>
+<script src="../assets/view.js" defer></script>
 <script src="../assets/app.js" defer></script>
 <script src="../assets/nns.js" defer></script>
 <script src="../assets/booking.js" defer></script>

@@ -23,6 +23,9 @@ T = {
     },
     "ui": {
         "lang_label": "言語",
+        "view_label": "表示",
+        "view_pc": "PC版",
+        "view_mo": "モバイル版",
         "detail": "詳しく見る",
         "airbnb": "Airbnbで予約する",
         "airbnb_short": "Airbnb",

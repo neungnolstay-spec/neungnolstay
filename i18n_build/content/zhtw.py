@@ -23,6 +23,9 @@ T = {
     },
     "ui": {
         "lang_label": "語言",
+        "view_label": "版本",
+        "view_pc": "電腦版",
+        "view_mo": "手機版",
         "detail": "查看詳情",
         "airbnb": "在 Airbnb 訂房",
         "airbnb_short": "Airbnb",
