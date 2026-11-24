@@ -65,6 +65,11 @@ LANGS = [ko.T, en.T, ja.T, zhcn.T, zhtw.T]
 BY_DIR = {t["dir"]: t for t in LANGS}
 ROOMS = ("heyum", "orot")
 FLOOR = {"heyum": "3", "orot": "6"}
+# 객실별 세탁·건조기 (2026-11-24 대욱 님 확인): 세탁기는 두 객실 모두, 건조기는 오롯에만 있음
+LAUNDRY_KO = {
+    "heyum": "드럼세탁기 있음 · 건조기 없음",
+    "orot": "드럼세탁기 + 건조기 있음",
+}
 
 # AI 검색(GEO/AEO)용 언어별 요약·질문·키워드 (content/geo.py). t["dir"] 키.
 GEO = {t["dir"]: geo.GEO[t["dir"]] for t in LANGS}
@@ -448,7 +453,8 @@ def lodgings_jsonld(t: dict) -> dict:
             {"@type": "LocationFeatureSpecification", "name": "Baby high chair", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Free parking (1 car, 1 minute on foot)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": True},
-            {"@type": "LocationFeatureSpecification", "name": "Washing machine", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Washing machine (both floors: Heyum and Orot)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Clothes dryer (Orot, 6th floor only)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Kitchen (induction only)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Air purifier", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Elevator", "value": True},
@@ -493,6 +499,7 @@ def room_jsonld(t: dict, room: str) -> dict:
             {"@type": "LocationFeatureSpecification", "name": "Baby high chair", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Kitchen (induction only)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Washing machine", "value": True},
+            *([{"@type": "LocationFeatureSpecification", "name": "Clothes dryer", "value": True}] if room == "orot" else []),
             {"@type": "LocationFeatureSpecification", "name": "Air purifier", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Elevator", "value": True},
@@ -1192,6 +1199,7 @@ def build_llms() -> str:
             f"{card['desc']}",
             "",
             *_room_spec_lines(ko_t, room),
+            f"- 세탁 / Laundry: {LAUNDRY_KO[room]}",
             f"- 에어비앤비 / Airbnb: {AIRBNB[room]} (평점 {stats['rating']} / 5, 후기 {stats['count']}개)",
             f"- 네이버 예약 / Naver Booking: {NAVER_BOOKING[room]}",
             f"- 페이지 / Page: {u(ko_t, room)}",
@@ -1204,7 +1212,8 @@ def build_llms() -> str:
         "- 객실 안 비치뷰 온수 자쿠지 (오롯은 거실과 벽 없이 이어짐)",
         "- 키즈룸: 정글짐·트램폴린·미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV(유튜브·넷플릭스)",
         "- 100인치 빔프로젝터 (거실 벽이 스크린), 유아 하이체어",
-        "- 60평대 독채: 침실 3·욕실 2·퀸베드 5, 주방(인덕션만), 드럼세탁기, 공기청정기, 엘리베이터",
+        "- 60평대 독채: 침실 3·욕실 2·퀸베드 5, 주방(인덕션만), 공기청정기, 엘리베이터",
+        "- 세탁·건조: 드럼세탁기는 헤윰·오롯 두 객실 모두, 건조기는 오롯(6층)에만 있음 (헤윰에는 건조기 없음)",
         "- 가족·단체 여행에 맞춘 구성: 기본 8인·최대 12인, 24개월 미만 무료, 초과 1인 30,000원",
         "",
         "## 이용 규정 (House rules)",

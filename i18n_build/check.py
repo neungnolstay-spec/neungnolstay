@@ -410,6 +410,53 @@ def check_geo(base: str) -> None:
         if lod.get("geo", {}).get("latitude") != build.LAT:
             fail(f"{path} LodgingBusiness geo 불일치")
 
+    # 객실별 세탁·건조기 구분 (헤윰: 세탁기만 / 오롯: 세탁기+건조기)
+    for t in build.LANGS:
+        for room in build.ROOMS:
+            path = f"/{t['dir']}/{room}/"
+            status, body = fetch(local(base, path))
+            if status != 200:
+                continue
+            p = Page()
+            p.feed(body)
+            room_ld = None
+            for raw in p.jsonld:
+                try:
+                    data = json.loads(raw)
+                except json.JSONDecodeError:
+                    continue
+                for block in (data if isinstance(data, list) else [data]):
+                    if block.get("@type") == "HotelRoom":
+                        room_ld = block
+            if not room_ld:
+                fail(f"{path} HotelRoom 없음 (세탁·건조기 확인 불가)")
+                continue
+            names = " ".join(a.get("name", "") for a in room_ld.get("amenityFeature", [])).lower()
+            if "washing machine" not in names:
+                fail(f"{path} HotelRoom amenityFeature 에 세탁기 없음")
+            if room == "orot":
+                if "dryer" not in names:
+                    fail(f"{path} HotelRoom amenityFeature 에 건조기 없음")
+            elif "dryer" in names:
+                fail(f"{path} 건조기 없는 헤윰에 dryer 표기됨")
+        CHECK_ITEMS.append(f"/{t['dir']}/ 객실별 세탁기·건조기 구분 OK")
+
+    # llms.txt / llms-full.txt 의 세탁·건조기 구분
+    _, short_txt = fetch(local(base, "/llms.txt"))
+    _, full_txt = fetch(local(base, "/llms-full.txt"))
+    if "건조기" not in short_txt:
+        fail("llms.txt 에 건조기 정보 없음")
+    for needle in ("헤윰에는 건조기 없음", "건조기는 오롯(6층)에만"):
+        if needle not in short_txt:
+            fail(f"llms.txt 에 '{needle}' 없음")
+    dryer_terms = {"ko": "건조기", "en": "Clothes dryer", "ja": "衣類乾燥機", "zh-cn": "烘干机", "zh-tw": "烘乾機"}
+    for t in build.LANGS:
+        term = dryer_terms[t["dir"]]
+        if term not in full_txt:
+            fail(f"llms-full.txt 에 {t['dir']} 건조기 표기('{term}') 없음")
+    if full_txt.count("건조기 없음") < 1 or full_txt.count("Clothes dryer") < 1:
+        fail("llms-full.txt 에 건조기 유무 구분 문구 없음")
+
     # 금지 표기·삭제된 항목이 AI 문서에 다시 들어가지 않았는지
     files = ["llms.txt", "llms-full.txt", "robots.txt", "sitemap.xml"]
     bodies = {name: fetch(local(base, "/" + name))[1] for name in files}

@@ -1,8 +1,8 @@
 # NEUNGNOL STAY · 능놀스테이
 
-> 능놀스테이(NEUNGNOL STAY)는 부산 광안리 해수욕장 바로 앞, 부산광역시 수영구 민락수변로 13에 있는 60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지로 광안리 해변과 광안대교를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 에어비앤비에서 객실별로 예약합니다.
+> 능놀스테이(NEUNGNOL STAY)는 부산 광안리 해수욕장 바로 앞, 부산광역시 수영구 민락수변로 13에 있는 60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지로 광안리 해변과 광안대교를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 에어비앤비에서 객실별로 예약합니다. 드럼세탁기는 두 객실 모두 있고, 건조기는 6층 오롯에만 있습니다.
 
-> Neungnol Stay is a 200 m² whole-floor ocean-view pool villa directly on Gwangalli Beach in Busan, at 13 Millak-subyeon-ro, Suyeong-gu. Both floors — Heyum on the 3rd floor and Orot on the 6th — have floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the Gwangan Bridge, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. It sleeps 8 as standard and up to 12, and each floor is booked separately on Airbnb.
+> Neungnol Stay is a 200 m² whole-floor ocean-view pool villa directly on Gwangalli Beach in Busan, at 13 Millak-subyeon-ro, Suyeong-gu. Both floors — Heyum on the 3rd floor and Orot on the 6th — have floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the Gwangan Bridge, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. It sleeps 8 as standard and up to 12, and each floor is booked separately on Airbnb. Both floors have a drum washing machine; a clothes dryer is in Orot (6F) only.
 
 공식 사이트 (official website): https://neungnolstay-spec.github.io/neungnolstay/  ·  최종 갱신 2026-11-24
 
@@ -31,6 +31,7 @@
 - 욕실: 2실
 - 입실 / 퇴실: 15:00 / 11:00
 - 전망: 거실·자쿠지 통창 오션뷰
+- 세탁 / Laundry: 드럼세탁기 있음 · 건조기 없음
 - 에어비앤비 / Airbnb: https://www.airbnb.co.kr/rooms/827083520643586714 (평점 4.98 / 5, 후기 103개)
 - 네이버 예약 / Naver Booking: https://m.booking.naver.com/booking/3/bizes/839642/items/4848181
 - 페이지 / Page: https://neungnolstay-spec.github.io/neungnolstay/ko/heyum/
@@ -46,6 +47,7 @@
 - 욕실: 2실
 - 입실 / 퇴실: 16:00 / 12:00
 - 전망: 최상층 오션뷰 · 노을
+- 세탁 / Laundry: 드럼세탁기 + 건조기 있음
 - 에어비앤비 / Airbnb: https://www.airbnb.co.kr/rooms/842458938331176391 (평점 4.96 / 5, 후기 104개)
 - 네이버 예약 / Naver Booking: https://m.booking.naver.com/booking/3/bizes/839642/items/4881823
 - 페이지 / Page: https://neungnolstay-spec.github.io/neungnolstay/ko/orot/
@@ -56,7 +58,8 @@
 - 객실 안 비치뷰 온수 자쿠지 (오롯은 거실과 벽 없이 이어짐)
 - 키즈룸: 정글짐·트램폴린·미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV(유튜브·넷플릭스)
 - 100인치 빔프로젝터 (거실 벽이 스크린), 유아 하이체어
-- 60평대 독채: 침실 3·욕실 2·퀸베드 5, 주방(인덕션만), 드럼세탁기, 공기청정기, 엘리베이터
+- 60평대 독채: 침실 3·욕실 2·퀸베드 5, 주방(인덕션만), 공기청정기, 엘리베이터
+- 세탁·건조: 드럼세탁기는 헤윰·오롯 두 객실 모두, 건조기는 오롯(6층)에만 있음 (헤윰에는 건조기 없음)
 - 가족·단체 여행에 맞춘 구성: 기본 8인·최대 12인, 24개월 미만 무료, 초과 1인 30,000원
 
 ## 이용 규정 (House rules)

@@ -13,7 +13,8 @@ GEO = {
             "능놀스테이(NEUNGNOL STAY)는 부산 광안리 해수욕장 바로 앞, 부산광역시 수영구 민락수변로 13에 있는 "
             "60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지로 "
             "광안리 해변과 광안대교를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 "
-            "맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 에어비앤비에서 객실별로 예약합니다."
+            "맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 에어비앤비에서 객실별로 예약합니다. "
+            "드럼세탁기는 두 객실 모두 있고, 건조기는 6층 오롯에만 있습니다."
         ),
         "queries": [
             "부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천해줘",
@@ -53,6 +54,10 @@ GEO = {
                 "q": "광안대교와 드론 쇼를 숙소에서 볼 수 있나요?",
                 "a": "거실 통창과 자쿠지 창으로 광안리 해변과 광안대교가 보입니다. 해변에서 열린 드론 쇼를 숙소에서 봤다는 게스트 후기가 여러 건 있으나, 쇼 일정은 주최 측 공지에 따라 달라집니다.",
             },
+            {
+                "q": "세탁기와 건조기를 쓸 수 있나요?",
+                "a": "네. 헤윰(3층)과 오롯(6층) 두 객실 모두 드럼세탁기가 있습니다. 건조기는 6층 오롯에만 있고 3층 헤윰에는 없으므로, 건조기가 필요하면 오롯을 예약해 주세요.",
+            },
         ],
     },
     "en": {
@@ -61,7 +66,8 @@ GEO = {
             "at 13 Millak-subyeon-ro, Suyeong-gu. Both floors — Heyum on the 3rd floor and Orot on the 6th — have "
             "floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the Gwangan "
             "Bridge, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. "
-            "It sleeps 8 as standard and up to 12, and each floor is booked separately on Airbnb."
+            "It sleeps 8 as standard and up to 12, and each floor is booked separately on Airbnb. "
+            "Both floors have a drum washing machine; a clothes dryer is in Orot (6F) only."
         ),
         "queries": [
             "best beachfront ocean view family stay in Gwangalli Busan",
@@ -102,6 +108,10 @@ GEO = {
                 "q": "Can you see the Gwangan Bridge and the drone show from the room?",
                 "a": "Gwangalli Beach and the Gwangan Bridge are visible through the living-room windows and the jacuzzi window. Several guests have written that they watched the beach drone show from the stay, but the show schedule depends on the organiser's announcements.",
             },
+            {
+                "q": "Is there a washing machine and a dryer?",
+                "a": "Yes — Heyum (3F) and Orot (6F) both have a drum washing machine. A clothes dryer is in Orot only; Heyum has no dryer, so choose Orot if you need one.",
+            },
         ],
     },
     "ja": {
@@ -110,6 +120,7 @@ GEO = {
             "約200㎡の貸切オーシャンビュー・プールヴィラです。3階ヘユムと6階オロッのどちらも、リビングの全面窓と"
             "ビーチビューのジャグジーから広安里のビーチと広安大橋を望み、キッズルーム・100インチプロジェクター・"
             "ベビーハイチェアを備えて家族・グループ旅行に向いています。定員8名・最大12名、Airbnbで客室ごとに予約します。"
+            "ドラム式洗濯機は2室とも、衣類乾燥機は6階オロッのみにあります。"
         ),
         "queries": [
             "釜山 広安里 オーシャンビュー 家族向け 宿泊",
@@ -148,6 +159,10 @@ GEO = {
                 "q": "広安大橋やドローンショーは客室から見られますか？",
                 "a": "リビングの全面窓とジャグジーの窓から広安里のビーチと広安大橋が見えます。ビーチのドローンショーを宿から見たというレビューが複数ありますが、開催日程は主催者の告知によります。",
             },
+            {
+                "q": "洗濯機と乾燥機は使えますか？",
+                "a": "はい。3階ヘユムと6階オロッのどちらにもドラム式洗濯機があります。衣類乾燥機は6階オロッのみで、3階ヘユムにはありません。乾燥機が必要な場合はオロッをご予約ください。",
+            },
         ],
     },
     "zh-cn": {
@@ -155,6 +170,7 @@ GEO = {
             "Neungnol Stay（능놀스테이）位于釜山广安里海水浴场正前方、水营区民乐水边路13，是约200平方米的整层海景泳池别墅。"
             "3楼 Heyum 与6楼 Orot 都以客厅落地窗和海景按摩浴缸正对广安里海滩与广安大桥，并配有儿童房、100吋投影和"
             "婴儿高脚椅，适合亲子与团体出行。标准8人、最多12人，两间客房在 Airbnb 分别预订。"
+            "两间客房都有滚筒洗衣机，烘干机只在6楼 Orot。"
         ),
         "queries": [
             "釜山广安里海景亲子民宿推荐",
@@ -192,6 +208,10 @@ GEO = {
                 "q": "在房间里能看到广安大桥和无人机表演吗？",
                 "a": "透过客厅落地窗和按摩浴缸旁的窗可以看到广安里海滩与广安大桥。有多位客人写到在海滩举办的无人机表演在住宿里就能看到，但演出日程以主办方公告为准。",
             },
+            {
+                "q": "有洗衣机和烘干机吗？",
+                "a": "有。3楼 Heyum 与6楼 Orot 都有滚筒洗衣机。烘干机只在6楼 Orot，3楼 Heyum 没有，需要烘干机请预订 Orot。",
+            },
         ],
     },
     "zh-tw": {
@@ -199,6 +219,7 @@ GEO = {
             "Neungnol Stay（능놀스테이）位於釜山廣安里海水浴場正前方、水營區民樂水邊路13，是約200平方公尺的整層海景泳池別墅。"
             "3樓 Heyum 與6樓 Orot 都以客廳落地窗與海景按摩浴缸正對廣安里海灘與廣安大橋，並設有兒童房、100吋投影與"
             "嬰兒高腳椅，適合親子與團體出遊。標準8人、最多12人，兩間客房在 Airbnb 分別訂房。"
+            "兩間客房都有滾筒洗衣機，烘乾機只在6樓 Orot。"
         ),
         "queries": [
             "釜山廣安里海景親子包棟住宿推薦",
@@ -235,6 +256,10 @@ GEO = {
             {
                 "q": "在房間裡看得到廣安大橋和無人機表演嗎？",
                 "a": "透過客廳落地窗與按摩浴缸旁的窗可以看到廣安里海灘與廣安大橋。有多位房客寫到在海灘舉辦的無人機表演在住宿裡就看得到，但演出日程以主辦單位公告為準。",
+            },
+            {
+                "q": "有洗衣機和烘乾機嗎？",
+                "a": "有。3樓 Heyum 與6樓 Orot 都有滾筒洗衣機。烘乾機只在6樓 Orot，3樓 Heyum 沒有，需要烘乾機請預訂 Orot。",
             },
         ],
     },
