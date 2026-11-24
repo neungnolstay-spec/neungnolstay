@@ -85,6 +85,8 @@ ROOMS = {
          "ko": "바다를 보며 일하는 자리", "en": "A desk with the sea in view"},
     ],
     "orot": [
+        {"src": 117, "slug": "jacuzzi-wide", "cat": "jacuzzi", "tone": "day",
+         "ko": "오롯의 자쿠지 전경", "en": "The jacuzzi at Orot"},
         {"src": 124, "slug": "jacuzzi-ocean", "cat": "jacuzzi", "tone": "day",
          "ko": "바다를 마주한 자쿠지", "en": "Jacuzzi facing the sea"},
         {"src": 62, "slug": "dining-night", "cat": "dining", "tone": "night",
@@ -103,8 +105,6 @@ ROOMS = {
          "ko": "창가 다이닝과 거울", "en": "Window dining and the mirror wall"},
         {"src": 0, "slug": "dining-guest", "cat": "dining", "tone": "day",
          "ko": "바다를 바라보는 다이닝", "en": "Dining with a view of the sea"},
-        {"src": 117, "slug": "jacuzzi-wide", "cat": "jacuzzi", "tone": "day",
-         "ko": "오롯의 자쿠지 전경", "en": "The jacuzzi at Orot"},
         {"src": 143, "slug": "jacuzzi-tray", "cat": "jacuzzi", "tone": "detail",
          "ko": "자쿠지 위 브런치 트레이", "en": "Brunch tray across the jacuzzi"},
         {"src": 145, "slug": "jacuzzi-window", "cat": "jacuzzi", "tone": "day",

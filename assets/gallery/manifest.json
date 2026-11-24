@@ -421,6 +421,17 @@
  ],
  "orot": [
   {
+   "slug": "jacuzzi-wide",
+   "cat": "jacuzzi",
+   "tone": "day",
+   "ko": "오롯의 자쿠지 전경",
+   "en": "The jacuzzi at Orot",
+   "w": 619,
+   "h": 772,
+   "tw": 619,
+   "th": 772
+  },
+  {
    "slug": "jacuzzi-ocean",
    "cat": "jacuzzi",
    "tone": "day",
@@ -518,17 +529,6 @@
    "h": 519,
    "tw": 527,
    "th": 519
-  },
-  {
-   "slug": "jacuzzi-wide",
-   "cat": "jacuzzi",
-   "tone": "day",
-   "ko": "오롯의 자쿠지 전경",
-   "en": "The jacuzzi at Orot",
-   "w": 619,
-   "h": 772,
-   "tw": 619,
-   "th": 772
   },
   {
    "slug": "jacuzzi-tray",
