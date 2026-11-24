@@ -24,6 +24,7 @@ python3 i18n_build/build.py --out docs
 |---|---|
 | `i18n_build/build.py` | 페이지 생성기. **BASE_URL·GA4·GTM·GSC·네이버 인증값은 이 파일 상단 한 곳** |
 | `i18n_build/content/ko.py` … `zhtw.py` | 언어별 문구(5개). 키 집합이 다르면 빌드가 중단됩니다. 객실별 에어비앤비 리뷰 본문(`rooms.*.reviews`)도 여기에 있고, 평점·후기 수는 `build.py` 의 `AIRBNB_STATS` |
+| `i18n_build/content/geo.py` | AI 검색(GEO/AEO)용 5개 언어 요약·자연어 질문·키워드·FAQ. `llms.txt`·`llms-full.txt` 와 홈 FAQ·meta keywords 에 쓰입니다 |
 | `i18n_build/photos.py` | 사진 크기·언어별 alt·갤러리 순서·객실 대표 사진 |
 | `i18n_build/prep_plans.py` | 도면 원본(네이버 플레이스 `business_005/006.jpg`)에서 빈 여백을 잘라 `assets/plan-hewyum.webp`·`plan-orot.webp` 재생성 (2200px, 비율 유지) |
 | `i18n_build/static/style.css` | 부티크 호텔 스타일 디자인 시스템 |
@@ -53,6 +54,8 @@ python3 i18n_build/check.py
 10. 상세 페이지 상단 사진도 동일한 에어비앤비 대표 사진인지
 11. **객실 페이지 상단·하단의 `← 전체 객실로 돌아가기` / `다른 객실 보기` 버튼** (클릭 시 실제 이동까지)
 12. **객실별 에어비앤비 리뷰 섹션** — 카드 6개·별점·게스트 이름·리뷰 더 보기 링크, 그리고 **리뷰 영역에 날짜 표기(연도·월·`~ 전`)가 없는지**
+13. **AI 검색 자산** — `llms.txt`·`llms-full.txt` HTTP 200·필수 항목(주소·두 에어비앤비 링크·5개 언어 URL), `robots.txt` 의 AI 크롤러 Allow, 홈 `FAQPage` 문항 수 = 화면 문항 수, `LodgingBusiness` 의 `knowsLanguage`·`sameAs`·`amenityFeature`
+14. **금지 표기** — `nungnol`·`NUNG NOL`·`누놀` 0건, 삭제된 연박 할인·소음·건물 주차 문구 0건
 
 ## 배포
 

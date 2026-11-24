@@ -59,11 +59,16 @@ FONT_LINKS = """<link rel="preconnect" href="https://fonts.googleapis.com">
 sys.path.insert(0, str(HERE))
 import photos  # noqa: E402
 from content import ko, en, ja, zhcn, zhtw  # noqa: E402
+from content import geo  # noqa: E402
 
 LANGS = [ko.T, en.T, ja.T, zhcn.T, zhtw.T]
 BY_DIR = {t["dir"]: t for t in LANGS}
 ROOMS = ("heyum", "orot")
 FLOOR = {"heyum": "3", "orot": "6"}
+
+# AI 검색(GEO/AEO)용 언어별 요약·질문·키워드 (content/geo.py). t["dir"] 키.
+GEO = {t["dir"]: geo.GEO[t["dir"]] for t in LANGS}
+LAST_MOD = "2026-11-24"
 
 
 # ----------------------------------------------------------------------------
@@ -414,6 +419,9 @@ def lodgings_jsonld(t: dict) -> dict:
         "@id": f"{BASE_URL}/#lodging",
         "name": t["brand_name"],
         "alternateName": "NEUNGNOL STAY",
+        "knowsLanguage": ["ko", "en", "ja", "zh-Hans", "zh-Hant"],
+        "petsAllowed": False,
+        "smokingAllowed": False,
         "description": t["home"]["desc"],
         "url": u(t),
         "image": [f"{BASE_URL}/assets/{f}" for f in ("hero.webp", "airbnb-heyum.webp", "airbnb-orot.webp")],
@@ -433,14 +441,20 @@ def lodgings_jsonld(t: dict) -> dict:
         "checkoutTime": "11:00",
         "numberOfRooms": 2,
         "amenityFeature": [
-            {"@type": "LocationFeatureSpecification", "name": "Ocean view", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Ocean view (Gwangalli Beach and Gwangan Bridge)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Beach-view jacuzzi", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Kids' room", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "100-inch projector", "value": True},
-            {"@type": "LocationFeatureSpecification", "name": "Free parking (1 car)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Baby high chair", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Free parking (1 car, 1 minute on foot)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Washing machine", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Kitchen (induction only)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Air purifier", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Elevator", "value": True},
         ],
-        "sameAs": [INSTAGRAM, NAVER_PLACE, AIRBNB["heyum"], AIRBNB["orot"]],
+        "sameAs": [INSTAGRAM, NAVER_PLACE, TALKTALK, GOOGLE_MAP_LINK, AIRBNB["heyum"], AIRBNB["orot"]],
+        "tourBookingPage": AIRBNB["heyum"],
         "containsPlace": [
             {"@type": "HotelRoom", "@id": f"{BASE_URL}/#room-heyum", "name": "Heyum"},
             {"@type": "HotelRoom", "@id": f"{BASE_URL}/#room-orot", "name": "Orot"},
@@ -460,20 +474,30 @@ def room_jsonld(t: dict, room: str) -> dict:
         "url": u(t, room),
         "image": [f"{BASE_URL}/assets/{f}" for f in [photos.HERO[room], *photos.GALLERY[room][:3]]],
         "floorLevel": FLOOR[room],
+        "knowsLanguage": ["ko", "en", "ja", "zh-Hans", "zh-Hant"],
+        "floorSize": {"@type": "QuantitativeValue", "value": 200, "unitCode": "MTK"},
         "occupancy": {"@type": "QuantitativeValue", "value": 8, "maxValue": 12},
-        "numberOfRooms": 3,
+        "numberOfBedrooms": 3,
         "numberOfBathroomsTotal": 2,
         "bed": {"@type": "BedDetails", "typeOfBed": "Queen", "numberOfBeds": 5},
         "checkinTime": "15:00" if room == "heyum" else "16:00",
         "checkoutTime": "11:00" if room == "heyum" else "12:00",
+        "petsAllowed": False,
+        "smokingAllowed": False,
         "amenityFeature": [
-            {"@type": "LocationFeatureSpecification", "name": "Ocean view", "value": True},
-            {"@type": "LocationFeatureSpecification", "name": "Jacuzzi", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Ocean view (Gwangalli Beach and Gwangan Bridge)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Beach-view jacuzzi", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Kids' room", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "100-inch projector", "value": True},
-            {"@type": "LocationFeatureSpecification", "name": "Kitchen", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "50-inch TV (YouTube, Netflix)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Baby high chair", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Kitchen (induction only)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Washing machine", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Air purifier", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Elevator", "value": True},
         ],
+        "tourBookingPage": AIRBNB[room],
         "containedInPlace": {
             "@type": "LodgingBusiness",
             "@id": f"{BASE_URL}/#lodging",
@@ -486,7 +510,7 @@ def room_jsonld(t: dict, room: str) -> dict:
                 "addressCountry": "KR",
             },
         },
-        "sameAs": [AIRBNB[room], NAVER_BOOKING[room]],
+        "sameAs": [AIRBNB[room], NAVER_BOOKING[room], NAVER_PLACE],
     }
 
 
@@ -503,15 +527,24 @@ def breadcrumb_jsonld(t: dict, room: str) -> dict:
     }
 
 
-def faq_jsonld(t: dict, room: str) -> dict:
+def faq_page_jsonld(items: list[dict]) -> dict:
     return {
         "@context": "https://schema.org",
         "@type": "FAQPage",
         "mainEntity": [
             {"@type": "Question", "name": q["q"], "acceptedAnswer": {"@type": "Answer", "text": q["a"]}}
-            for q in t["rooms"][room]["faq"]
+            for q in items
         ],
     }
+
+
+def faq_jsonld(t: dict, room: str) -> dict:
+    return faq_page_jsonld(t["rooms"][room]["faq"])
+
+
+def home_faq(t: dict) -> list[dict]:
+    """홈 FAQ = 기본 FAQ + AI 검색용 자연어 질문(content/geo.py)."""
+    return list(t["home"]["faq"]) + list(GEO[t["dir"]]["faq"])
 
 
 def website_jsonld(t: dict) -> dict:
@@ -558,7 +591,8 @@ def build_home(t: dict) -> str:
     a = attr_links(t, 1, "home")
     h = t["home"]
     assets = a["assets"]
-    jsonld = [lodgings_jsonld(t), website_jsonld(t)]
+    jsonld = [lodgings_jsonld(t), website_jsonld(t), faq_page_jsonld(home_faq(t))]
+    keywords = f'{h["keywords"]}, {GEO[t["dir"]]["keywords_home"]}'
 
     badges = "".join(f"<li>{e(b)}</li>" for b in h["badges"])
     stats = "".join(f"<li><b>{e(v)}</b><span>{e(l)}</span></li>" for v, l in h["stats"])
@@ -579,14 +613,14 @@ def build_home(t: dict) -> str:
     )
     faqs = "".join(
         f'<details><summary>{e(q["q"])}</summary><div class="a"><p>{e(q["a"])}</p></div></details>'
-        for q in h["faq"]
+        for q in home_faq(t)
     )
     notes = "".join(f"<li>{e(n)}</li>" for n in h["notes"])
     cta_rows = "".join(
         f'<div class="row"><span>{e(r["k"])}</span><b>{e(r["v"])}</b></div>' for r in h["cta_card_rows"]
     )
 
-    return f"""{head(t, 1, 'home', h['title'], h['desc'], h['keywords'], h['og_title'], photos.HERO['home'], jsonld)}
+    return f"""{head(t, 1, 'home', h['title'], h['desc'], keywords, h['og_title'], photos.HERO['home'], jsonld)}
 
 {header(t, 1, 'home')}
 
@@ -750,6 +784,7 @@ def build_room(t: dict, room: str) -> str:
     name = t["home"]["cards"][room]["name"]
     assets = a["assets"]
     jsonld = [room_jsonld(t, room), breadcrumb_jsonld(t, room), faq_jsonld(t, room)]
+    keywords = f'{r["keywords"]}, {GEO[t["dir"]]["keywords_room"]}'
 
     facts = "".join(
         f'<div><div class="k">{e(f["k"])}</div><div class="v">{e(f["v"])}</div></div>' for f in r["facts"]
@@ -776,7 +811,7 @@ def build_room(t: dict, room: str) -> str:
     notes = "".join(f"<li>{e(n)}</li>" for n in r["booking_notes"])
     intro_img = photos.GALLERY[room][1]
 
-    return f"""{head(t, 2, 'room', r['title'], r['desc'], r['keywords'], r['og_title'], photos.HERO[room], jsonld, room)}
+    return f"""{head(t, 2, 'room', r['title'], r['desc'], keywords, r['og_title'], photos.HERO[room], jsonld, room)}
 
 {header(t, 2, 'room', room)}
 
@@ -1057,7 +1092,7 @@ def build_sitemap() -> str:
     entries.append(
         f"""  <url>
     <loc>{BASE_URL}/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>{LAST_MOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
 {root_links}
@@ -1073,7 +1108,7 @@ def build_sitemap() -> str:
             entries.append(
                 f"""  <url>
     <loc>{u(t, room)}</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>{LAST_MOD}</lastmod>
     <changefreq>{"weekly" if room is None else "monthly"}</changefreq>
     <priority>{"0.9" if room is None else "0.8"}</priority>
 {links}
@@ -1087,11 +1122,252 @@ def build_sitemap() -> str:
 
 
 def build_robots() -> str:
-    return f"""User-agent: *
-Allow: /
+    """검색엔진·AI 검색 크롤러를 모두 명시적으로 허용한다."""
+    agents = [
+        ("검색엔진 (search engines)", ["Googlebot", "Bingbot", "Yeti", "Daumoa", "Applebot"]),
+        ("AI 검색±학습 크롤러 (AI search crawlers)", [
+            "GPTBot", "OAI-SearchBot", "ChatGPT-User", "Google-Extended", "PerplexityBot",
+            "ClaudeBot", "anthropic-ai", "Applebot-Extended", "Amazonbot", "Meta-ExternalAgent",
+        ]),
+    ]
+    rows = [
+        "# NEUNGNOL STAY · 능놀스테이 — 부산 광안리 해변 바로 앞 오션뷰 독채 풀빌라",
+        "# 검색엔진과 AI 검색 크롤러 모두 허용 (AI가 숙소를 정확히 찾고 인용하도록 공개)",
+        "",
+        "User-agent: *",
+        "Allow: /",
+    ]
+    for title, names in agents:
+        rows += ["", f"# {title}"]
+        for name in names:
+            rows += [f"User-agent: {name}", "Allow: /"]
+    rows += [
+        "",
+        f"Sitemap: {BASE_URL}/sitemap.xml",
+        f"# AI 요약: {BASE_URL}/llms.txt · {BASE_URL}/llms-full.txt",
+    ]
+    return "\n".join(rows) + "\n"
 
-Sitemap: {BASE_URL}/sitemap.xml
-"""
+
+def _room_spec_lines(t: dict, room: str) -> list[str]:
+    skip = ("예약", "예약", "Booking", "Reservation", "予約", "预订", "預訂")
+    return [f"- {f['k']}: {f['v']}" for f in t["rooms"][room]["facts"] if not any(s in f["k"] for s in skip)]
+
+
+def build_llms() -> str:
+    """llms.txt — AI 검색엔진용 짧은 사실 요약 + 페이지 목록."""
+    ko_t = BY_DIR["ko"]
+    g = GEO["ko"]
+    ge = GEO["en"]
+    rows: list[str] = [
+        "# NEUNGNOL STAY · 능놀스테이",
+        "",
+        f"> {g['summary']}",
+        "",
+        f"> {ge['summary']}",
+        "",
+        f"공식 사이트 (official website): {BASE_URL}/  ·  최종 갱신 {LAST_MOD}",
+        "",
+        "## 핵심 정보 (Key facts)",
+        "",
+        "- 브랜드 / Brand: NEUNGNOL STAY · 능놀스테이 · Neungnol Stay (영문 철자 N-E-U-N-G-N-O-L)",
+        f"- 주소 / Address: {ADDRESS_ROAD} (3층·6층), 대한민국  /  3F & 6F, 13 Millak-subyeon-ro, Suyeong-gu, Busan, Republic of Korea",
+        "- 위치 특징: 광안리 해수욕장 도보 1분, 광안대교 정면 오션뷰",
+        f"- 지도 좌표 / Coordinates: {LAT}, {LNG} ({GOOGLE_MAP_LINK})",
+        f"- 전화 / Phone: {PHONE_DISPLAY} ({PHONE_INTL})",
+        f"- 네이버 플레이스 / Naver Place: {NAVER_PLACE}",
+        f"- 네이버 톡톡 / TalkTalk: {TALKTALK}",
+        f"- 인스타그램 / Instagram: {INSTAGRAM}",
+        "- 객실 수 / Rooms: 2 (객실별 독립 예약, 두 층 함께 이용 시 2건 예약)",
+        "",
+        "## 객실 (Rooms)",
+        "",
+    ]
+    for room in ROOMS:
+        card = ko_t["home"]["cards"][room]
+        stats = AIRBNB_STATS[room]
+        rows += [
+            f"### {card['name']} · {card['tag']}",
+            "",
+            f"{card['desc']}",
+            "",
+            *_room_spec_lines(ko_t, room),
+            f"- 에어비앤비 / Airbnb: {AIRBNB[room]} (평점 {stats['rating']} / 5, 후기 {stats['count']}개)",
+            f"- 네이버 예약 / Naver Booking: {NAVER_BOOKING[room]}",
+            f"- 페이지 / Page: {u(ko_t, room)}",
+            "",
+        ]
+    rows += [
+        "## 핵심 특징 (Highlights)",
+        "",
+        "- 거실 통창과 자쿠지 창으로 광안리 해변·바다·광안대교가 보이는 전면 오션뷰",
+        "- 객실 안 비치뷰 온수 자쿠지 (오롯은 거실과 벽 없이 이어짐)",
+        "- 키즈룸: 정글짐·트램폴린·미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV(유튜브·넷플릭스)",
+        "- 100인치 빔프로젝터 (거실 벽이 스크린), 유아 하이체어",
+        "- 60평대 독채: 침실 3·욕실 2·퀸베드 5, 주방(인덕션만), 드럼세탁기, 공기청정기, 엘리베이터",
+        "- 가족·단체 여행에 맞춘 구성: 기본 8인·최대 12인, 24개월 미만 무료, 초과 1인 30,000원",
+        "",
+        "## 이용 규정 (House rules)",
+        "",
+    ]
+    for row in ko_t["home"]["guide_rows"]:
+        rows.append(f"- {row['k']}: {row['v']}")
+    rows += [
+        f"- 주차: 민락회센터·민락어패류주차장 1대 무료(도보 1분, 차종 사전 협의)",
+        "",
+        "## 평점 (Ratings)",
+        "",
+        f"- {g['reviews_summary']}",
+        "",
+        "## 언어별 페이지 (Language versions)",
+        "",
+    ]
+    for t in LANGS:
+        rows.append(f"- [{t['label']} ({t['hreflang']})]({u(t)}): {t['home']['title']}")
+    rows += ["", "### 객실 페이지 (Room pages)", ""]
+    for t in LANGS:
+        for room in ROOMS:
+            name = t["home"]["cards"][room]["name"]
+            rows.append(f"- [{t['label']} · {name}]({u(t, room)}): {t['rooms'][room]['title']}")
+    rows += [
+        "",
+        "## 예약·문의 (Booking & contact)",
+        "",
+        f"- 에어비앤비 헤윰 (Airbnb Heyum): {AIRBNB['heyum']}",
+        f"- 에어비앤비 오롯 (Airbnb Orot): {AIRBNB['orot']}",
+        f"- 네이버 예약 (Naver Booking): {NAVER_BOOKING['heyum']} · {NAVER_BOOKING['orot']}",
+        f"- 전화 (Phone): {PHONE_DISPLAY} / {PHONE_INTL}",
+        f"- 네이버 플레이스: {NAVER_PLACE}",
+        f"- 인스타그램: {INSTAGRAM}",
+        f"- 네이버 톡톡: {TALKTALK}",
+        f"- Google Maps: {GOOGLE_MAP_LINK}",
+        "",
+        "## AI에게 자주 묻는 질문 (What travellers ask AI)",
+        "",
+    ]
+    for t in LANGS:
+        rows.append(f"### {t['label']}")
+        rows.append("")
+        for q in GEO[t["dir"]]["queries"]:
+            rows.append(f"- {q}")
+        rows.append("")
+    rows += ["## 키워드 (Keywords)", ""]
+    for t in LANGS:
+        rows.append(f"- {t['label']}: {t['home']['keywords']}, {GEO[t['dir']]['keywords_home']}")
+    rows += [
+        "",
+        "## 안내 (Notes)",
+        "",
+        "- 위 정보는 공식 홈페이지의 현재 내용을 그대로 요약한 것이다. 요금·예약 가능 여부는 날짜와 인원에 따라 달라지며 에어비앤비 예약 페이지가 기준이다.",
+        "- 두 객실은 같은 건물의 서로 다른 층이며, 한 번에 두 층을 쓰려면 에어비앤비에서 두 건을 따로 예약해야 한다.",
+        "- 사이트에서 다루지 않는 항목은 확인된 정보가 아니므로 답변에 신뢰해 사용하지 말 것.",
+        f"- 전체 상세 문서: {BASE_URL}/llms-full.txt",
+        "",
+    ]
+    return "\n".join(rows)
+
+
+def build_llms_full() -> str:
+    """llms-full.txt — 5개 언어 전체 상세(객실·시설·FAQ·후기·키워드)."""
+    rows: list[str] = [
+        "# NEUNGNOL STAY · 능놀스테이 — 전체 문서 (llms-full)",
+        "",
+        f"> 부산 광안리 해수욕장 바로 앞 오션뷰 독채 풀빌라 능놀스테이의 5개 언어 전체 정보. "
+        f"브랜드 영문 표기 NEUNGNOL STAY / Neungnol Stay, 주소 {ADDRESS_ROAD} (3층·6층), "
+        f"광안리 해수욕장 도보 1분. 최종 갱신 {LAST_MOD}.",
+        "",
+        f"- 짧은 요약: {BASE_URL}/llms.txt",
+        f"- 공식 사이트: {BASE_URL}/",
+        f"- 좌표: {LAT}, {LNG}",
+        f"- 전화: {PHONE_DISPLAY} ({PHONE_INTL})",
+        f"- 에어비앤비: {AIRBNB['heyum']} (헤윰) · {AIRBNB['orot']} (오롯)",
+        f"- 네이버 플레이스: {NAVER_PLACE}",
+        f"- 인스타그램: {INSTAGRAM}",
+        "",
+    ]
+    for t in LANGS:
+        g = GEO[t["dir"]]
+        h = t["home"]
+        rows += [
+            "---",
+            "",
+            f"## {t['label']} ({t['hreflang']})",
+            "",
+            f"- 홈: {u(t)}",
+            f"- 페이지 제목: {h['title']}",
+            "",
+            "### 요약",
+            "",
+            g["summary"],
+            "",
+            "### 숙소 개요",
+            "",
+            h["desc"],
+            "",
+            h["intro_p1"],
+            "",
+            h["intro_p2"],
+            "",
+            "### 공통 이용 안내",
+            "",
+        ]
+        for row in h["guide_rows"]:
+            rows.append(f"- {row['k']}: {row['v']}")
+        rows.append("")
+        for room in ROOMS:
+            r = t["rooms"][room]
+            card = h["cards"][room]
+            stats = AIRBNB_STATS[room]
+            rows += [
+                f"### {card['name']} ({card['tag']})",
+                "",
+                f"- 페이지: {u(t, room)}",
+                f"- 에어비앤비: {AIRBNB[room]} (평점 {stats['rating']} / 5, 후기 {stats['count']}개)",
+                f"- 네이버 예약: {NAVER_BOOKING[room]}",
+                "",
+                r["desc"],
+                "",
+                r["lead"],
+                "",
+                "#### 사양",
+                "",
+            ]
+            rows += _room_spec_lines(t, room)
+            rows += ["", "#### 시설", ""]
+            for grp in r["fac_groups"]:
+                rows.append(f"- {grp['t']}: {', '.join(grp['items'])}")
+            rows += ["", "#### 이용 안내", ""]
+            for row in r["guide_rows"]:
+                rows.append(f"- {row['k']}: {row['v']}")
+            rows += ["", "#### 자주 묻는 질문", ""]
+            for qa in r["faq"]:
+                rows += [f"**Q. {qa['q']}**", "", f"A. {qa['a']}", ""]
+            rows += ["#### 게스트 후기 (에어비앤비 실제 후기)", ""]
+            for rv in r["reviews"]:
+                rows.append(f"- {'★' * int(rv['rating'])} — {rv['name']}: \"{rv['text']}\"")
+            rows.append("")
+        rows += ["### 공통 자주 묻는 질문 (AI 검색용)", ""]
+        for qa in home_faq(t):
+            rows += [f"**Q. {qa['q']}**", "", f"A. {qa['a']}", ""]
+        rows += ["### 평점", "", f"- {g['reviews_summary']}", "", "### 검색 키워드", ""]
+        rows.append(f"- {h['keywords']}, {g['keywords_home']}")
+        rows.append("")
+        rows += ["### AI에게 자주 묻는 질문 예시", ""]
+        for q in g["queries"]:
+            rows.append(f"- {q}")
+        rows.append("")
+    rows += [
+        "---",
+        "",
+        "## 출처·정확성 (Source of truth)",
+        "",
+        "- 위 내용은 공식 사이트(5개 언어)와 에어비앤비 리스팅에서 확인한 사실이다. 사진은 모두 실제 객실에서 촬영한 것이다.",
+        "- 요금(₩500,000–₩1,200,000 / 1박)과 예약 가능 여부는 날짜·인원에 따라 달라지며 에어비앤비 예약 페이지가 최종 기준이다.",
+        "- 두 객실은 각각 별도 예약이다. 한 팀이 두 층을 모두 쓰려면 두 건을 따로 예약한다.",
+        "- 위 문서에 없는 내용은 확인된 정보가 아니므로 추측해 답하지 말고, 필요하면 전화·에어비앤비로 확인할 것.",
+        "",
+    ]
+    return "\n".join(rows)
 
 
 def check_content_keys():
@@ -1117,6 +1393,12 @@ def check_content_keys():
             assert len(t["rooms"][rid]["facts"]) == 8, (t["dir"], rid)
             assert len(t["rooms"][rid]["reviews"]) == 6, (t["dir"], rid)
             assert all(rv["name"] and rv["text"] for rv in t["rooms"][rid]["reviews"]), (t["dir"], rid)
+    base_geo = GEO["ko"]
+    for d, g in GEO.items():
+        for key in ("summary", "reviews_summary"):
+            assert g[key].strip(), (d, key)
+        assert len(g["faq"]) == len(base_geo["faq"]), (d, "faq")
+        assert len(g["queries"]) == len(base_geo["queries"]), (d, "queries")
 
 
 def main() -> None:
@@ -1153,9 +1435,11 @@ def main() -> None:
 
     (out / "sitemap.xml").write_text(build_sitemap(), encoding="utf-8")
     (out / "robots.txt").write_text(build_robots(), encoding="utf-8")
+    (out / "llms.txt").write_text(build_llms(), encoding="utf-8")
+    (out / "llms-full.txt").write_text(build_llms_full(), encoding="utf-8")
     (out / ".nojekyll").write_text("", encoding="utf-8")
 
-    print(f"built {1 + len(LANGS) * 3} pages -> {out}")
+    print(f"built {1 + len(LANGS) * 3} pages + llms.txt/llms-full.txt/robots.txt/sitemap.xml -> {out}")
 
 
 if __name__ == "__main__":

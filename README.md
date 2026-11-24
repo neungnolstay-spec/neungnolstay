@@ -25,6 +25,20 @@ URL 구조
 `BASE_URL`·GA4·GTM·Search Console·네이버 서치어드바이저 값은 `i18n_build/build.py` 상단 한 곳에서 관리합니다.
 자체 도메인으로 옮길 때는 `BASE_URL` 한 줄만 바꾸면 canonical·hreflang·OG·sitemap이 함께 바뀝니다.
 
+### AI 검색 최적화 (GEO/AEO)
+
+ChatGPT·Perplexity·Gemini·Claude 같은 AI 검색이 능놀스테이를 정확히 찾아 인용하도록 아래 파일을 `build.py`가 함께 생성합니다.
+
+| URL | 내용 |
+|---|---|
+| `/llms.txt` | AI용 짧은 사실 요약(주소·객실·특징·규정·평점·16페이지 목록·예약 링크·5개 언어 질문·키워드) |
+| `/llms-full.txt` | 5개 언어 전체 상세(객실 사양·시설·이용 안내·FAQ·에어비앤비 후기·키워드) |
+| `/robots.txt` | GPTBot·OAI-SearchBot·ChatGPT-User·Google-Extended·PerplexityBot·ClaudeBot·anthropic-ai·Applebot-Extended·Bingbot 등 명시적 Allow |
+
+- 16페이지 JSON-LD에 `LodgingBusiness`/`HotelRoom` + `FAQPage`(홈 10문항)를 넣고, `knowsLanguage`(ko·en·ja·zh-Hans·zh-Hant), `amenityFeature`(오션뷰·자쿠지·키즈룸·100인치 프로젝터·유아 하이체어·주차·세탁기 등), `sameAs`(에어비앤비 두 객실·인스타그램·네이버 플레이스·톡톡), `petsAllowed`/`smokingAllowed`(false), `floorSize`를 채웁니다.
+- AI 검색용 자연어 질문·키워드는 `i18n_build/content/geo.py` 한 곳에 5개 언어로 모여 있습니다.
+- 연박 할인·소음·건물 주차처럼 사이트에서 삭제된 항목은 `check.py`가 금지어로 검사합니다.
+
 ---
 
 ## 기존 1페이지 SPA (루트 · 보존)

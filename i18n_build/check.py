@@ -330,6 +330,99 @@ def check_browser(base: str) -> None:
 
 
 
+def check_geo(base: str) -> None:
+    """AI 검색(GEO) 자산: robots.txt 크롤러 허용, llms.txt / llms-full.txt, FAQPage·구조화 속성."""
+    status, robots = fetch(local(base, "/robots.txt"))
+    if status != 200:
+        fail("robots.txt HTTP %s" % status)
+    else:
+        for agent in (
+            "GPTBot", "OAI-SearchBot", "ChatGPT-User", "Google-Extended", "PerplexityBot",
+            "ClaudeBot", "anthropic-ai", "Applebot-Extended", "Bingbot",
+        ):
+            if f"User-agent: {agent}\nAllow: /" not in robots:
+                fail(f"robots.txt 에 {agent} Allow 없음")
+        if "User-agent: *\nAllow: /" not in robots:
+            fail("robots.txt 기본 Allow 없음")
+        if f"{build.BASE_URL}/sitemap.xml" not in robots:
+            fail("robots.txt 에 sitemap 없음")
+
+    # llms.txt / llms-full.txt
+    short = ""
+    for name, min_len in (("llms.txt", 3000), ("llms-full.txt", 20000)):
+        status, body = fetch(local(base, "/" + name))
+        if status != 200:
+            fail(f"{name} HTTP {status}")
+            continue
+        if len(body) < min_len:
+            fail(f"{name} 내용 부족 ({len(body)}자, 기대 {min_len}+)")
+        if not body.startswith("# "):
+            fail(f"{name} 가 Markdown H1 로 시작하지 않음")
+        for needle in ("NEUNGNOL STAY", "능놀스테이", build.ADDRESS_ROAD, build.AIRBNB["heyum"], build.AIRBNB["orot"]):
+            if needle not in body:
+                fail(f"{name} 에 '{needle}' 없음")
+        for t in build.LANGS:
+            if not (build.BASE_URL + f"/{t['dir']}/") in body:
+                fail(f"{name} 에 {t['dir']} 페이지 URL 없음")
+        if name == "llms.txt":
+            short = body
+        else:
+            CHECK_ITEMS.append(f"{name} {len(body)//1024}KB · 5개 언어·예약 링크 포함")
+    if short and build.LANGS[0]["brand_name"] not in short:
+        fail("llms.txt 에 한글 브랜드명 없음")
+
+    # 홈 FAQPage + 구조화 속성
+    for t in build.LANGS:
+        path = f"/{t['dir']}/"
+        status, body = fetch(local(base, path))
+        if status != 200:
+            continue
+        p = Page()
+        p.feed(body)
+        blocks = []
+        for raw in p.jsonld:
+            try:
+                blocks.append(json.loads(raw))
+            except json.JSONDecodeError:
+                pass
+        faq = next((b for b in blocks if b.get("@type") == "FAQPage"), None)
+        if not faq:
+            fail(f"{path} FAQPage 없음")
+        elif len(faq.get("mainEntity", [])) != len(build.home_faq(t)):
+            fail(f"{path} FAQPage 문항 {len(faq.get('mainEntity', []))}개 != 화면 {len(build.home_faq(t))}개")
+        else:
+            CHECK_ITEMS.append(f"{path} FAQPage {len(faq['mainEntity'])}문항")
+        lod = next((b for b in blocks if b.get("@type") == "LodgingBusiness"), None)
+        if not lod:
+            fail(f"{path} LodgingBusiness 없음")
+            continue
+        lang = set(lod.get("knowsLanguage", []))
+        if not {"ko", "en", "ja"} <= lang:
+            fail(f"{path} knowsLanguage 부족: {sorted(lang)}")
+        same = set(lod.get("sameAs", []))
+        for need in (build.INSTAGRAM, build.AIRBNB["heyum"], build.AIRBNB["orot"]):
+            if need not in same:
+                fail(f"{path} LodgingBusiness sameAs 에 {need} 없음")
+        amen = " ".join(a.get("name", "") for a in lod.get("amenityFeature", []))
+        for need in ("Ocean view", "jacuzzi", "Kids' room", "projector", "parking"):
+            if need.lower() not in amen.lower():
+                fail(f"{path} amenityFeature 에 {need} 없음")
+        if lod.get("geo", {}).get("latitude") != build.LAT:
+            fail(f"{path} LodgingBusiness geo 불일치")
+
+    # 금지 표기·삭제된 항목이 AI 문서에 다시 들어가지 않았는지
+    files = ["llms.txt", "llms-full.txt", "robots.txt", "sitemap.xml"]
+    bodies = {name: fetch(local(base, "/" + name))[1] for name in files}
+    for t in build.LANGS:
+        for path in (f"/{t['dir']}/", f"/{t['dir']}/heyum/", f"/{t['dir']}/orot/"):
+            bodies[path] = fetch(local(base, path))[1]
+    banned = ["nungnol", "NUNG NOL", "누놀", "연박", "2박", "소음", "건물주차"]
+    for where, body in bodies.items():
+        for word in banned:
+            if word in body:
+                fail(f"{where} 금지 표기·삭제 항목 포함: {word}")
+
+
 # ----------------------------------------------------------------------------
 # 최종 검수 10항목
 # ----------------------------------------------------------------------------
@@ -571,6 +664,7 @@ def main() -> None:
         for path in PAGES:
             check_seo(base, path)
         check_sitemap_robots(base)
+        check_geo(base)
         check_room_nav_reviews(base)
         check_browser(base)
         check_ten_items(base)
