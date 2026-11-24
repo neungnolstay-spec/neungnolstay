@@ -16,8 +16,9 @@
   var PATH = "/neungnol_booking_v1";
   /* 관리자 계정 — Firebase Auth 로그인(Google 또는 이메일)이 끝나야 DB에 접근할 수 있다 */
   var ADMIN_EMAIL = "eodnrdlrnrnf@gmail.com";
-  /* 관리자로 인정하는 계정 — Firebase Auth에서 이메일 인증이 끝난 계정만 통과 */
-  var ADMIN_EMAILS = ["eodnrdlrnrnf@gmail.com", "anseodnr@naver.com"];
+  /* 관리자로 인정하는 계정 — Firebase Auth에서 이메일 인증이 끝난 계정만 통과
+     (보안 규칙과 같은 목록을 유지할 것) */
+  var ADMIN_EMAILS = ["eodnrdlrnrnf@gmail.com"];
   var SESSION_KEY = "nns_admin_session";
   var SESSION_MS = 12 * 3600 * 1000;
   var ROOM_NAME = { heyum: "헤윰 · 3층", orot: "오롯 · 6층" };
