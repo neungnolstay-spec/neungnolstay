@@ -16,7 +16,7 @@ Allow: /
 User-agent: Applebot
 Allow: /
 
-# AI 검색±학습 크롤러 (AI search crawlers)
+# AI 검색·학습 크롤러 (AI search crawlers)
 User-agent: GPTBot
 Allow: /
 User-agent: OAI-SearchBot

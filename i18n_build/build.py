@@ -1125,7 +1125,7 @@ def build_robots() -> str:
     """검색엔진·AI 검색 크롤러를 모두 명시적으로 허용한다."""
     agents = [
         ("검색엔진 (search engines)", ["Googlebot", "Bingbot", "Yeti", "Daumoa", "Applebot"]),
-        ("AI 검색±학습 크롤러 (AI search crawlers)", [
+        ("AI 검색·학습 크롤러 (AI search crawlers)", [
             "GPTBot", "OAI-SearchBot", "ChatGPT-User", "Google-Extended", "PerplexityBot",
             "ClaudeBot", "anthropic-ai", "Applebot-Extended", "Amazonbot", "Meta-ExternalAgent",
         ]),
