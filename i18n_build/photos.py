@@ -2,7 +2,7 @@
 
 Generated from `/workspace/neungnolstay-site/assets/photos.json` (original webp sizes),
 with hand-written alt text per language. Alt text describes what the photo actually
-shows: the Gwangalli beach / Gwangandaegyo bridge seen through the full-width windows.
+shows: the Gwangalli beach and the open sea seen through the full-width windows.
 """
 
 # file: (width, height)
@@ -55,11 +55,11 @@ ALT = {
         "zh-tw": "Heyum 客廳與餐區，窗外即是廣安里海灘",
     },
     "h02.webp": {
-        "ko": "헤윰 자쿠지에 앉아 바라본 광안대교와 바다",
-        "en": "Gwangandaegyo bridge and the sea seen from the jacuzzi in Heyum",
-        "ja": "ヘユムのジャグジーから望む広安大橋と海",
-        "zh-cn": "坐在 Heyum 按摩浴缸中眺望广安大桥与大海",
-        "zh-tw": "坐在 Heyum 按摩浴缸中眺望廣安大橋與大海",
+        "ko": "헤윰 자쿠지에 앉아 바라본 광안리 바다",
+        "en": "The sea seen from the jacuzzi in Heyum",
+        "ja": "ヘユムのジャグジーから望む広安里の海",
+        "zh-cn": "坐在 Heyum 按摩浴缸中眺望广安里的大海",
+        "zh-tw": "坐在 Heyum 按摩浴缸中眺望廣安里的大海",
     },
     "h03.webp": {
         "ko": "헤윰 비치뷰 자쿠지, 창밖으로 해변이 펼쳐진다",
@@ -125,11 +125,11 @@ ALT = {
         "zh-tw": "距離住宿步行 1 分鐘的廣安里海灘拍照點",
     },
     "o01.webp": {
-        "ko": "오롯 6층 자쿠지에서 바라본 광안리 노을",
-        "en": "Sunset over Gwangalli seen from the jacuzzi on the 6th floor of Orot",
-        "ja": "オロッ6階のジャグジーから望む広安里の夕景",
-        "zh-cn": "从 Orot 六楼按摩浴缸眺望广安里夕阳",
-        "zh-tw": "從 Orot 六樓按摩浴缸眺望廣安里夕陽",
+        "ko": "오롯 6층 자쿠지에서 바라본 낮의 광안리 바다",
+        "en": "Daylight over Gwangalli seen from the jacuzzi on the 6th floor of Orot",
+        "ja": "オロッ6階のジャグジーから望む昼の広安里の海",
+        "zh-cn": "从 Orot 六楼按摩浴缸眺望白天的广安里大海",
+        "zh-tw": "從 Orot 六樓按摩浴缸眺望白天的廣安里大海",
     },
     "o02.webp": {
         "ko": "오롯 자쿠지와 오션뷰 창",

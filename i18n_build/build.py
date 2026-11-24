@@ -624,7 +624,7 @@ def lodgings_jsonld(t: dict) -> dict:
         "checkoutTime": "11:00",
         "numberOfRooms": 2,
         "amenityFeature": [
-            {"@type": "LocationFeatureSpecification", "name": "Ocean view (Gwangalli Beach and Gwangan Bridge)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Ocean view (Gwangalli Beach and the open sea)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Beach-view jacuzzi", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Kids' room", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "100-inch projector", "value": True},
@@ -669,7 +669,7 @@ def room_jsonld(t: dict, room: str) -> dict:
         "petsAllowed": False,
         "smokingAllowed": False,
         "amenityFeature": [
-            {"@type": "LocationFeatureSpecification", "name": "Ocean view (Gwangalli Beach and Gwangan Bridge)", "value": True},
+            {"@type": "LocationFeatureSpecification", "name": "Ocean view (Gwangalli Beach and the open sea)", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Beach-view jacuzzi", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "Kids' room", "value": True},
             {"@type": "LocationFeatureSpecification", "name": "100-inch projector", "value": True},
@@ -1622,7 +1622,7 @@ def build_llms() -> str:
         "",
         "- 브랜드 / Brand: NEUNGNOL STAY · 능놀스테이 · Neungnol Stay (영문 철자 N-E-U-N-G-N-O-L)",
         f"- 주소 / Address: {ADDRESS_ROAD} (3층·6층), 대한민국  /  3F & 6F, 13 Millak-subyeon-ro, Suyeong-gu, Busan, Republic of Korea",
-        "- 위치 특징: 광안리 해수욕장 도보 1분, 광안대교 정면 오션뷰",
+        "- 위치 특징: 광안리 해수욕장 도보 1분, 광안리 바다 정면 오션뷰",
         f"- 지도 좌표 / Coordinates: {LAT}, {LNG} ({GOOGLE_MAP_LINK})",
         f"- 전화 / Phone: {PHONE_DISPLAY} ({PHONE_INTL})",
         f"- 인스타그램 / Instagram: {INSTAGRAM}",
@@ -1647,7 +1647,7 @@ def build_llms() -> str:
     rows += [
         "## 핵심 특징 (Highlights)",
         "",
-        "- 거실 통창과 자쿠지 창으로 광안리 해변·바다·광안대교가 보이는 전면 오션뷰",
+        "- 거실 통창과 자쿠지 창으로 광안리 해변과 바다가 보이는 전면 오션뷰",
         "- 객실 안 비치뷰 온수 자쿠지 (오롯은 거실과 벽 없이 이어짐)",
         "- 키즈룸: 정글짐·트램폴린·미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV(유튜브·넷플릭스)",
         "- 100인치 빔프로젝터 (거실 벽이 스크린), 유아 하이체어",

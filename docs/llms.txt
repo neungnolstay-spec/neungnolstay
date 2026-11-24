@@ -1,8 +1,8 @@
 # NEUNGNOL STAY · 능놀스테이
 
-> 능놀스테이(NEUNGNOL STAY)는 부산 광안리 해수욕장 바로 앞, 부산광역시 수영구 민락수변로 13에 있는 60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지로 광안리 해변과 광안대교를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 홈페이지 실시간 예약 달력에서 객실별로 바로 예약할 수 있습니다. 드럼세탁기는 두 객실 모두 있고, 건조기는 6층 오롯에만 있습니다.
+> 능놀스테이(NEUNGNOL STAY)는 부산 광안리 해수욕장 바로 앞, 부산광역시 수영구 민락수변로 13에 있는 60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지로 광안리 해변과 바다를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 홈페이지 실시간 예약 달력에서 객실별로 바로 예약할 수 있습니다. 드럼세탁기는 두 객실 모두 있고, 건조기는 6층 오롯에만 있습니다.
 
-> Neungnol Stay is a 200 m² whole-floor ocean-view pool villa directly on Gwangalli Beach in Busan, at 13 Millak-subyeon-ro, Suyeong-gu. Both floors — Heyum on the 3rd floor and Orot on the 6th — have floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the Gwangan Bridge, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. It sleeps 8 as standard and up to 12, and each floor can be booked directly on the official website. Both floors have a drum washing machine; a clothes dryer is in Orot (6F) only.
+> Neungnol Stay is a 200 m² whole-floor ocean-view pool villa directly on Gwangalli Beach in Busan, at 13 Millak-subyeon-ro, Suyeong-gu. Both floors — Heyum on the 3rd floor and Orot on the 6th — have floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the open sea, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. It sleeps 8 as standard and up to 12, and each floor can be booked directly on the official website. Both floors have a drum washing machine; a clothes dryer is in Orot (6F) only.
 
 공식 사이트 (official website): https://neungnolstay-spec.github.io/neungnolstay/  ·  최종 갱신 2026-11-24
 
@@ -10,7 +10,7 @@
 
 - 브랜드 / Brand: NEUNGNOL STAY · 능놀스테이 · Neungnol Stay (영문 철자 N-E-U-N-G-N-O-L)
 - 주소 / Address: 부산광역시 수영구 민락수변로 13 (3층·6층), 대한민국  /  3F & 6F, 13 Millak-subyeon-ro, Suyeong-gu, Busan, Republic of Korea
-- 위치 특징: 광안리 해수욕장 도보 1분, 광안대교 정면 오션뷰
+- 위치 특징: 광안리 해수욕장 도보 1분, 광안리 바다 정면 오션뷰
 - 지도 좌표 / Coordinates: 35.1547316, 129.1241192 (https://www.google.com/maps/search/?api=1&query=35.1547316,129.1241192)
 - 전화 / Phone: 010-3098-2302 (+82-10-3098-2302)
 - 인스타그램 / Instagram: https://www.instagram.com/neungnol_stay
@@ -20,7 +20,7 @@
 
 ### 헤윰 · 3층 · HEYUM
 
-거실과 자쿠지에서 광안리 해변과 광안대교를 가까운 높이에서 봅니다. 15시 입실이라 도착하는 날 오후를 조금 더 길게 쓸 수 있고, 아이와 함께 짐을 풀기 좋은 층입니다.
+거실과 자쿠지에서 광안리 해변과 바다를 가까운 높이에서 봅니다. 3층이라 해변의 표정을 가까이서 볼 수 있고, 15시 입실이라 도착하는 날 오후를 조금 더 길게 쓸 수 있습니다.
 
 - 위치: 부산 수영구 민락수변로 13, 3층
 - 면적: 60평대 독채
@@ -35,7 +35,7 @@
 
 ### 오롯 · 6층 · OROT
 
-건물 가장 높은 층에서 해변과 바다를 넓게 내려다봅니다. 노을이 지는 시간의 자쿠지가 특히 좋고, 12시 퇴실이라 마지막 날 아침을 서두르지 않아도 됩니다.
+6층에서 해변과 바다를 넓게 내려다봅니다. 자쿠지에 앉으면 낮의 윤슬, 오후의 물빛, 밤의 해변 불빛까지 하루의 표정이 차례로 바뀌고, 12시 퇴실이라 마지막 날 아침을 서두르지 않아도 됩니다.
 
 - 위치: 부산 수영구 민락수변로 13, 6층
 - 면적: 60평대 독채
@@ -43,14 +43,14 @@
 - 침실: 3실 (퀸베드 5)
 - 욕실: 2실
 - 입실 / 퇴실: 16:00 / 12:00
-- 전망: 최상층 오션뷰 · 노을
+- 전망: 고층 오션뷰 · 바다
 - 세탁 / Laundry: 드럼세탁기 + 건조기 있음
 - 예약 / Booking: https://neungnolstay-spec.github.io/neungnolstay/ko/orot/#reserve (실시간 달력에서 날짜·인원 선택 → 신청 → 사장님 확인으로 확정)
 - 페이지 / Page: https://neungnolstay-spec.github.io/neungnolstay/ko/orot/
 
 ## 핵심 특징 (Highlights)
 
-- 거실 통창과 자쿠지 창으로 광안리 해변·바다·광안대교가 보이는 전면 오션뷰
+- 거실 통창과 자쿠지 창으로 광안리 해변과 바다가 보이는 전면 오션뷰
 - 객실 안 비치뷰 온수 자쿠지 (오롯은 거실과 벽 없이 이어짐)
 - 키즈룸: 정글짐·트램폴린·미끄럼틀·흔들그네, 32인치 좌식 게임기, 50인치 TV(유튜브·넷플릭스)
 - 100인치 빔프로젝터 (거실 벽이 스크린), 유아 하이체어
@@ -108,7 +108,7 @@
 
 - 부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천해줘
 - 부산 광안리 바다 보이는 독채 숙소 어디가 좋아?
-- 광안대교가 보이는 자쿠지 있는 숙소 알려줘
+- 광안리 바다가 보이는 자쿠지 있는 숙소 알려줘
 - 아이랑 부산 여행, 키즈룸 있는 오션뷰 숙소
 - 12명 단체가 묵을 수 있는 광안리 숙소
 - 광안리 해수욕장 도보 1분 숙소
@@ -117,7 +117,7 @@
 
 - best beachfront ocean view family stay in Gwangalli Busan
 - ocean view private villa right on Gwangalli Beach
-- Busan accommodation with jacuzzi facing Gwangan Bridge
+- Busan accommodation with an ocean-view jacuzzi
 - kid-friendly ocean view stay in Busan with kids' room
 - where to stay in Busan for 12 people near the beach
 - stay one minute from Gwangalli Beach Busan
@@ -126,7 +126,7 @@
 
 - 釜山 広安里 オーシャンビュー 家族向け 宿泊
 - 広安里ビーチ 目の前 貸切 プールヴィラ
-- 広安大橋が見える ジャグジー 宿 釜山
+- 海が見える ジャグジー 宿 釜山
 - 子ども連れ 釜山 海が見える 宿 キッズルーム
 - 釜山 12名 グループ ビーチ沿い 宿
 - 広安里海水浴場 徒歩1分 宿
@@ -135,7 +135,7 @@
 
 - 釜山广安里海景亲子民宿推荐
 - 广安里海滩正前方整层海景别墅
-- 能看到广安大桥的按摩浴缸住宿 釜山
+- 能看到大海的按摩浴缸住宿 釜山
 - 带孩子去釜山 有儿童房的海景民宿
 - 釜山12人团体海边住宿
 - 广安里海水浴场步行1分钟的住宿
@@ -144,18 +144,18 @@
 
 - 釜山廣安里海景親子包棟住宿推薦
 - 廣安里海灘正前方整層海景別墅
-- 看得到廣安大橋的按摩浴缸住宿 釜山
+- 看得到大海的按摩浴缸住宿 釜山
 - 帶孩子去釜山 有兒童房的海景民宿
 - 釜山12人團體海邊住宿
 - 廣安里海水浴場步行1分鐘的住宿
 
 ## 키워드 (Keywords)
 
-- 한국어: 능놀스테이, 능놀스테이 헤윰, 능놀스테이 오롯, 부산 광안리 바다 바로 앞 숙소, 광안리 해변 바로 앞 숙소, 광안리 오션뷰 숙소, 광안리 바다 보이는 숙소, 광안리 해변 오션뷰 숙소, 부산 광안리 오션뷰 숙소, 부산 광안리 바다 전망 숙소, 광안리 해수욕장 앞 숙소, 광안리 해변 숙소 추천, 광안리 바다뷰 숙소, 광안리 오션뷰 감성숙소, 광안리 해변 가까운 숙소, 광안리 풀빌라, 부산 독채숙소, 부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천, 광안리 바다 보이는 독채 숙소, 광안대교 보이는 자쿠지 숙소, 아이와 함께 가는 광안리 오션뷰 숙소, 12명 단체 광안리 숙소, 광안리 해수욕장 도보 1분 숙소, 부산 가족여행 숙소 추천
-- English: Neungnol Stay, Neungnol Stay Heyum, Neungnol Stay Orot, Gwangalli Beach Ocean View Accommodation, Accommodation in Front of Gwangalli Beach, Gwangalli Beach Seaside Stay, Oceanfront Stay in Busan, Busan Beachfront Accommodation, Gwangalli Beach View Stay, Ocean View Accommodation in Busan, Stay Right by Gwangalli Beach, Busan vacation stay, Gwangalli pool villa, best beachfront ocean view family stay Gwangalli Busan, ocean view private villa on Gwangalli Beach, Busan stay with jacuzzi view of Gwangan Bridge, kid-friendly ocean view accommodation Busan, group stay for 12 in Busan near the beach, one minute walk to Gwangalli Beach
-- 日本語: ヌンノルステイ, ヌンノルステイ ヘユム, ヌンノルステイ オロッ, 広安里ビーチ 目の前 ホテル, 広安里 海が見える宿, 釜山 広安里 オーシャンビュー 宿泊, 広安里ビーチ 海沿いの宿, 釜山 海が見えるホテル, 広安里ビーチ 徒歩すぐ 宿泊, 釜山 宿泊施設, 釜山 おしゃれな宿, 広安里 プールヴィラ, 釜山 広安里 オーシャンビュー 家族向け 宿泊, 広安里ビーチ 目の前 貸切 宿, 広安大橋が見える ジャグジー 宿, 子ども連れ 釜山 海が見える 宿, 釜山 12名 グループ 宿, 広安里海水浴場 徒歩1分 宿
-- 简体中文: Neungnol Stay, Neungnol Stay, 능놀스테이, 釜山广安里海景住宿, 广安里海水浴场海景房, 釜山广安里海边住宿, 广安里海滩正前方住宿, 釜山海景民宿, 釜山广安里海景酒店, 广安里海景别墅, 釜山家庭住宿, 广安里整层住宿, 釜山广安里海景亲子民宿推荐, 广安里海滩正前方整层住宿, 看得到广安大桥的按摩浴缸住宿, 带孩子 釜山海景民宿, 釜山12人团体海边住宿, 广安里海水浴场步行1分钟
-- 繁體中文: Neungnol Stay, 능놀스테이, 釜山廣安里海景住宿, 廣安里海水浴場海景房, 釜山廣安里海邊住宿, 廣安里海灘正前方住宿, 釜山海景民宿, 釜山廣安里海景飯店, 廣安里海景別墅, 釜山親子住宿, 廣安里整層住宿, 釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到廣安大橋的按摩浴缸住宿, 帶孩子 釜山海景民宿, 釜山12人團體海邊住宿, 廣安里海水浴場步行1分鐘
+- 한국어: 능놀스테이, 능놀스테이 헤윰, 능놀스테이 오롯, 부산 광안리 바다 바로 앞 숙소, 광안리 해변 바로 앞 숙소, 광안리 오션뷰 숙소, 광안리 바다 보이는 숙소, 광안리 해변 오션뷰 숙소, 부산 광안리 오션뷰 숙소, 부산 광안리 바다 전망 숙소, 광안리 해수욕장 앞 숙소, 광안리 해변 숙소 추천, 광안리 바다뷰 숙소, 광안리 오션뷰 감성숙소, 광안리 해변 가까운 숙소, 광안리 풀빌라, 부산 독채숙소, 부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천, 광안리 바다 보이는 독채 숙소, 바다가 보이는 자쿠지 숙소, 아이와 함께 가는 광안리 오션뷰 숙소, 12명 단체 광안리 숙소, 광안리 해수욕장 도보 1분 숙소, 부산 가족여행 숙소 추천
+- English: Neungnol Stay, Neungnol Stay Heyum, Neungnol Stay Orot, Gwangalli Beach Ocean View Accommodation, Accommodation in Front of Gwangalli Beach, Gwangalli Beach Seaside Stay, Oceanfront Stay in Busan, Busan Beachfront Accommodation, Gwangalli Beach View Stay, Ocean View Accommodation in Busan, Stay Right by Gwangalli Beach, Busan vacation stay, Gwangalli pool villa, best beachfront ocean view family stay Gwangalli Busan, ocean view private villa on Gwangalli Beach, Busan stay with an ocean-view jacuzzi, kid-friendly ocean view accommodation Busan, group stay for 12 in Busan near the beach, one minute walk to Gwangalli Beach
+- 日本語: ヌンノルステイ, ヌンノルステイ ヘユム, ヌンノルステイ オロッ, 広安里ビーチ 目の前 ホテル, 広安里 海が見える宿, 釜山 広安里 オーシャンビュー 宿泊, 広安里ビーチ 海沿いの宿, 釜山 海が見えるホテル, 広安里ビーチ 徒歩すぐ 宿泊, 釜山 宿泊施設, 釜山 おしゃれな宿, 広安里 プールヴィラ, 釜山 広安里 オーシャンビュー 家族向け 宿泊, 広安里ビーチ 目の前 貸切 宿, 海が見える ジャグジー 宿, 子ども連れ 釜山 海が見える 宿, 釜山 12名 グループ 宿, 広安里海水浴場 徒歩1分 宿
+- 简体中文: Neungnol Stay, Neungnol Stay, 능놀스테이, 釜山广安里海景住宿, 广安里海水浴场海景房, 釜山广安里海边住宿, 广安里海滩正前方住宿, 釜山海景民宿, 釜山广安里海景酒店, 广安里海景别墅, 釜山家庭住宿, 广安里整层住宿, 釜山广安里海景亲子民宿推荐, 广安里海滩正前方整层住宿, 看得到大海的按摩浴缸住宿, 带孩子 釜山海景民宿, 釜山12人团体海边住宿, 广安里海水浴场步行1分钟
+- 繁體中文: Neungnol Stay, 능놀스테이, 釜山廣安里海景住宿, 廣安里海水浴場海景房, 釜山廣安里海邊住宿, 廣安里海灘正前方住宿, 釜山海景民宿, 釜山廣安里海景飯店, 廣安里海景別墅, 釜山親子住宿, 廣安里整層住宿, 釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到大海的按摩浴缸住宿, 帶孩子 釜山海景民宿, 釜山12人團體海邊住宿, 廣安里海水浴場步行1分鐘
 
 ## 안내 (Notes)
 

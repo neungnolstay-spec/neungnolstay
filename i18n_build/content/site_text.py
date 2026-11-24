@@ -43,7 +43,7 @@ OVERRIDES = {
         (("home", "cta_card_title"), "객실별 예약 안내"),
         (("rooms", "heyum", "desc"),
          "광안리 해수욕장 도보 1분, 3층 오션뷰 독채 능놀스테이 헤윰. 거실 통창과 비치뷰 자쿠지에서 "
-         "광안대교까지 보이는 60평대·기준 8인 최대 12인. 키즈룸·100인치 시네마. "
+         "바다가 보이는 60평대·기준 8인 최대 12인. 키즈룸·100인치 시네마. "
          "입실 15:00 / 퇴실 11:00, 홈페이지에서 바로 예약."),
         (("rooms", "heyum", "facts", 7, "v"), "홈페이지 예약 (아래 달력)"),
         (("rooms", "heyum", "booking_p"),
@@ -53,8 +53,8 @@ OVERRIDES = {
          "능놀스테이에 머문 게스트들이 남긴 후기입니다. 창 너머의 바다와 넓은 거실이 어떤 하루를 "
          "만들었는지 미리 읽어 보세요."),
         (("rooms", "orot", "desc"),
-         "광안리 해변 6층 최상층 오션뷰 독채, 능놀스테이 오롯. 노을 지는 자쿠지와 통창 거실에서 "
-         "바다를 내려다보는 60평대·8~12인. 키즈룸·100인치 시네마. 입실 16:00 / 퇴실 12:00, "
+         "광안리 해변 6층 고층 오션뷰 독채, 능놀스테이 오롯. 낮의 윤슬부터 밤의 야경까지 자쿠지와 "
+         "통창 거실에서 즐기는 60평대·8~12인. 키즈룸·100인치 시네마. 입실 16:00 / 퇴실 12:00, "
          "홈페이지에서 바로 예약."),
         (("rooms", "orot", "facts", 7, "v"), "홈페이지 예약 (아래 달력)"),
         (("rooms", "orot", "faq", 4, "a"),
@@ -63,7 +63,7 @@ OVERRIDES = {
          "날짜와 인원을 고르면 실제 요금과 예약 가능 여부가 바로 표시됩니다."),
         (("rooms", "orot", "booking_notes", 1), "예약 신청 후 사장님 확인으로 확정됩니다"),
         (("rooms", "orot", "reviews_lede"),
-         "능놀스테이에 머문 게스트들이 남긴 후기입니다. 6층 창으로 들어오는 노을과 드론 쇼, "
+         "능놀스테이에 머문 게스트들이 남긴 후기입니다. 6층 창으로 들어오는 바다와 드론 쇼, "
          "아이들이 머문 놀이방 이야기를 미리 읽어 보세요."),
         (("rooms", "orot", "reviews", 1, "text"),
          "우리가 묵어 본 숙소 중 가장 아름다운 숙소 중 하나입니다. 인테리어가 완벽하게 설계되었고 "
@@ -109,7 +109,7 @@ OVERRIDES = {
         (("home", "cta_card_title"), "Booking for each room"),
         (("rooms", "heyum", "desc"),
          "Heyum is a 60-pyeong private ocean-view floor one minute from Gwangalli Beach. Full-width "
-         "living-room windows over the sand, a beach-view jacuzzi facing Gwangan Bridge, 8 guests "
+         "living-room windows over the sand, a beach-view jacuzzi facing the open sea, 8 guests "
          "standard and up to 12, kids' room and 100-inch cinema. Check-in 15:00 / check-out 11:00, "
          "booked here on our own calendar."),
         (("rooms", "heyum", "facts", 7, "v"), "Book on this site (calendar below)"),
@@ -120,8 +120,8 @@ OVERRIDES = {
          "Reviews written by guests who stayed at Neungnol Stay. Read what the window full of sea and "
          "the wide living room made of their days here."),
         (("rooms", "orot", "desc"),
-         "Orot is the top-floor, 60-pyeong private ocean-view stay above Gwangalli Beach. Sunset "
-         "jacuzzi opening onto the living room, dining table facing the sea, kids' room and 100-inch "
+         "Orot is the 60-pyeong private ocean-view stay on the 6th floor above Gwangalli Beach. A jacuzzi "
+         "where the sea changes through the day, opening onto the living room, dining table facing the sea, kids' room and 100-inch "
          "cinema. 8–12 guests. Check-in 16:00 / check-out 12:00, booked here on our own calendar."),
         (("rooms", "orot", "facts", 7, "v"), "Book on this site (calendar below)"),
         (("rooms", "orot", "faq", 4, "a"),
@@ -130,7 +130,7 @@ OVERRIDES = {
          "Pick your dates and party size to see the actual rate and live availability."),
         (("rooms", "orot", "booking_notes", 1), "Every request is confirmed by the host"),
         (("rooms", "orot", "reviews_lede"),
-         "Reviews written by guests who stayed at Neungnol Stay. Read about the sunset through the "
+         "Reviews written by guests who stayed at Neungnol Stay. Read about the sea through the "
          "sixth-floor window, the drone show over the beach and the playroom the children would not leave."),
         (("rooms", "orot", "reviews", 1, "text"),
          "One of the most beautiful stays we have ever had. The interior is perfectly designed and the "
@@ -177,7 +177,7 @@ OVERRIDES = {
         (("home", "cta_card_title"), "客室ごとの予約案内"),
         (("rooms", "heyum", "desc"),
          "広安里海水浴場まで徒歩1分、3階の貸切オーシャンビュー客室ヘユム。全面窓のリビングと"
-         "ビーチビューのジャグジーから広安大橋まで望む約200㎡・定員8名最大12名。キッズルーム・"
+         "ビーチビューのジャグジーから海を望む約200㎡・定員8名最大12名。キッズルーム・"
          "100インチシネマ。チェックイン15:00 / アウト11:00、当サイトからご予約いただけます。"),
         (("rooms", "heyum", "facts", 7, "v"), "当サイト予約（下のカレンダー）"),
         (("rooms", "heyum", "booking_p"),
@@ -187,7 +187,7 @@ OVERRIDES = {
          "ヌンノルステイにご宿泊いただいたゲストのレビューです。海を映す窓と広いリビングが"
          "どんな一日をつくったのか、先に読んでみてください。"),
         (("rooms", "orot", "desc"),
-         "広安里ビーチの6階最上階、貸切オーシャンビュー客室オロッ。夕日が入るジャグジーと"
+         "広安里ビーチの6階高層、貸切オーシャンビュー客室オロッ。昼のきらめきから夜の灯りまで海を楽しむジャグジーと"
          "リビングがひとつながり、海を向いたダイニング、キッズルーム、100インチシネマ。"
          "約200㎡・8〜12名。チェックイン16:00 / アウト12:00、当サイトからご予約いただけます。"),
         (("rooms", "orot", "facts", 7, "v"), "当サイト予約（下のカレンダー）"),
@@ -197,7 +197,7 @@ OVERRIDES = {
          "日付と人数を選ぶと、実際の料金と空室状況がすぐに表示されます。"),
         (("rooms", "orot", "booking_notes", 1), "お申し込み後、オーナー確認で確定します"),
         (("rooms", "orot", "reviews_lede"),
-         "ヌンノルステイにご宿泊いただいたゲストのレビューです。6階の窓から入る夕日、"
+         "ヌンノルステイにご宿泊いただいたゲストのレビューです。6階の窓から入る海、"
          "ビーチのドローンショー、子どもたちが離れなかったプレイルームの話を先に読んでみてください。"),
         (("rooms", "orot", "reviews", 1, "text"),
          "これまで泊まった宿の中で最も美しい宿のひとつです。インテリアは完璧に設計されていて、"
@@ -239,7 +239,7 @@ OVERRIDES = {
         (("home", "cta_card_title"), "各客房预订说明"),
         (("rooms", "heyum", "desc"),
          "距广安里海水浴场步行1分钟，3楼整层海景客房 Heyum。客厅落地窗与海景按摩浴缸可望到"
-         "广安大桥，约200平方米、8人标准最多12人，儿童房与100吋影院。"
+         "大海，约200平方米、8人标准最多12人，儿童房与100吋影院。"
          "入住15:00 / 退房11:00，可在本站直接预订。"),
         (("rooms", "heyum", "facts", 7, "v"), "本站预订（下方日历）"),
         (("rooms", "heyum", "booking_p"), "选择日期和人数，即可看到实际房价与可订状态。"),
@@ -247,7 +247,7 @@ OVERRIDES = {
         (("rooms", "heyum", "reviews_lede"),
          "来自入住 Neungnol Stay 的住客评价。先读一读满窗海景与宽敞客厅，为他们的旅程留下了什么。"),
         (("rooms", "orot", "desc"),
-         "广安里海滩6楼最高层整层海景客房 Orot。日落按摩浴缸与客厅相连，餐桌面向大海，"
+         "广安里海滩6楼高层整层海景客房 Orot。白天波光到夜晚灯火都能尽收的按摩浴缸与客厅相连，餐桌面向大海，"
          "儿童房与100吋影院。约200平方米、8–12人。入住16:00 / 退房12:00，可在本站直接预订。"),
         (("rooms", "orot", "facts", 7, "v"), "本站预订（下方日历）"),
         (("rooms", "orot", "faq", 4, "a"),
@@ -255,7 +255,7 @@ OVERRIDES = {
         (("rooms", "orot", "booking_p"), "选择日期和人数，即可看到实际房价与可订状态。"),
         (("rooms", "orot", "booking_notes", 1), "提交申请后由房东确认"),
         (("rooms", "orot", "reviews_lede"),
-         "来自入住 Neungnol Stay 的住客评价。先读一读透过六层窗户照进来的夕阳、海滩无人机表演，"
+         "来自入住 Neungnol Stay 的住客评价。先读一读透过六层窗户照进来的大海、海滩无人机表演，"
          "以及孩子舍不得离开的游戏房。"),
         (("rooms", "orot", "reviews", 1, "text"),
          "这是我们住过最美的住宿之一。室内设计非常完美，海景也很漂亮。孩子们很喜欢游戏房，"
@@ -295,7 +295,7 @@ OVERRIDES = {
         (("home", "cta_card_title"), "各客房預訂說明"),
         (("rooms", "heyum", "desc"),
          "距廣安里海水浴場步行1分鐘，3樓整層海景客房 Heyum。客廳落地窗與海景按摩浴缸可望見"
-         "廣安大橋，約200平方公尺、8人標準最多12人，兒童房與100吋劇院。"
+         "大海，約200平方公尺、8人標準最多12人，兒童房與100吋劇院。"
          "入住15:00 / 退房11:00，可於本站直接預訂。"),
         (("rooms", "heyum", "facts", 7, "v"), "本站預訂（下方日曆）"),
         (("rooms", "heyum", "booking_p"), "選擇日期與人數，即可看到實際房價與可訂狀態。"),
@@ -303,7 +303,7 @@ OVERRIDES = {
         (("rooms", "heyum", "reviews_lede"),
          "來自入住 Neungnol Stay 的住客評價。先讀一讀滿窗海景與寬敞客廳，為他們的旅程留下了什麼。"),
         (("rooms", "orot", "desc"),
-         "廣安里海灘6樓最高層整層海景客房 Orot。日落按摩浴缸與客廳相連，餐桌面向大海，"
+         "廣安里海灘6樓高層整層海景客房 Orot。白天波光到夜晚燈火都能盡收的按摩浴缸與客廳相連，餐桌面向大海，"
          "兒童房與100吋劇院。約200平方公尺、8–12人。入住16:00 / 退房12:00，可於本站直接預訂。"),
         (("rooms", "orot", "facts", 7, "v"), "本站預訂（下方日曆）"),
         (("rooms", "orot", "faq", 4, "a"),
@@ -311,7 +311,7 @@ OVERRIDES = {
         (("rooms", "orot", "booking_p"), "選擇日期與人數，即可看到實際房價與可訂狀態。"),
         (("rooms", "orot", "booking_notes", 1), "送出申請後由房東確認"),
         (("rooms", "orot", "reviews_lede"),
-         "來自入住 Neungnol Stay 的住客評價。先讀一讀透過六層窗戶照進來的夕陽、海灘無人機表演，"
+         "來自入住 Neungnol Stay 的住客評價。先讀一讀透過六層窗戶照進來的大海、海灘無人機表演，"
          "以及孩子捨不得離開的遊戲房。"),
         (("rooms", "orot", "reviews", 1, "text"),
          "這是我們住過最美的住宿之一。室內設計非常完美，海景也很漂亮。孩子們很喜歡遊戲房，"

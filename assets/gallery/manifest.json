@@ -59,8 +59,8 @@
    "slug": "living-dusk",
    "cat": "living",
    "tone": "dusk",
-   "ko": "해질녘 거실과 광안대교",
-   "en": "The living room at dusk, Gwangandaegyo beyond the glass",
+   "ko": "해질녘, 창 너머로 물드는 광안리 바다",
+   "en": "The living room at dusk, Gwangalli water beyond the glass",
    "w": 788,
    "h": 595,
    "tw": 788,
@@ -421,6 +421,17 @@
  ],
  "orot": [
   {
+   "slug": "jacuzzi-ocean",
+   "cat": "jacuzzi",
+   "tone": "day",
+   "ko": "바다를 마주한 자쿠지",
+   "en": "Jacuzzi facing the sea",
+   "w": 481,
+   "h": 623,
+   "tw": 481,
+   "th": 623
+  },
+  {
    "slug": "dining-night",
    "cat": "dining",
    "tone": "night",
@@ -518,17 +529,6 @@
    "h": 772,
    "tw": 619,
    "th": 772
-  },
-  {
-   "slug": "jacuzzi-ocean",
-   "cat": "jacuzzi",
-   "tone": "day",
-   "ko": "바다를 마주한 자쿠지",
-   "en": "Jacuzzi facing the sea",
-   "w": 481,
-   "h": 623,
-   "tw": 481,
-   "th": 623
   },
   {
    "slug": "jacuzzi-tray",
@@ -738,17 +738,6 @@
    "h": 1487,
    "tw": 726,
    "th": 900
-  },
-  {
-   "slug": "detail-breakfast",
-   "cat": "detail",
-   "tone": "detail",
-   "ko": "커피와 크루아상",
-   "en": "Coffee and croissants",
-   "w": 398,
-   "h": 536,
-   "tw": 398,
-   "th": 536
   },
   {
    "slug": "detail-shelf",

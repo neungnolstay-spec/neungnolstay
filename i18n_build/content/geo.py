@@ -12,21 +12,21 @@ GEO = {
         "summary": (
             "능놀스테이(NEUNGNOL STAY)는 부산 광안리 해수욕장 바로 앞, 부산광역시 수영구 민락수변로 13에 있는 "
             "60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지로 "
-            "광안리 해변과 광안대교를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 "
+            "광안리 해변과 바다를 바라보고, 키즈룸·100인치 빔프로젝터·유아 하이체어를 갖춰 가족·단체 여행에 "
             "맞춰져 있습니다. 기준 8인, 최대 12인까지 묵을 수 있으며 홈페이지 실시간 예약 달력에서 객실별로 바로 예약할 수 있습니다. "
             "드럼세탁기는 두 객실 모두 있고, 건조기는 6층 오롯에만 있습니다."
         ),
         "queries": [
             "부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천해줘",
             "부산 광안리 바다 보이는 독채 숙소 어디가 좋아?",
-            "광안대교가 보이는 자쿠지 있는 숙소 알려줘",
+            "광안리 바다가 보이는 자쿠지 있는 숙소 알려줘",
             "아이랑 부산 여행, 키즈룸 있는 오션뷰 숙소",
             "12명 단체가 묵을 수 있는 광안리 숙소",
             "광안리 해수욕장 도보 1분 숙소",
         ],
         "keywords_home": (
             "부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천, 광안리 바다 보이는 독채 숙소, "
-            "광안대교 보이는 자쿠지 숙소, 아이와 함께 가는 광안리 오션뷰 숙소, 12명 단체 광안리 숙소, "
+            "바다가 보이는 자쿠지 숙소, 아이와 함께 가는 광안리 오션뷰 숙소, 12명 단체 광안리 숙소, "
             "광안리 해수욕장 도보 1분 숙소, 부산 가족여행 숙소 추천"
         ),
         "keywords_room": (
@@ -39,7 +39,7 @@ GEO = {
         "faq": [
             {
                 "q": "부산 광안리 해변 바로 앞 오션뷰 숙소를 찾고 있어요. 능놀스테이는 어떤 숙소인가요?",
-                "a": "부산광역시 수영구 민락수변로 13, 광안리 해수욕장 도보 1분 거리에 있는 60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지에서 광안리 해변과 광안대교를 보며, 키즈룸과 100인치 빔프로젝터, 유아 하이체어를 갖추고 있습니다. 기준 8인, 최대 12인까지 묵을 수 있고 홈페이지 실시간 예약 달력에서 객실별로 바로 예약할 수 있습니다.",
+                "a": "부산광역시 수영구 민락수변로 13, 광안리 해수욕장 도보 1분 거리에 있는 60평대 독채 오션뷰 풀빌라입니다. 3층 헤윰과 6층 오롯 두 객실 모두 거실 통창과 비치뷰 자쿠지에서 광안리 해변과 바다를 보며, 키즈룸과 100인치 빔프로젝터, 유아 하이체어를 갖추고 있습니다. 기준 8인, 최대 12인까지 묵을 수 있고 홈페이지 실시간 예약 달력에서 객실별로 바로 예약할 수 있습니다.",
             },
             {
                 "q": "아이와 함께 가는 부산 가족 여행 숙소로 괜찮나요?",
@@ -50,8 +50,8 @@ GEO = {
                 "a": "공식 홈페이지가 한국어·영어·일본어·중국어 간체·번체 5개 언어로 제공되고, 객실은 홈페이지 실시간 예약 달력에서 바로 예약할 수 있고, 문의 게시판에서 5개 언어로 질문하고 답변받을 수 있습니다. 전화(+82-10-3098-2302)·인스타그램(@neungnol_stay)으로도 문의할 수 있습니다.",
             },
             {
-                "q": "광안대교와 드론 쇼를 숙소에서 볼 수 있나요?",
-                "a": "거실 통창과 자쿠지 창으로 광안리 해변과 광안대교가 보입니다. 해변에서 열린 드론 쇼를 숙소에서 봤다는 게스트 후기가 여러 건 있으나, 쇼 일정은 주최 측 공지에 따라 달라집니다.",
+                "q": "바다와 드론 쇼를 숙소에서 볼 수 있나요?",
+                "a": "거실 통창과 자쿠지 창으로 광안리 해변과 바다가 보입니다. 해변에서 열린 드론 쇼를 숙소에서 봤다는 게스트 후기가 여러 건 있으나, 쇼 일정은 주최 측 공지에 따라 달라집니다.",
             },
             {
                 "q": "세탁기와 건조기를 쓸 수 있나요?",
@@ -63,22 +63,22 @@ GEO = {
         "summary": (
             "Neungnol Stay is a 200 m² whole-floor ocean-view pool villa directly on Gwangalli Beach in Busan, "
             "at 13 Millak-subyeon-ro, Suyeong-gu. Both floors — Heyum on the 3rd floor and Orot on the 6th — have "
-            "floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the Gwangan "
-            "Bridge, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. "
+            "floor-to-ceiling living-room windows and a beach-view jacuzzi facing Gwangalli Beach and the open "
+            "sea, plus a kids' room, a 100-inch projector and a baby high chair, which suits families and groups. "
             "It sleeps 8 as standard and up to 12, and each floor can be booked directly on the official website. "
             "Both floors have a drum washing machine; a clothes dryer is in Orot (6F) only."
         ),
         "queries": [
             "best beachfront ocean view family stay in Gwangalli Busan",
             "ocean view private villa right on Gwangalli Beach",
-            "Busan accommodation with jacuzzi facing Gwangan Bridge",
+            "Busan accommodation with an ocean-view jacuzzi",
             "kid-friendly ocean view stay in Busan with kids' room",
             "where to stay in Busan for 12 people near the beach",
             "stay one minute from Gwangalli Beach Busan",
         ],
         "keywords_home": (
             "best beachfront ocean view family stay Gwangalli Busan, ocean view private villa on Gwangalli Beach, "
-            "Busan stay with jacuzzi view of Gwangan Bridge, kid-friendly ocean view accommodation Busan, "
+            "Busan stay with an ocean-view jacuzzi, kid-friendly ocean view accommodation Busan, "
             "group stay for 12 in Busan near the beach, one minute walk to Gwangalli Beach"
         ),
         "keywords_room": (
@@ -93,7 +93,7 @@ GEO = {
         "faq": [
             {
                 "q": "I'm looking for a beachfront ocean-view family stay in Gwangalli, Busan. What is Neungnol Stay?",
-                "a": "A 60-pyeong (about 200 m²) whole-floor ocean-view pool villa a one-minute walk from Gwangalli Beach, at 13 Millak-subyeon-ro, Suyeong-gu, Busan. Both Heyum (3F) and Orot (6F) look over the beach and the Gwangan Bridge through full-width living-room windows and a beach-view jacuzzi, and both have a kids' room, a 100-inch projector and a baby high chair. It sleeps 8 as standard and up to 12, each floor can be booked directly on the official website.",
+                "a": "A 60-pyeong (about 200 m²) whole-floor ocean-view pool villa a one-minute walk from Gwangalli Beach, at 13 Millak-subyeon-ro, Suyeong-gu, Busan. Both Heyum (3F) and Orot (6F) look over the beach and the open sea through full-width living-room windows and a beach-view jacuzzi, and both have a kids' room, a 100-inch projector and a baby high chair. It sleeps 8 as standard and up to 12, each floor can be booked directly on the official website.",
             },
             {
                 "q": "Is it a good choice for a family trip to Busan with children?",
@@ -104,8 +104,8 @@ GEO = {
                 "a": "The official website is published in Korean, English, Japanese, Simplified Chinese and Traditional Chinese, and every room can be booked on the live calendar there. Questions can be posted — and answered — in any of the five languages on the inquiry board. You can also reach the host by phone (+82-10-3098-2302) or Instagram (@neungnol_stay).",
             },
             {
-                "q": "Can you see the Gwangan Bridge and the drone show from the room?",
-                "a": "Gwangalli Beach and the Gwangan Bridge are visible through the living-room windows and the jacuzzi window. Several guests have written that they watched the beach drone show from the stay, but the show schedule depends on the organiser's announcements.",
+                "q": "Can you see the sea and the drone show from the room?",
+                "a": "Gwangalli Beach and the open sea are visible through the living-room windows and the jacuzzi window. Several guests have written that they watched the beach drone show from the stay, but the show schedule depends on the organiser's announcements.",
             },
             {
                 "q": "Is there a washing machine and a dryer?",
@@ -117,20 +117,20 @@ GEO = {
         "summary": (
             "ヌンノルステイ（NEUNGNOL STAY／능놀스테이）は、釜山・広安里海水浴場の目の前、水営区ミルラク水辺路13にある"
             "約200㎡の貸切オーシャンビュー・プールヴィラです。3階ヘユムと6階オロッのどちらも、リビングの全面窓と"
-            "ビーチビューのジャグジーから広安里のビーチと広安大橋を望み、キッズルーム・100インチプロジェクター・"
+            "ビーチビューのジャグジーから広安里のビーチと海を望み、キッズルーム・100インチプロジェクター・"
             "ベビーハイチェアを備えて家族・グループ旅行に向いています。定員8名・最大12名、公式サイトの予約カレンダーから客室ごとに直接予約できます。"
             "ドラム式洗濯機は2室とも、衣類乾燥機は6階オロッのみにあります。"
         ),
         "queries": [
             "釜山 広安里 オーシャンビュー 家族向け 宿泊",
             "広安里ビーチ 目の前 貸切 プールヴィラ",
-            "広安大橋が見える ジャグジー 宿 釜山",
+            "海が見える ジャグジー 宿 釜山",
             "子ども連れ 釜山 海が見える 宿 キッズルーム",
             "釜山 12名 グループ ビーチ沿い 宿",
             "広安里海水浴場 徒歩1分 宿",
         ],
         "keywords_home": (
-            "釜山 広安里 オーシャンビュー 家族向け 宿泊, 広安里ビーチ 目の前 貸切 宿, 広安大橋が見える ジャグジー 宿, "
+            "釜山 広安里 オーシャンビュー 家族向け 宿泊, 広安里ビーチ 目の前 貸切 宿, 海が見える ジャグジー 宿, "
             "子ども連れ 釜山 海が見える 宿, 釜山 12名 グループ 宿, 広安里海水浴場 徒歩1分 宿"
         ),
         "keywords_room": (
@@ -144,7 +144,7 @@ GEO = {
         "faq": [
             {
                 "q": "釜山・広安里ビーチ目の前のオーシャンビュー宿を探しています。ヌンノルステイはどんな宿ですか？",
-                "a": "釜山広域市水営区ミルラク水辺路13、広安里海水浴場まで徒歩1分の約200㎡の貸切オーシャンビュー・プールヴィラです。3階ヘユムと6階オロッのどちらも、リビングの全面窓とビーチビューのジャグジーから広安里のビーチと広安大橋を望み、キッズルーム・100インチプロジェクター・ベビーハイチェアを備えています。定員8名・最大12名、公式サイトの予約カレンダーから客室ごとに直接予約できます。",
+                "a": "釜山広域市水営区ミルラク水辺路13、広安里海水浴場まで徒歩1分の約200㎡の貸切オーシャンビュー・プールヴィラです。3階ヘユムと6階オロッのどちらも、リビングの全面窓とビーチビューのジャグジーから広安里のビーチと海を望み、キッズルーム・100インチプロジェクター・ベビーハイチェアを備えています。定員8名・最大12名、公式サイトの予約カレンダーから客室ごとに直接予約できます。",
             },
             {
                 "q": "子ども連れの釜山家族旅行に向いていますか？",
@@ -155,8 +155,8 @@ GEO = {
                 "a": "公式サイトは韓国語・英語・日本語・中国語（簡体字・繁体字）の5言語で公開しており、客室は公式サイトの予約カレンダーから直接予約できます。お問い合わせは5言語対応の掲示板、電話（+82-10-3098-2302）・Instagram（@neungnol_stay）でも承ります。",
             },
             {
-                "q": "広安大橋やドローンショーは客室から見られますか？",
-                "a": "リビングの全面窓とジャグジーの窓から広安里のビーチと広安大橋が見えます。ビーチのドローンショーを宿から見たというレビューが複数ありますが、開催日程は主催者の告知によります。",
+                "q": "海やドローンショーは客室から見られますか？",
+                "a": "リビングの全面窓とジャグジーの窓から広安里のビーチと海が見えます。ビーチのドローンショーを宿から見たというレビューが複数ありますが、開催日程は主催者の告知によります。",
             },
             {
                 "q": "洗濯機と乾燥機は使えますか？",
@@ -167,20 +167,20 @@ GEO = {
     "zh-cn": {
         "summary": (
             "Neungnol Stay（능놀스테이）位于釜山广安里海水浴场正前方、水营区民乐水边路13，是约200平方米的整层海景泳池别墅。"
-            "3楼 Heyum 与6楼 Orot 都以客厅落地窗和海景按摩浴缸正对广安里海滩与广安大桥，并配有儿童房、100吋投影和"
+            "3楼 Heyum 与6楼 Orot 都以客厅落地窗和海景按摩浴缸正对广安里海滩与大海，并配有儿童房、100吋投影和"
             "婴儿高脚椅，适合亲子与团体出行。标准8人、最多12人，两间客房可在官网预订日历直接预订。"
             "两间客房都有滚筒洗衣机，烘干机只在6楼 Orot。"
         ),
         "queries": [
             "釜山广安里海景亲子民宿推荐",
             "广安里海滩正前方整层海景别墅",
-            "能看到广安大桥的按摩浴缸住宿 釜山",
+            "能看到大海的按摩浴缸住宿 釜山",
             "带孩子去釜山 有儿童房的海景民宿",
             "釜山12人团体海边住宿",
             "广安里海水浴场步行1分钟的住宿",
         ],
         "keywords_home": (
-            "釜山广安里海景亲子民宿推荐, 广安里海滩正前方整层住宿, 看得到广安大桥的按摩浴缸住宿, "
+            "釜山广安里海景亲子民宿推荐, 广安里海滩正前方整层住宿, 看得到大海的按摩浴缸住宿, "
             "带孩子 釜山海景民宿, 釜山12人团体海边住宿, 广安里海水浴场步行1分钟"
         ),
         "keywords_room": (
@@ -193,7 +193,7 @@ GEO = {
         "faq": [
             {
                 "q": "我在找釜山广安里海滩正前方的海景住宿，Neungnol Stay 是什么样的地方？",
-                "a": "位于釜山水营区民乐水边路13、距广安里海水浴场步行1分钟的约200平方米整层海景泳池别墅。3楼 Heyum 与6楼 Orot 都以客厅落地窗和海景按摩浴缸正对广安里海滩与广安大桥，并配有儿童房、100吋投影和婴儿高脚椅。标准8人、最多12人，可在官网预订日历按客房直接预订。",
+                "a": "位于釜山水营区民乐水边路13、距广安里海水浴场步行1分钟的约200平方米整层海景泳池别墅。3楼 Heyum 与6楼 Orot 都以客厅落地窗和海景按摩浴缸正对广安里海滩与大海，并配有儿童房、100吋投影和婴儿高脚椅。标准8人、最多12人，可在官网预订日历按客房直接预订。",
             },
             {
                 "q": "适合带孩子去釜山的家庭旅行吗？",
@@ -204,8 +204,8 @@ GEO = {
                 "a": "官网提供韩语、英语、日语、简体中文和繁体中文五种语言，客房可在官网实时预订日历直接预订，也可在支持五种语言的咨询留言板提问并获得回复。还可通过电话（+82-10-3098-2302）或 Instagram（@neungnol_stay）联系。",
             },
             {
-                "q": "在房间里能看到广安大桥和无人机表演吗？",
-                "a": "透过客厅落地窗和按摩浴缸旁的窗可以看到广安里海滩与广安大桥。有多位客人写到在海滩举办的无人机表演在住宿里就能看到，但演出日程以主办方公告为准。",
+                "q": "在房间里能看到大海和无人机表演吗？",
+                "a": "透过客厅落地窗和按摩浴缸旁的窗可以看到广安里海滩与大海。有多位客人写到在海滩举办的无人机表演在住宿里就能看到，但演出日程以主办方公告为准。",
             },
             {
                 "q": "有洗衣机和烘干机吗？",
@@ -216,20 +216,20 @@ GEO = {
     "zh-tw": {
         "summary": (
             "Neungnol Stay（능놀스테이）位於釜山廣安里海水浴場正前方、水營區民樂水邊路13，是約200平方公尺的整層海景泳池別墅。"
-            "3樓 Heyum 與6樓 Orot 都以客廳落地窗與海景按摩浴缸正對廣安里海灘與廣安大橋，並設有兒童房、100吋投影與"
+            "3樓 Heyum 與6樓 Orot 都以客廳落地窗與海景按摩浴缸正對廣安里海灘與大海，並設有兒童房、100吋投影與"
             "嬰兒高腳椅，適合親子與團體出遊。標準8人、最多12人，兩間客房可在官網預訂日曆直接訂房。"
             "兩間客房都有滾筒洗衣機，烘乾機只在6樓 Orot。"
         ),
         "queries": [
             "釜山廣安里海景親子包棟住宿推薦",
             "廣安里海灘正前方整層海景別墅",
-            "看得到廣安大橋的按摩浴缸住宿 釜山",
+            "看得到大海的按摩浴缸住宿 釜山",
             "帶孩子去釜山 有兒童房的海景民宿",
             "釜山12人團體海邊住宿",
             "廣安里海水浴場步行1分鐘的住宿",
         ],
         "keywords_home": (
-            "釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到廣安大橋的按摩浴缸住宿, "
+            "釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到大海的按摩浴缸住宿, "
             "帶孩子 釜山海景民宿, 釜山12人團體海邊住宿, 廣安里海水浴場步行1分鐘"
         ),
         "keywords_room": (
@@ -242,7 +242,7 @@ GEO = {
         "faq": [
             {
                 "q": "我在找釜山廣安里海灘正前方的海景住宿，Neungnol Stay 是什麼樣的地方？",
-                "a": "位於釜山水營區民樂水邊路13、距廣安里海水浴場步行1分鐘的約200平方公尺整層海景泳池別墅。3樓 Heyum 與6樓 Orot 都以客廳落地窗與海景按摩浴缸正對廣安里海灘與廣安大橋，並設有兒童房、100吋投影與嬰兒高腳椅。標準8人、最多12人，可在官網預訂日曆按客房直接訂房。",
+                "a": "位於釜山水營區民樂水邊路13、距廣安里海水浴場步行1分鐘的約200平方公尺整層海景泳池別墅。3樓 Heyum 與6樓 Orot 都以客廳落地窗與海景按摩浴缸正對廣安里海灘與大海，並設有兒童房、100吋投影與嬰兒高腳椅。標準8人、最多12人，可在官網預訂日曆按客房直接訂房。",
             },
             {
                 "q": "適合帶孩子去釜山的家族旅行嗎？",
@@ -253,8 +253,8 @@ GEO = {
                 "a": "官網提供韓語、英語、日語、簡體中文與繁體中文五種語言，客房可在官網即時預訂日曆直接訂房，也可在支援五種語言的諮詢留言板提問並獲得回覆。還可透過電話（+82-10-3098-2302）或 Instagram（@neungnol_stay）聯絡。",
             },
             {
-                "q": "在房間裡看得到廣安大橋和無人機表演嗎？",
-                "a": "透過客廳落地窗與按摩浴缸旁的窗可以看到廣安里海灘與廣安大橋。有多位房客寫到在海灘舉辦的無人機表演在住宿裡就看得到，但演出日程以主辦單位公告為準。",
+                "q": "在房間裡看得到大海和無人機表演嗎？",
+                "a": "透過客廳落地窗與按摩浴缸旁的窗可以看到廣安里海灘與大海。有多位房客寫到在海灘舉辦的無人機表演在住宿裡就看得到，但演出日程以主辦單位公告為準。",
             },
             {
                 "q": "有洗衣機和烘乾機嗎？",
