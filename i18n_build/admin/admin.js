@@ -14,11 +14,6 @@
     appId: "1:449371435334:web:neungnolstay"
   };
   var PATH = "/neungnol_booking_v1";
-  /* 관리자 계정 — Firebase Auth 로그인(Google 또는 이메일)이 끝나야 DB에 접근할 수 있다 */
-  var ADMIN_EMAIL = "eodnrdlrnrnf@gmail.com";
-  /* 관리자로 인정하는 계정 — Firebase Auth에서 이메일 인증이 끝난 계정만 통과
-     (보안 규칙과 같은 목록을 유지할 것) */
-  var ADMIN_EMAILS = ["eodnrdlrnrnf@gmail.com"];
   var SESSION_KEY = "nns_admin_session";
   var SESSION_MS = 12 * 3600 * 1000;
   var ROOM_NAME = { heyum: "헤윰 · 3층", orot: "오롯 · 6층" };
@@ -218,7 +213,7 @@
   /* ---------- firebase ---------- */
   function loadSdk() {
     return new Promise(function (resolve, reject) {
-      if (window.firebase && window.firebase.database && window.firebase.auth) return resolve();
+      if (window.firebase && window.firebase.database) return resolve();
       var base = "https://www.gstatic.com/firebasejs/" + FB_VERSION + "/";
       var addScript = function (src, ok, fail) {
         var s = document.createElement("script");
@@ -228,12 +223,10 @@
         s.onerror = fail;
         document.head.appendChild(s);
       };
-      /* app-compat → auth-compat → database-compat 순서 보장 */
+      /* app-compat → database-compat 순서 보장 */
       addScript(base + "firebase-app-compat.js", function () {
-        addScript(base + "firebase-auth-compat.js", function () {
-          addScript(base + "firebase-database-compat.js", function () { resolve(); },
-            function () { reject(new Error("sdk:database")); });
-        }, function () { reject(new Error("sdk:auth")); });
+        addScript(base + "firebase-database-compat.js", function () { resolve(); },
+          function () { reject(new Error("sdk:database")); });
       }, function () { reject(new Error("sdk:app")); });
     });
   }
@@ -245,7 +238,6 @@
     elx.textContent = text;
   }
 
-  /* 인증(auth)과 DB는 같은 Firebase 앱 인스턴스를 써야 권한이 전달된다 */
   function ensureApp() {
     if (!firebase.apps || !firebase.apps.length) firebase.initializeApp(FB_CONFIG);
     return firebase.app();
@@ -1533,144 +1525,8 @@
     renderAll();
   }
 
-  /* ---------- 사장님 계정 인증 ---------- */
-  var auth = null;
-  var connected = false;
-
-  function authMsg(text, kind) {
-    var m = $("#authMsg");
-    if (!m) return;
-    m.textContent = text || "";
-    m.className = "lock__msg" + (text ? (kind === "ok" ? " is-ok" : " is-error") : "");
-  }
-
-  function showPanel(name) {
-    var pin = $("#pinPanel");
-    var au = $("#authPanel");
-    if (pin) pin.hidden = name !== "pin";
-    if (au) au.hidden = name !== "auth";
-  }
-
-  function authErrText(err) {
-    var c = (err && err.code) || "";
-    if (c === "auth/popup-closed-by-user") return "로그인 창을 닫았습니다. 다시 시도해 주세요.";
-    if (c === "auth/popup-blocked") return "팝업이 차단되었습니다. 이메일·비밀번호로 로그인해 주세요.";
-    if (c === "auth/unauthorized-domain") return "이 주소는 Firebase에 승인되지 않았습니다.";
-    if (c === "auth/email-already-in-use") return "이미 계정이 있습니다. [로그인]을 눌러 주세요. 구글로 만든 계정이면 구글 버튼을 씨 주세요.";
-    if (c === "auth/wrong-password" || c === "auth/invalid-login-credentials" || c === "auth/invalid-credential") return "이메일 또는 비밀번호가 맞지 않습니다.";
-    if (c === "auth/weak-password") return "비밀번호는 6자 이상으로 정해 주세요.";
-    if (c === "auth/invalid-email") return "이메일 주소를 확인해 주세요.";
-    if (c === "auth/account-exists-with-different-credential") return "같은 이메일이 다른 로그인 방식으로 이미 있습니다.";
-    if (c === "auth/operation-not-allowed") return "이 로그인 방식이 아직 켜져 있지 않습니다.";
-    if (c === "auth/network-request-failed") return "네트워크 연결을 확인해 주세요.";
-    return "로그인하지 못했습니다" + (c ? " (" + c + ")" : "");
-  }
-
-  function afterAuth(user) {
-    var email = String((user && user.email) || "").toLowerCase();
-    var allowed = !!(user && ADMIN_EMAILS.indexOf(email) >= 0 && user.emailVerified);
-    var resend = $("#authResend");
-    if (resend) resend.hidden = true;
-    if (allowed) {
-      var out = $("#authOut");
-      if (out) out.hidden = true;
-      authMsg("");
-      showPanel("pin");
-      if (!connected) { connected = true; connect(); }
-      return;
-    }
-    showPanel("auth");
-    var o = $("#authOut");
-    if (o) o.hidden = !user;
-    if (!user) { authMsg(""); return; }
-    if (ADMIN_EMAILS.indexOf(email) < 0) {
-      authMsg("이 계정(" + email + ")은 관리자 계정이 아닙니다. 로그아웃 후 " + ADMIN_EMAIL + " 로 로그인해 주세요.");
-    } else {
-      authMsg("이메일 인증이 아직 끝나지 않았습니다. " + email + " 받은편지함의 인증 메일 링크를 누른 뒤 새로고침해 주세요.");
-      if (resend) resend.hidden = false;
-    }
-  }
-
-  function bootAuth() {
-    loadSdk().then(function () {
-      auth = ensureApp().auth();
-      auth.onAuthStateChanged(function (user) {
-        state.user = user || null;
-        afterAuth(user);
-      });
-
-      var g = $("#authGoogle");
-      if (g) g.addEventListener("click", function () {
-        authMsg("");
-        var provider = new firebase.auth.GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: "select_account" });
-        var viaRedirect = function () {
-          auth.signInWithRedirect(provider).catch(function (e2) {
-            authMsg(authErrText(e2));
-            var pin = $("#pinPanel");
-            if (pin) pin.hidden = true;
-          });
-        };
-        auth.signInWithPopup(provider).catch(function (err) {
-          var c = (err && err.code) || "";
-          if (c === "auth/popup-blocked" || c === "auth/operation-not-supported-in-this-environment") { viaRedirect(); return; }
-          authMsg(authErrText(err));
-        });
-      });
-
-      var form = $("#authForm");
-      if (form) form.addEventListener("submit", function (ev) {
-        ev.preventDefault();
-        var email = String(($("#authEmail") || {}).value || "").trim();
-        var pass = String(($("#authPass") || {}).value || "");
-        if (!email || pass.length < 6) { authMsg("이메일과 6자 이상의 비밀번호를 입력해 주세요."); return; }
-        auth.signInWithEmailAndPassword(email, pass).catch(function (err) {
-          var c = (err && err.code) || "";
-          if (c === "auth/user-not-found" || c === "auth/invalid-login-credentials" || c === "auth/invalid-credential" || c === "auth/wrong-password") {
-            authMsg(authErrText(err) + " 처음이라면 [비밀번호 만들기]를 눌러 주세요.");
-            return;
-          }
-          authMsg(authErrText(err));
-        });
-      });
-
-      var su = $("#authSignup");
-      if (su) su.addEventListener("click", function () {
-        var email = String(($("#authEmail") || {}).value || "").trim();
-        var pass = String(($("#authPass") || {}).value || "");
-        if (!email || pass.length < 6) { authMsg("이메일과 6자 이상의 비밀번호를 입력해 주세요."); return; }
-        auth.createUserWithEmailAndPassword(email, pass).then(function (cred) {
-          var u = cred && cred.user;
-          if (u && u.sendEmailVerification) u.sendEmailVerification().catch(function () {});
-          authMsg("관리자 계정을 만들었습니다. " + email + " 로 보낸 인증 메일의 링크를 누른 뒤 이 화면을 새로고침해 주세요.", "ok");
-        }).catch(function (err) { authMsg(authErrText(err)); });
-      });
-
-      var resend = $("#authResend");
-      if (resend) resend.addEventListener("click", function () {
-        var u = auth.currentUser;
-        if (!u || !u.sendEmailVerification) return;
-        u.sendEmailVerification().then(function () { authMsg("인증 메일을 다시 보냈습니다.", "ok"); },
-          function (e) { authMsg(authErrText(e)); });
-      });
-
-      var out = $("#authOut");
-      if (out) out.addEventListener("click", function () {
-        endSession();
-        auth.signOut().then(function () {
-          authMsg("로그아웃했습니다.");
-          showPanel("auth");
-        }, function () {});
-      });
-    }).catch(function () {
-      showPanel("auth");
-      setSync("off", "연결 실패");
-      authMsg("Firebase를 불러오지 못했습니다. 네트워크를 확인해 주세요.");
-    });
-  }
-
   /* ---------- boot ---------- */
-  bootAuth();
+  connect();
 
   /* PIN keypad */
   var keypad = $("#keypad");
@@ -1868,12 +1724,11 @@
     if (ev.key === "Escape" && sheet && !sheet.hidden) closeSheet();
   });
 
-  /* logout — 사장님 계정 로그아웃 + PIN 세션 종료 */
+  /* logout — PIN 세션 종료 */
   var logout = $("#logout");
   if (logout) logout.addEventListener("click", function () {
     endSession();
-    var p = (auth && auth.signOut) ? auth.signOut().catch(function () {}) : Promise.resolve();
-    p.then(function () { window.location.reload(); });
+    window.location.reload();
   });
 
   /* PIN change */
