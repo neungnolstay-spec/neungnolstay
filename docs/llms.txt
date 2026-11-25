@@ -78,8 +78,8 @@
 - [한국어 (ko)](https://neungnolstay-spec.github.io/neungnolstay/ko/): 능놀스테이 | 부산 광안리 바다 바로 앞 오션뷰 독채 풀빌라 · 헤윰·오롯
 - [English (en)](https://neungnolstay-spec.github.io/neungnolstay/en/): Neungnol Stay | Gwangalli Beach Ocean View Accommodation, Busan
 - [日本語 (ja)](https://neungnolstay-spec.github.io/neungnolstay/ja/): ヌンノルステイ｜釜山 広安里ビーチ目の前のオーシャンビュー宿泊（ヘユム・オロッ）
-- [简体中文 (zh-Hans)](https://neungnolstay-spec.github.io/neungnolstay/zh-cn/): Neungnol Stay｜釜山广安里海景住宿 · 海滩正前方整层别墅（Heyum·Orot）
-- [繁體中文 (zh-Hant)](https://neungnolstay-spec.github.io/neungnolstay/zh-tw/): Neungnol Stay｜釜山廣安里海景住宿 · 海灘正前方整層別墅（Heyum·Orot）
+- [简体中文 (zh-Hans)](https://neungnolstay-spec.github.io/neungnolstay/zh-cn/): Neungnol Stay｜釜山广安里一线海景 · 海滩正前方60坪整层独享（Heyum·Orot）
+- [繁體中文 (zh-Hant)](https://neungnolstay-spec.github.io/neungnolstay/zh-tw/): Neungnol Stay｜釜山廣安里一線海景 · 海灘正前方60坪整層獨享（Heyum·Orot）
 
 ### 객실 페이지 (Room pages)
 
@@ -89,10 +89,10 @@
 - [English · Orot](https://neungnolstay-spec.github.io/neungnolstay/en/orot/): Neungnol Stay Orot | Busan Oceanfront Accommodation
 - [日本語 · ヘユム](https://neungnolstay-spec.github.io/neungnolstay/ja/heyum/): ヌンノルステイ ヘユム｜広安里ビーチ 海が見える宿（3階オーシャンビュー）
 - [日本語 · オロッ](https://neungnolstay-spec.github.io/neungnolstay/ja/orot/): ヌンノルステイ オロッ｜広安里ビーチ 海沿いの宿（6階オーシャンビュー）
-- [简体中文 · Heyum](https://neungnolstay-spec.github.io/neungnolstay/zh-cn/heyum/): Neungnol Stay Heyum｜广安里海水浴场海景房（3楼整层）
-- [简体中文 · Orot](https://neungnolstay-spec.github.io/neungnolstay/zh-cn/orot/): Neungnol Stay Orot｜釜山广安里海边住宿（6楼海景整层）
-- [繁體中文 · Heyum](https://neungnolstay-spec.github.io/neungnolstay/zh-tw/heyum/): Neungnol Stay Heyum｜廣安里海水浴場海景房（3樓整層）
-- [繁體中文 · Orot](https://neungnolstay-spec.github.io/neungnolstay/zh-tw/orot/): Neungnol Stay Orot｜釜山廣安里海邊住宿（6樓海景整層）
+- [简体中文 · Heyum](https://neungnolstay-spec.github.io/neungnolstay/zh-cn/heyum/): Neungnol Stay Heyum｜广安里海滩正前方一线海景 · 60坪整层独享（3楼）
+- [简体中文 · Orot](https://neungnolstay-spec.github.io/neungnolstay/zh-cn/orot/): Neungnol Stay Orot｜釜山广安里一线海景 · 6楼60坪整层独享
+- [繁體中文 · Heyum](https://neungnolstay-spec.github.io/neungnolstay/zh-tw/heyum/): Neungnol Stay Heyum｜廣安里海灘正前方一線海景 · 60坪整層獨享（3樓）
+- [繁體中文 · Orot](https://neungnolstay-spec.github.io/neungnolstay/zh-tw/orot/): Neungnol Stay Orot｜釜山廣安里一線海景 · 6樓60坪整層獨享
 
 ## 예약·문의 (Booking & contact)
 
@@ -154,8 +154,8 @@
 - 한국어: 능놀스테이, 능놀스테이 헤윰, 능놀스테이 오롯, 부산 광안리 바다 바로 앞 숙소, 광안리 해변 바로 앞 숙소, 광안리 오션뷰 숙소, 광안리 바다 보이는 숙소, 광안리 해변 오션뷰 숙소, 부산 광안리 오션뷰 숙소, 부산 광안리 바다 전망 숙소, 광안리 해수욕장 앞 숙소, 광안리 해변 숙소 추천, 광안리 바다뷰 숙소, 광안리 오션뷰 감성숙소, 광안리 해변 가까운 숙소, 광안리 풀빌라, 부산 독채숙소, 부산 광안리 해변 바로 앞 오션뷰 가족 숙소 추천, 광안리 바다 보이는 독채 숙소, 바다가 보이는 자쿠지 숙소, 아이와 함께 가는 광안리 오션뷰 숙소, 12명 단체 광안리 숙소, 광안리 해수욕장 도보 1분 숙소, 부산 가족여행 숙소 추천
 - English: Neungnol Stay, Neungnol Stay Heyum, Neungnol Stay Orot, Gwangalli Beach Ocean View Accommodation, Accommodation in Front of Gwangalli Beach, Gwangalli Beach Seaside Stay, Oceanfront Stay in Busan, Busan Beachfront Accommodation, Gwangalli Beach View Stay, Ocean View Accommodation in Busan, Stay Right by Gwangalli Beach, Busan vacation stay, Gwangalli pool villa, best beachfront ocean view family stay Gwangalli Busan, ocean view private villa on Gwangalli Beach, Busan stay with an ocean-view jacuzzi, kid-friendly ocean view accommodation Busan, group stay for 12 in Busan near the beach, one minute walk to Gwangalli Beach
 - 日本語: ヌンノルステイ, ヌンノルステイ ヘユム, ヌンノルステイ オロッ, 広安里ビーチ 目の前 ホテル, 広安里 海が見える宿, 釜山 広安里 オーシャンビュー 宿泊, 広安里ビーチ 海沿いの宿, 釜山 海が見えるホテル, 広安里ビーチ 徒歩すぐ 宿泊, 釜山 宿泊施設, 釜山 おしゃれな宿, 広安里 プールヴィラ, 釜山 広安里 オーシャンビュー 家族向け 宿泊, 広安里ビーチ 目の前 貸切 宿, 海が見える ジャグジー 宿, 子ども連れ 釜山 海が見える 宿, 釜山 12名 グループ 宿, 広安里海水浴場 徒歩1分 宿
-- 简体中文: Neungnol Stay, Neungnol Stay, 능놀스테이, 釜山广安里海景住宿, 广安里海水浴场海景房, 釜山广安里海边住宿, 广安里海滩正前方住宿, 釜山海景民宿, 釜山广安里海景酒店, 广安里海景别墅, 釜山家庭住宿, 广安里整层住宿, 釜山广安里海景亲子民宿推荐, 广安里海滩正前方整层住宿, 看得到大海的按摩浴缸住宿, 带孩子 釜山海景民宿, 釜山12人团体海边住宿, 广安里海水浴场步行1分钟
-- 繁體中文: Neungnol Stay, 능놀스테이, 釜山廣安里海景住宿, 廣安里海水浴場海景房, 釜山廣安里海邊住宿, 廣安里海灘正前方住宿, 釜山海景民宿, 釜山廣安里海景飯店, 廣安里海景別墅, 釜山親子住宿, 廣安里整層住宿, 釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到大海的按摩浴缸住宿, 帶孩子 釜山海景民宿, 釜山12人團體海邊住宿, 廣安里海水浴場步行1分鐘
+- 简体中文: Neungnol Stay, 능놀스테이, 釜山广安里海景住宿, 广安里一线海景, 广安里海水浴场海景房, 釜山广安里海边住宿, 广安里海滩正前方住宿, 釜山广安里60坪住宿, 近200㎡整层独享, 广安里整层独享别墅, 釜山海景民宿, 釜山广安里海景酒店, 广安里海景别墅, 釜山家庭住宿, 广安里12人住宿, 海景按摩浴缸, 釜山亲子民宿, 釜山广安里海景亲子民宿推荐, 广安里海滩正前方整层住宿, 看得到大海的按摩浴缸住宿, 带孩子 釜山海景民宿, 釜山12人团体海边住宿, 广安里海水浴场步行1分钟
+- 繁體中文: Neungnol Stay, 능놀스테이, 釜山廣安里海景住宿, 廣安里一線海景, 廣安里海水浴場海景房, 釜山廣安里海邊住宿, 廣安里海灘正前方住宿, 釜山廣安里60坪住宿, 近200平方公尺整層獨享, 廣安里整層獨享別墅, 釜山海景民宿, 釜山廣安里海景飯店, 廣安里海景別墅, 釜山家族住宿, 廣安里12人住宿, 海景按摩浴缸, 釜山親子民宿, 釜山廣安里海景親子包棟住宿推薦, 廣安里海灘正前方整層住宿, 看得到大海的按摩浴缸住宿, 帶孩子 釜山海景民宿, 釜山12人團體海邊住宿, 廣安里海水浴場步行1分鐘
 
 ## 안내 (Notes)
 
